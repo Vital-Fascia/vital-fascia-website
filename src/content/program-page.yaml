@@ -1,0 +1,26 @@
+# TODO: there is no design or copy for this page yet. Everything below is placeholder
+# text (in [square brackets]) except the intro, which comes from the home page offer card.
+badge: Coming soon
+heading: 8-Week 1:1 Program
+intro: A structured, in-person program for people who want lasting change, not just relief. Currently in development.
+primaryButton: { label: Join the waitlist, href: "#waitlist" }
+includesHeading: What's included
+includes:
+  - { title: "[Included item 1]", description: "[Short description - TODO]" }
+  - { title: "[Included item 2]", description: "[Short description - TODO]" }
+  - { title: "[Included item 3]", description: "[Short description - TODO]" }
+forWhoHeading: Who it's for
+forWhoText: "[Who this program is for - TODO]"
+detailsHeading: The details
+details:
+  - { label: Format, value: "1:1, in person, Double Bay" }
+  - { label: Length, value: 8 weeks }
+  - { label: Investment, value: "[$XXX]" }
+  - { label: Start date, value: "[TBC]" }
+waitlistHeading: Join the waitlist
+waitlistText: Leave your details and you'll be the first to hear when places open.
+nameLabel: First name
+emailLabel: Email address
+buttonLabel: Join the waitlist
+finePrint: No spam, ever. Unsubscribe any time.
+successMessage: Thanks! You're on the waitlist.

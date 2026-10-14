@@ -1,0 +1,19 @@
+visible: true
+eyebrow: What I help with
+heading: Common issues, treated at the source
+issues:
+  - { title: Neck & shoulder tension, description: The desk-bound tightness that creeps up by mid-afternoon and never fully lets go. }
+  - { title: Lower back pain, description: Often the loudest symptom of a pattern that started somewhere else entirely. }
+  - { title: Hip & glute tightness, description: Common in runners, cyclists and anyone who sits most of the day. }
+  - { title: Running & training injuries, description: Overuse patterns, compensations and the niggles that keep resurfacing. }
+  - { title: Postural imbalance, description: "Rounded shoulders, forward head carry, an uneven pelvis: seen and addressed together." }
+  - { title: Recovery & mobility limits, description: Getting range of motion back after injury, surgery or years of guarding. }
+treatmentsEyebrow: How I work
+treatmentsHeading: A toolkit, matched to your pattern
+treatments:
+  - { name: Remedial massage, description: Broad, whole-body groundwork }
+  - { name: Myofascial release, description: Slow work on the connective web }
+  - { name: Trigger point therapy, description: Targeted release of referred pain }
+  - { name: Myofascial cupping, description: Decompression for stubborn tightness }
+  - { name: Dry needling, description: Precise relief for deep tension }
+  - { name: Corrective exercise, description: Movement that makes it stick }

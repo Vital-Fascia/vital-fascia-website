@@ -1,0 +1,42 @@
+---
+import { getContent } from '../lib/content';
+const d = await getContent('approach');
+---
+{d.visible && (
+  <section id="approach" class="approach band">
+    <div class="wrap grid">
+      <div>
+        <span class="eyebrow eyebrow-dark">{d.eyebrow}</span>
+        <h2>{d.heading}</h2>
+        <p class="body">{d.body}</p>
+      </div>
+      <div class="diagram">
+        <span class="d-title">{d.diagramTitle}</span>
+        <ol class="points">
+          {d.diagramPoints.map((p: any) => (
+            <li class:list={{ hl: p.highlight }}><span class="label">{p.highlight ? <b>{p.label}</b> : p.label}</span></li>
+          ))}
+        </ol>
+        <p class="d-caption">{d.diagramCaption}</p>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .approach { background: var(--charcoal); color: var(--cream); }
+  .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(40px, 6vw, 90px); align-items: center; margin-top: 20px; }
+  h2 { font-size: clamp(30px, 4vw, 46px); color: var(--cream); }
+  .body { color: var(--cream-muted); font-size: 18px; line-height: 1.7; margin-top: 22px; max-width: 520px; }
+  .diagram { display: flex; flex-direction: column; align-items: center; }
+  .d-title { font-family: var(--font-display); font-style: italic; font-size: 18px; margin-bottom: 26px; }
+  .points { width: 280px; padding-top: 0; list-style: none; }
+  .points li { position: relative; height: 88px; padding-left: 60px; }
+  .points li:last-child { height: 84px; }
+  .points li::before { content: ''; position: absolute; left: 24px; top: 0; width: 16px; height: 16px; border-radius: 50%; background: var(--sage); }
+  .points li.hl::before { background: var(--cream); }
+  .points li:not(:last-child)::after { content: ''; position: absolute; left: 31px; top: 16px; width: 2px; height: 72px; border-radius: 2px; background: rgba(242, 236, 221, 0.4); }
+  .label { display: block; margin-top: -2px; font-size: 15px; line-height: 20px; }
+  .d-caption { font-size: 14px; color: var(--cream-muted); margin-top: 22px; max-width: 280px; text-align: center; line-height: 1.5; }
+  @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } .diagram { order: -1; } }
+</style>

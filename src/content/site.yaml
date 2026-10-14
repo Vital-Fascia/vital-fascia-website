@@ -1,0 +1,10 @@
+businessName: Vital Fascia
+tagline: Soft-tissue therapy in Double Bay
+navLinks:
+  - { label: About, href: "/#about" }
+  - { label: My Approach, href: "/#approach" }
+  - { label: 8-Week Program, href: "/8-week-program" }
+  - { label: Work With Me, href: "/#work-with-me" }
+  - { label: Contact, href: "/contact" }
+bookButtonLabel: Book Now
+footerNote: All rights reserved.

@@ -1,0 +1,72 @@
+---
+import { getContent } from '../lib/content';
+const d = await getContent('testimonials');
+---
+{d.visible && d.items.length > 0 && (
+  <section id="testimonials" class="testimonials band" data-carousel>
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <span class="eyebrow">{d.eyebrow}</span>
+          <h2>{d.heading}</h2>
+        </div>
+        <div class="controls">
+          <button type="button" class="arrow" data-dir="-1" aria-label="Scroll testimonials left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+          </button>
+          <button type="button" class="arrow" data-dir="1" aria-label="Scroll testimonials right">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="carousel">
+      <div class="scroll" tabindex="0" role="region" aria-label="Client testimonials">
+        {d.items.map((t: any) => (
+          <figure class="card">
+            <div class="stars" role="img" aria-label={`${t.rating} out of 5 stars`}>{'★'.repeat(t.rating)}</div>
+            <blockquote>“{t.quote}”</blockquote>
+            <div class="divider"></div>
+            <figcaption>
+              <span class="name">{t.name}</span>
+              {t.detail && <span class="ctx">{t.detail}</span>}
+            </figcaption>
+            {t.source && <span class="source">{t.source}</span>}
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('.scroll');
+    root.querySelectorAll<HTMLButtonElement>('.arrow').forEach((b) =>
+      b.addEventListener('click', () => track?.scrollBy({ left: Number(b.dataset.dir) * 260, behavior: 'smooth' })),
+    );
+  });
+</script>
+
+<style>
+  .testimonials { background: var(--olive); color: var(--cream); }
+  .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .head .eyebrow { color: var(--cream); }
+  h2 { font-size: clamp(30px, 4vw, 44px); color: var(--cream); font-style: italic; font-weight: 400; }
+  .controls { display: flex; gap: 10px; margin-bottom: 6px; }
+  .arrow { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid rgba(242, 236, 221, 0.5); background: transparent; color: var(--cream); display: flex; align-items: center; justify-content: center; padding: 0; }
+  .arrow:hover { background: rgba(242, 236, 221, 0.14); }
+  .arrow svg { width: 18px; height: 18px; }
+  .arrow:focus-visible, .scroll:focus-visible { outline-color: var(--cream); }
+  .carousel { padding-inline: var(--gutter); margin-top: 44px; }
+  .scroll { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 10px; scrollbar-width: none; }
+  .scroll::-webkit-scrollbar { display: none; }
+  .card { scroll-snap-align: start; flex: 0 0 auto; width: 230px; background: var(--white); color: var(--ink); border-radius: var(--radius); padding: 28px 24px; display: flex; flex-direction: column; margin: 0; }
+  .stars { color: var(--gold); font-size: 14px; letter-spacing: 3px; }
+  blockquote { font-family: var(--font-display); font-style: italic; font-size: 17px; line-height: 1.5; margin: 16px 0 0; flex-grow: 1; }
+  .divider { width: 100%; height: 1px; background: var(--stone-line); margin: 22px 0 16px; }
+  .name { font-weight: 600; display: block; margin-bottom: 2px; font-size: 15px; }
+  .ctx { color: var(--ink-muted); font-size: 13.5px; }
+  .source { display: block; margin-top: 12px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-muted); }
+  @media (max-width: 560px) { .card { width: 78vw; } }
+</style>

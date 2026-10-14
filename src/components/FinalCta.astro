@@ -1,0 +1,21 @@
+---
+import { getContent } from '../lib/content';
+const d = await getContent('finalCta');
+const contact = await getContent('contact');
+---
+{d.visible && (
+  <section id="book" class="cta band">
+    <div class="wrap">
+      <h2>{d.heading}</h2>
+      <p>{d.text}</p>
+      <a class="btn btn-primary" href={contact.bookingUrl} target="_blank" rel="noopener">{d.buttonLabel}</a>
+    </div>
+  </section>
+)}
+
+<style>
+  .cta { background: var(--charcoal); color: var(--cream); text-align: center; }
+  h2 { color: var(--cream); font-size: clamp(32px, 4.4vw, 50px); max-width: 680px; margin-inline: auto; }
+  p { color: var(--cream-muted); font-size: 18px; margin: 20px auto 0; max-width: 480px; }
+  .btn { margin-top: 36px; }
+</style>

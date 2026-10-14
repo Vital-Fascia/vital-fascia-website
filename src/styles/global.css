@@ -1,0 +1,74 @@
+@import '@fontsource-variable/newsreader/opsz.css';
+@import '@fontsource-variable/newsreader/opsz-italic.css';
+@import '@fontsource-variable/work-sans/wght.css';
+@import './tokens.css';
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--bone);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; margin: 0; color: inherit; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font-family: var(--font-body); }
+button { cursor: pointer; }
+ul { margin: 0; padding: 0; list-style: none; }
+img { max-width: 100%; height: auto; }
+::selection { background: var(--olive); color: var(--cream); }
+:focus-visible { outline: 2px solid var(--olive); outline-offset: 3px; }
+
+.skip-link {
+  position: absolute; left: 12px; top: -60px; z-index: 200;
+  background: var(--olive); color: var(--cream); padding: 12px 18px; border-radius: var(--radius-btn);
+}
+.skip-link:focus { top: 12px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.wrap { max-width: var(--wrap-max); margin-inline: auto; padding-inline: var(--gutter); }
+.band { padding-block: var(--band-pad); }
+.band-tight { padding-block: var(--band-pad-tight); }
+.eyebrow { display: block; font-size: 13px; letter-spacing: .09em; text-transform: uppercase; font-weight: 600; color: var(--olive); margin-bottom: 16px; }
+.eyebrow-dark { color: var(--cream-muted); }
+.lede { font-size: 19px; line-height: 1.65; color: var(--ink-muted); max-width: 640px; }
+.rule { display: block; width: 44px; height: 2px; background: var(--olive); border: 0; margin: 18px 0 4px; }
+.h2 { font-size: clamp(30px, 4vw, 44px); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  height: 52px; padding: 0 30px; border-radius: var(--radius-btn);
+  font-size: 15px; font-weight: 600; letter-spacing: .01em; white-space: nowrap;
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+.btn-sm { height: 42px; padding: 0 22px; font-size: 14px; }
+.btn-primary { background: var(--olive); color: var(--cream); border: 1px solid var(--olive); }
+.btn-primary:hover { background: var(--olive-dark); border-color: var(--olive-dark); }
+.btn-ghost { background: transparent; color: var(--olive); border: 1.5px solid var(--olive); }
+.btn-ghost:hover { background: var(--olive); color: var(--cream); }
+.btn-ghost-dark { background: transparent; color: var(--cream); border: 1.5px solid var(--cream-muted); }
+.btn-ghost-dark:hover { background: var(--cream); color: var(--charcoal); border-color: var(--cream); }
+
+/* Form fields (shared by every form) */
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field label { font-size: 13px; letter-spacing: .03em; color: var(--ink-muted); }
+.field .hint { font-size: 13px; color: var(--ink-muted); }
+.field input, .field textarea {
+  padding: 0 16px; min-height: 50px; background: var(--white); border: 1px solid var(--stone);
+  color: var(--ink); border-radius: var(--radius); font-size: 16px;
+}
+.field textarea { padding-block: 14px; min-height: 160px; resize: vertical; }
+.field input:focus, .field textarea:focus { outline: 2px solid var(--olive); outline-offset: 1px; }
+.form-status { margin-top: 14px; font-size: 15px; }
+.form-dark .field label, .form-dark .field .hint { color: var(--cream-muted); }
+.form-dark .field input, .form-dark .field textarea { background: rgba(242, 236, 221, 0.06); border-color: rgba(242, 236, 221, 0.35); color: var(--cream); }
+.form-dark .field input::placeholder { color: rgba(242, 236, 221, 0.55); }
+.form-dark .field input:focus, .form-dark .field textarea:focus { outline-color: var(--cream); }

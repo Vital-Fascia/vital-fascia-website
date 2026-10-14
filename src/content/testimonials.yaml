@@ -1,0 +1,11 @@
+visible: true
+eyebrow: What clients say
+heading: Loved by clients
+# TODO: these testimonials come from the design prototype and are NOT confirmed real. Replace with real reviews (with permission) or hide this section.
+items:
+  - { quote: "I finally understand why my back kept going out - it's never just the back.", name: Sarah, detail: "Marketing Manager, 34", source: Via Google, rating: 5 }
+  - { quote: "Alex treats the whole picture, not just the sore spot. First time that's actually made sense to me.", name: Tom, detail: "Runner, 34", source: Via Instagram, rating: 5 }
+  - { quote: "I left every session with something to actually work on, not just temporary relief.", name: Priya, detail: "Consultant, 29", source: Via Google, rating: 5 }
+  - { quote: "The first time a therapist actually explained why the pain kept moving around.", name: Marcus, detail: "Software Engineer, 38", source: Via Google, rating: 5 }
+  - { quote: "Alex gave me exercises I actually understood, not just 'stretch more'.", name: Liv, detail: "Personal Trainer, 27", source: Via Instagram, rating: 5 }
+  - { quote: "Best investment I've made in my own body in years.", name: Ben, detail: "Founder, 41", source: Via Google, rating: 5 }

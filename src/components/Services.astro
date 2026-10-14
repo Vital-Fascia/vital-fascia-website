@@ -1,0 +1,43 @@
+---
+import { getContent } from '../lib/content';
+const d = await getContent('services');
+---
+{d.visible && (
+  <section id="help" class="band-tight services">
+    <div class="wrap">
+      <span class="eyebrow">{d.eyebrow}</span>
+      <h2 class="h2">{d.heading}</h2>
+      <span class="rule"></span>
+      <ul class="help-grid">
+        {d.issues.map((i: any) => (
+          <li class="help-card"><h3>{i.title}</h3><p>{i.description}</p></li>
+        ))}
+      </ul>
+      <div class="modalities">
+        <span class="eyebrow">{d.treatmentsEyebrow}</span>
+        <h3 class="m-heading">{d.treatmentsHeading}</h3>
+        <ul class="modality-list">
+          {d.treatments.map((t: any) => (
+            <li class="modality-item"><span class="m-name">{t.name}</span><span class="m-desc">{t.description}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .services { background: var(--sand); }
+  .help-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 44px; }
+  .help-card { background: var(--bone); border: 1px solid var(--stone-line); padding: 28px 24px; }
+  .help-card h3 { font-size: 19px; margin-bottom: 8px; }
+  .help-card p { font-size: 15px; line-height: 1.55; color: var(--ink-muted); }
+  .modalities { margin-top: 64px; border-top: 1px solid var(--stone-line); padding-top: 44px; }
+  .m-heading { font-size: 22px; }
+  .modality-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 28px; margin-top: 28px; }
+  .modality-item { display: flex; flex-direction: column; gap: 4px; padding: 16px 0; border-bottom: 1px solid var(--stone-line); }
+  .m-name { font-size: 16px; font-weight: 600; }
+  .m-desc { font-size: 14px; color: var(--ink-muted); line-height: 1.5; }
+  @media (max-width: 980px) { .help-grid, .modality-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 700px) { .help-grid, .modality-list { grid-template-columns: 1fr; } }
+</style>

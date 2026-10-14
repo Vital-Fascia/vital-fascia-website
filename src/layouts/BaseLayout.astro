@@ -1,0 +1,57 @@
+---
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import Header from '../components/Header.astro';
+import ContactFooter from '../components/ContactFooter.astro';
+import { getContent } from '../lib/content';
+
+interface Props {
+  page: 'home' | 'program' | 'contact';
+}
+const { page } = Astro.props;
+const site = await getContent('site');
+const seo = await getContent('seo');
+const meta = seo[page];
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+let ogImage: string | undefined;
+if (seo.socialImage) {
+  const img = await getImage({ src: seo.socialImage, width: 1200, height: 630, format: 'jpg' });
+  ogImage = new URL(img.src, Astro.site).href;
+}
+---
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{meta.title}</title>
+    <meta name="description" content={meta.description} />
+    <link rel="canonical" href={canonical.href} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#4a5240" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.businessName} />
+    <meta property="og:title" content={meta.title} />
+    <meta property="og:description" content={meta.description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:locale" content="en_AU" />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && seo.socialImageAlt && <meta property="og:image:alt" content={seo.socialImageAlt} />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <div id="top"></div>
+    <main id="main">
+      <slot />
+    </main>
+    <ContactFooter />
+    <script>
+      import '../scripts/forms';
+    </script>
+  </body>
+</html>

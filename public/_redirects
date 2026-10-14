@@ -1,0 +1,5 @@
+# Old Squarespace URLs -> new site
+/about                          /#about                301
+/services                       /#help                 301
+/functional-breathing-resource  /#resource             301
+/cart                           /                      301

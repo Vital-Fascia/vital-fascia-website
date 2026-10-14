@@ -1,0 +1,43 @@
+---
+import { getContent } from '../lib/content';
+const d = await getContent('process');
+---
+{d.visible && (
+  <section id="process" class="band">
+    <div class="wrap">
+      <span class="eyebrow">{d.eyebrow}</span>
+      <h2 class="h2">{d.heading}</h2>
+      <span class="rule"></span>
+      <p class="lede intro">{d.intro}</p>
+      <ol class="track">
+        {d.steps.map((s: any, i: number) => (
+          <>
+            {i > 0 && <li class="connector" aria-hidden="true"></li>}
+            <li class="step">
+              <div class="num" aria-hidden="true">{i + 1}</div>
+              <div class="text"><h3>{s.title}</h3><p>{s.description}</p></div>
+            </li>
+          </>
+        ))}
+      </ol>
+    </div>
+  </section>
+)}
+
+<style>
+  .intro { margin-top: 18px; }
+  .track { display: flex; align-items: flex-start; margin-top: 56px; padding: 0; list-style: none; }
+  .step { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; min-width: 0; padding: 0 8px; }
+  .num { width: 56px; height: 56px; border-radius: 50%; background: var(--olive); color: var(--cream); font-family: var(--font-display); font-size: 20px; display: flex; align-items: center; justify-content: center; flex: none; }
+  h3 { margin-top: 18px; font-size: 18px; }
+  .step p { margin: 8px auto 0; font-size: 14px; line-height: 1.55; color: var(--ink-muted); max-width: 190px; }
+  .connector { flex: none; height: 1.5px; width: 100%; background: var(--stone); margin-top: 27px; max-width: 64px; margin-inline: -8px; }
+  @media (max-width: 980px) {
+    .track { flex-direction: column; align-items: stretch; }
+    .step { flex-direction: row; text-align: left; align-items: flex-start; padding: 20px 0; }
+    h3, .step p { margin-top: 0; }
+    .step p { max-width: none; margin-inline: 0; }
+    .text { margin-left: 20px; }
+    .connector { width: 1.5px; height: 32px; max-width: none; margin: 0 0 0 27px; }
+  }
+</style>

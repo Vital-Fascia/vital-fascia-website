@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout page="home">
+  <section class="nf">
+    <div class="wrap">
+      <h1>Page not found</h1>
+      <p class="lede">Sorry, we couldn't find that page.</p>
+      <a class="btn btn-primary" href="/">Back to home</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf { padding: calc(var(--header-h) + 80px) 0 100px; }
+  h1 { font-size: clamp(36px, 5vw, 56px); }
+  .lede { margin: 18px 0 32px; }
+</style>

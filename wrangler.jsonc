@@ -1,0 +1,11 @@
+{
+  // Cloudflare static assets config. Used when Cloudflare builds from GitHub.
+  // No resources are created by this file.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "vital-fascia-website",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}

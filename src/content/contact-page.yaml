@@ -1,0 +1,10 @@
+eyebrow: Contact
+heading: Get in touch
+intro: Have a question, or ready to start care? Send a message and I'll get back to you.
+nameLabel: Your name
+emailLabel: Email address
+phoneLabel: Phone (optional)
+messageLabel: Message
+messageHint: Tell me a little about what's going on.
+buttonLabel: Send message
+successMessage: Thanks! Your message has been sent.

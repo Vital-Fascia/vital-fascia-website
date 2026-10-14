@@ -1,0 +1,54 @@
+---
+import { getContent } from '../lib/content';
+const site = await getContent('site');
+const c = await getContent('contact');
+const year = new Date().getFullYear();
+---
+<footer id="contact" class="contact-section band-tight">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-col">
+        <h3>{c.visitHeading}</h3>
+        <p>{c.addressLines.map((line: string, i: number) => <>{i > 0 && <br />}{line}</>)}</p>
+        <p class="gap-s">{c.hours}</p>
+        {c.mapEmbedUrl && (
+          <div class="map">
+            <iframe src={c.mapEmbedUrl} title={`Map showing ${site.businessName}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        )}
+        {c.mapLinkUrl && <p class="gap-s"><a class="underline" href={c.mapLinkUrl} target="_blank" rel="noopener">Get directions</a></p>}
+      </div>
+      <div class="contact-col">
+        <h3>{c.getInTouchHeading}</h3>
+        <p><a href={`mailto:${c.email}`}>{c.email}</a></p>
+        <p class="gap-s"><a href={c.instagramUrl} target="_blank" rel="noopener">{c.instagramHandle}</a></p>
+        {c.facebookUrl && <p class="gap-s"><a href={c.facebookUrl} target="_blank" rel="noopener">Facebook</a></p>}
+        <p class="gap-l buttons">
+          <a class="btn btn-ghost-dark btn-sm" href={c.bookingUrl} target="_blank" rel="noopener">{c.bookingLabel}</a>
+          <a class="btn btn-ghost-dark btn-sm" href="/contact">{c.contactFormLabel}</a>
+        </p>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>© {year} {site.businessName}. {site.footerNote}</span>
+      <span><a href="#top">Back to top</a></span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .contact-section { background: var(--charcoal-2); color: var(--cream); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  .contact-col h3 { font-family: var(--font-body); font-size: 15px; letter-spacing: .05em; text-transform: uppercase; color: var(--cream-muted); font-weight: 600; margin-bottom: 16px; }
+  .contact-col p, .contact-col a:not(.btn) { font-size: 16px; line-height: 1.7; color: var(--cream); }
+  .contact-col a:not(.btn):hover { color: var(--cream-muted); }
+  .underline { text-decoration: underline; text-underline-offset: 3px; }
+  .gap-s { margin-top: 8px; }
+  .gap-l { margin-top: 24px; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+  .map { margin-top: 20px; width: 100%; aspect-ratio: 16/10; border: 1px solid rgba(242, 236, 221, 0.18); }
+  .map iframe { width: 100%; height: 100%; border: 0; display: block; filter: grayscale(.35) contrast(.95); }
+  .footer-base { border-top: 1px solid rgba(242, 236, 221, 0.14); margin-top: 64px; padding-top: 28px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 13px; color: rgba(242, 236, 221, 0.7); }
+  .footer-base a { color: rgba(242, 236, 221, 0.85); }
+  @media (max-width: 980px) { .contact-grid { grid-template-columns: 1fr; } }
+</style>

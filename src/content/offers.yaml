@@ -1,0 +1,22 @@
+visible: true
+eyebrow: Work with me
+heading: 1:1 treatment, built around your pattern
+session:
+  badge: Available now
+  title: Initial Session
+  details: 75 minutes · in-clinic, Double Bay
+  # TODO: prices are placeholders - confirm with client.
+  price: "[$XXX]"
+  priceNote: " per session"
+  includes:
+    - Whole-body movement & posture assessment
+    - Hands-on treatment matched to your pattern
+    - A simple, personalised take-home movement plan
+    - Follow-up sessions from [$XXX] · 60 minutes
+  buttonLabel: Book a Session
+program:
+  badge: Coming soon
+  title: 8-Week 1:1 Program
+  description: A structured, in-person program for people who want lasting change, not just relief. Currently in development.
+  buttonLabel: Find out more
+  buttonHref: /8-week-program

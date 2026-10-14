@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getContent } from '../lib/content';
+import { formEndpoints } from '../lib/forms';
+const d = await getContent('contactPage');
+const c = await getContent('contact');
+---
+<BaseLayout page="contact">
+  <section class="page">
+    <div class="wrap grid">
+      <div>
+        <span class="eyebrow">{d.eyebrow}</span>
+        <h1>{d.heading}</h1>
+        <span class="rule"></span>
+        <p class="lede intro">{d.intro}</p>
+        <p class="direct"><a href={`mailto:${c.email}`}>{c.email}</a></p>
+      </div>
+      <form data-form data-success={d.successMessage} action={formEndpoints.contact || undefined} method="post">
+        <!-- TODO: connect to a form service by setting formEndpoints.contact in src/lib/forms.ts -->
+        <div class="fields">
+          <div class="field"><label for="c-name">{d.nameLabel}</label><input id="c-name" name="name" type="text" autocomplete="name" required /></div>
+          <div class="field"><label for="c-email">{d.emailLabel}</label><input id="c-email" name="email" type="email" autocomplete="email" required /></div>
+          <div class="field"><label for="c-phone">{d.phoneLabel}</label><input id="c-phone" name="phone" type="tel" autocomplete="tel" /></div>
+          <div class="field">
+            <label for="c-message">{d.messageLabel}</label>
+            <textarea id="c-message" name="message" aria-describedby="c-hint" required></textarea>
+            <span class="hint" id="c-hint">{d.messageHint}</span>
+          </div>
+          <button type="submit" class="btn btn-primary">{d.buttonLabel}</button>
+        </div>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page { padding-top: calc(var(--header-h) + clamp(48px, 7vw, 96px)); padding-bottom: var(--band-pad-tight); }
+  .grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(32px, 6vw, 90px); align-items: start; }
+  h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.08; }
+  .intro { margin-top: 18px; }
+  .direct { margin-top: 28px; font-size: 17px; }
+  .direct a { text-decoration: underline; text-underline-offset: 3px; }
+  .fields { display: flex; flex-direction: column; gap: 20px; }
+  form .btn { align-self: flex-start; }
+  @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
+</style>

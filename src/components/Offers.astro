@@ -1,0 +1,53 @@
+---
+import { getContent } from '../lib/content';
+const d = await getContent('offers');
+const contact = await getContent('contact');
+---
+{d.visible && (
+  <section id="work-with-me" class="offers band">
+    <div class="wrap">
+      <span class="eyebrow">{d.eyebrow}</span>
+      <h2 class="h2">{d.heading}</h2>
+      <span class="rule"></span>
+      <div class="grid">
+        <div class="card">
+          <span class="badge">{d.session.badge}</span>
+          <h3>{d.session.title}</h3>
+          <p class="details">{d.session.details}</p>
+          <div class="price">{d.session.price}<span>{d.session.priceNote}</span></div>
+          <ul class="includes">
+            {d.session.includes.map((i: string) => <li>{i}</li>)}
+          </ul>
+          <a class="btn btn-primary" href={contact.bookingUrl} target="_blank" rel="noopener">{d.session.buttonLabel}</a>
+        </div>
+        <div id="program" class="card soon">
+          <span class="badge">{d.program.badge}</span>
+          <h3>{d.program.title}</h3>
+          <p class="desc">{d.program.description}</p>
+          <a class="btn btn-ghost" href={d.program.buttonHref}>{d.program.buttonLabel}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .offers { background: var(--sand); }
+  .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 24px; margin-top: 48px; align-items: stretch; }
+  .card { background: var(--white); border: 1px solid var(--stone-line); padding: 44px 40px; display: flex; flex-direction: column; }
+  .card.soon { background: transparent; border: 1.5px dashed var(--stone); justify-content: center; }
+  .badge { display: inline-block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--olive); background: var(--sand); border: 1px solid var(--stone-line); padding: 6px 12px; align-self: flex-start; margin-bottom: 18px; }
+  .soon .badge { background: transparent; }
+  h3 { font-size: 26px; }
+  .details { color: var(--ink-muted); margin-top: 8px; font-size: 15px; }
+  .desc { color: var(--ink-muted); margin-top: 14px; font-size: 15px; line-height: 1.6; }
+  .price { font-family: var(--font-display); font-size: 40px; margin: 18px 0 6px; }
+  .price span { font-size: 16px; font-family: var(--font-body); color: var(--ink-muted); font-weight: 400; }
+  .includes { margin-top: 22px; display: flex; flex-direction: column; gap: 12px; }
+  .includes li { display: flex; gap: 12px; font-size: 15px; align-items: flex-start; }
+  .includes li::before { content: ''; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--olive); margin-top: 8px; }
+  .card .btn { margin-top: 32px; align-self: flex-start; }
+  .soon .btn { margin-top: 26px; }
+  @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
+  @media (max-width: 700px) { .card { padding: 32px 24px; } }
+</style>

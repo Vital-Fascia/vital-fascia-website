@@ -1,0 +1,378 @@
+# Sveltia CMS configuration for the Vital Fascia website.
+# Docs: https://github.com/sveltia/sveltia-cms
+# Keep this in sync with src/content.config.ts (the content schemas).
+#
+# LOCAL EDITING (no login needed): run `npm run dev`, open http://localhost:4321/admin/
+# in Chrome or Edge, click "Work with Local Repository" and pick this project folder.
+
+backend:
+  name: github
+  repo: Vital-Fascia/vital-fascia-website
+  branch: main
+  # TODO: replace with the URL of the deployed sveltia-cms-auth Cloudflare Worker,
+  # e.g. https://sveltia-cms-auth.<your-subdomain>.workers.dev  (only needed for GitHub login)
+  base_url: https://YOUR-SVELTIA-CMS-AUTH-WORKER.example.workers.dev
+
+site_url: https://www.vitalfascia.com.au
+display_url: https://www.vitalfascia.com.au
+locale: en
+
+# Photos are stored in ONE folder that both Astro and the CMS use: src/assets/uploads.
+# Each collection below sets media_folder relative to the content files in src/content/,
+# so image paths are saved as ../assets/uploads/photo.jpg (what Astro's image optimiser needs).
+media_folder: src/assets/uploads
+
+collections:
+  # ---------------------------------------------------------------- HOME PAGE
+  - name: home_page
+    media_folder: ../assets/uploads
+    label: Home page
+    label_singular: Home page section
+    description: Each section of the home page, from top to bottom. Pick a section to edit its wording and photos.
+    files:
+      - name: hero
+        label: "1. Top banner (Hero)"
+        file: src/content/hero.yaml
+        fields:
+          - { name: eyebrow, label: Small line above the headline, widget: string, hint: "Short label, e.g. the type of therapy and where you are." }
+          - { name: headingStart, label: Headline - first part, widget: string, hint: "The big headline is built from three parts so one word can be shown in italics. Keep the trailing space." }
+          - { name: headingEmphasis, label: Headline - italic word, widget: string, hint: "This word is shown in italics and green." }
+          - { name: headingEnd, label: Headline - last part, widget: string, hint: "Keep the leading space." }
+          - { name: intro, label: Introduction paragraph, widget: text }
+          - name: primaryButton
+            label: Main button
+            widget: object
+            fields:
+              - { name: label, label: Button text, widget: string }
+              - { name: href, label: Where it goes, widget: string, hint: "Use # to use the booking link from Contact details." }
+          - name: secondaryButton
+            label: Second button
+            widget: object
+            fields:
+              - { name: label, label: Button text, widget: string }
+              - { name: href, label: Where it goes, widget: string, hint: "Use #approach to scroll to a section on this page." }
+          - { name: photo, label: Photo, widget: image, required: false, choose_url: false, hint: "Portrait-shaped photo works best (4:5). Until you add one, a grey placeholder is shown." }
+          - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false, hint: "Describe what is in the photo, e.g. 'Alex treating a client's shoulder'. Important for accessibility and Google." }
+          - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
+
+      - name: highlights
+        label: "2. Key numbers strip"
+        file: src/content/highlights.yaml
+        fields:
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true, hint: "Switch off to hide the whole strip. Only show numbers that are true and up to date." }
+          - name: items
+            label: Numbers
+            label_singular: number
+            widget: list
+            summary: "{{fields.value}} - {{fields.label}}"
+            fields:
+              - { name: value, label: Number or figure, widget: string, hint: "e.g. 500+" }
+              - { name: label, label: What it means, widget: string, hint: "e.g. Sessions delivered" }
+
+      - name: whoItsFor
+        label: "3. Who it's for"
+        file: src/content/who-its-for.yaml
+        fields:
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true }
+          - { name: eyebrow, label: Small line above the heading, widget: string }
+          - { name: heading, label: Heading, widget: string }
+          - { name: intro, label: Introduction, widget: text }
+          - name: signs
+            label: "'Does this sound like you?' points"
+            label_singular: point
+            widget: list
+            field: { name: text, label: Point, widget: string }
+            hint: "Short sentences describing what your clients experience. Drag to re-order."
+          - { name: closing, label: Closing line, widget: text }
+
+      - name: services
+        label: "4. Services & treatments"
+        file: src/content/services.yaml
+        fields:
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true }
+          - { name: eyebrow, label: Small line above the heading, widget: string }
+          - { name: heading, label: Heading, widget: string }
+          - name: issues
+            label: Common issues
+            label_singular: issue
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: Issue, widget: string }
+              - { name: description, label: Short description, widget: text }
+          - { name: treatmentsEyebrow, label: Small line above the treatments heading, widget: string }
+          - { name: treatmentsHeading, label: Treatments heading, widget: string }
+          - name: treatments
+            label: Treatments
+            label_singular: treatment
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - { name: name, label: Treatment name, widget: string }
+              - { name: description, label: One-line description, widget: string }
+
+      - name: approach
+        label: "5. My approach"
+        file: src/content/approach.yaml
+        fields:
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true }
+          - { name: eyebrow, label: Small line above the heading, widget: string }
+          - { name: heading, label: Heading, widget: string }
+          - { name: body, label: Paragraph, widget: text }
+          - { name: diagramTitle, label: Diagram title, widget: string }
+          - name: diagramPoints
+            label: Body diagram (top to bottom)
+            label_singular: point
+            widget: list
+            summary: "{{fields.label}}"
+            hint: "Each point is a dot on the diagram. Tick 'Highlight' for the one to emphasise."
+            fields:
+              - { name: label, label: Body area, widget: string }
+              - { name: highlight, label: Highlight this point, widget: boolean, default: false }
+          - { name: diagramCaption, label: Diagram caption, widget: string }
+
+      - name: process
+        label: "6. How it works (process)"
+        file: src/content/process.yaml
+        fields:
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true }
+          - { name: eyebrow, label: Small line above the heading, widget: string }
+          - { name: heading, label: Heading, widget: string }
+          - { name: intro, label: Introduction, widget: text }
+          - name: steps
+            label: Steps (in order)
+            label_singular: step
+            widget: list
+            summary: "{{fields.title}}"
+            hint: "Steps are numbered automatically. Five fits the layout best."
+            fields:
+              - { name: title, label: Step name, widget: string }
+              - { name: description, label: Description, widget: text }
+
+      - name: offers
+        label: "7. Pricing & offers"
+        file: src/content/offers.yaml
+        fields:
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true }
+          - { name: eyebrow, label: Small line above the heading, widget: string }
+          - { name: heading, label: Heading, widget: string }
+          - name: session
+            label: Session card (left)
+            widget: object
+            fields:
+              - { name: badge, label: Badge, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: details, label: Length and location, widget: string }
+              - { name: price, label: Price, widget: string, hint: "Include the dollar sign, e.g. $150. [$XXX] is a placeholder." }
+              - { name: priceNote, label: Text after the price, widget: string, required: false, hint: "e.g. ' per session'. Keep the leading space." }
+              - name: includes
+                label: What's included
+                label_singular: item
+                widget: list
+                field: { name: text, label: Item, widget: string }
+              - { name: buttonLabel, label: Button text, widget: string }
+          - name: program
+            label: 8-week program card (right)
+            widget: object
+            fields:
+              - { name: badge, label: Badge, widget: string, hint: "e.g. Coming soon" }
+              - { name: title, label: Title, widget: string }
+              - { name: description, label: Description, widget: text }
+              - { name: buttonLabel, label: Button text, widget: string }
+              - { name: buttonHref, label: Button goes to, widget: string, hint: "Leave as /8-week-program to open the program page." }
+
+      - name: testimonials
+        label: "8. Client testimonials"
+        file: src/content/testimonials.yaml
+        fields:
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true, hint: "Only publish real testimonials, with the client's permission." }
+          - { name: eyebrow, label: Small line above the heading, widget: string }
+          - { name: heading, label: Heading, widget: string }
+          - name: items
+            label: Testimonials
+            label_singular: testimonial
+            widget: list
+            summary: "{{fields.name}} - {{fields.quote}}"
+            fields:
+              - { name: quote, label: What they said, widget: text, hint: "Don't add quote marks - they are added automatically." }
+              - { name: name, label: First name, widget: string }
+              - { name: detail, label: Job or age (optional), widget: string, required: false }
+              - { name: source, label: Where it came from (optional), widget: string, required: false, hint: "e.g. Via Google" }
+              - { name: rating, label: Star rating, widget: number, value_type: int, min: 1, max: 5, default: 5 }
+
+      - name: about
+        label: "9. About"
+        file: src/content/about.yaml
+        fields:
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true }
+          - { name: eyebrow, label: Small line above the heading, widget: string }
+          - { name: heading, label: Heading, widget: string }
+          - name: paragraphs
+            label: Story (one entry per paragraph)
+            label_singular: paragraph
+            widget: list
+            field: { name: text, label: Paragraph, widget: text }
+          - { name: signature, label: Sign-off, widget: string }
+          - { name: photo, label: Portrait photo, widget: image, required: false, choose_url: false, hint: "Portrait-shaped photo works best (3:4)." }
+          - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false }
+          - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
+
+      - name: freeResource
+        label: "10. Free resource sign-up"
+        file: src/content/free-resource.yaml
+        fields:
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true }
+          - { name: eyebrow, label: Small line above the heading, widget: string }
+          - { name: heading, label: Heading, widget: string }
+          - name: paragraphs
+            label: Text (one entry per paragraph)
+            label_singular: paragraph
+            widget: list
+            field: { name: text, label: Paragraph, widget: text }
+          - { name: nameLabel, label: Name box - label, widget: string }
+          - { name: namePlaceholder, label: Name box - example text, widget: string }
+          - { name: emailLabel, label: Email box - label, widget: string }
+          - { name: emailPlaceholder, label: Email box - example text, widget: string }
+          - { name: buttonLabel, label: Button text, widget: string }
+          - { name: finePrint, label: Small print under the button, widget: string }
+          - { name: successMessage, label: Message shown after signing up, widget: string }
+
+      - name: finalCta
+        label: "11. Final call to action"
+        file: src/content/final-cta.yaml
+        fields:
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true }
+          - { name: heading, label: Heading, widget: string }
+          - { name: text, label: Supporting line, widget: text }
+          - { name: buttonLabel, label: Button text, widget: string }
+
+  # -------------------------------------------------------------- OTHER PAGES
+  - name: other_pages
+    media_folder: ../assets/uploads
+    label: Other pages
+    files:
+      - name: programPage
+        label: 8-Week Program page
+        file: src/content/program-page.yaml
+        fields:
+          - { name: badge, label: Badge, widget: string, hint: "e.g. Coming soon" }
+          - { name: heading, label: Page heading, widget: string }
+          - { name: intro, label: Introduction, widget: text }
+          - name: primaryButton
+            label: Main button
+            widget: object
+            fields:
+              - { name: label, label: Button text, widget: string }
+              - { name: href, label: Where it goes, widget: string, hint: "Leave as #waitlist to scroll to the sign-up form." }
+          - { name: includesHeading, label: "'What's included' heading", widget: string }
+          - name: includes
+            label: What's included
+            label_singular: item
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: description, label: Description, widget: text }
+          - { name: forWhoHeading, label: "'Who it's for' heading", widget: string }
+          - { name: forWhoText, label: Who it's for, widget: text }
+          - { name: detailsHeading, label: "'Details' heading", widget: string }
+          - name: details
+            label: Details (length, price, etc.)
+            label_singular: detail
+            widget: list
+            summary: "{{fields.label}}: {{fields.value}}"
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: value, label: Value, widget: string }
+          - { name: waitlistHeading, label: Waitlist heading, widget: string }
+          - { name: waitlistText, label: Waitlist text, widget: text }
+          - { name: nameLabel, label: Name box - label, widget: string }
+          - { name: emailLabel, label: Email box - label, widget: string }
+          - { name: buttonLabel, label: Button text, widget: string }
+          - { name: finePrint, label: Small print under the button, widget: string }
+          - { name: successMessage, label: Message shown after signing up, widget: string }
+
+      - name: contactPage
+        label: Contact page (message form)
+        file: src/content/contact-page.yaml
+        fields:
+          - { name: eyebrow, label: Small line above the heading, widget: string }
+          - { name: heading, label: Heading, widget: string }
+          - { name: intro, label: Introduction, widget: text }
+          - { name: nameLabel, label: Name box - label, widget: string }
+          - { name: emailLabel, label: Email box - label, widget: string }
+          - { name: phoneLabel, label: Phone box - label, widget: string }
+          - { name: messageLabel, label: Message box - label, widget: string }
+          - { name: messageHint, label: Hint under the message box, widget: string }
+          - { name: buttonLabel, label: Button text, widget: string }
+          - { name: successMessage, label: Message shown after sending, widget: string }
+
+  # ----------------------------------------------------------------- SETTINGS
+  - name: settings
+    media_folder: ../assets/uploads
+    label: Business details & settings
+    files:
+      - name: contact
+        label: Contact details & opening hours
+        file: src/content/contact.yaml
+        fields:
+          - name: addressLines
+            label: Address (one line per entry)
+            label_singular: line
+            widget: list
+            field: { name: line, label: Address line, widget: string }
+          - { name: hours, label: Opening hours, widget: text, hint: "Shown in the website footer, e.g. 'Mon-Fri, 7am-6pm'." }
+          - { name: mapEmbedUrl, label: Google Maps embed link, widget: string, required: false, hint: "In Google Maps: Share > Embed a map > copy the address inside src=\"...\". Leave empty to hide the map." }
+          - { name: mapLinkUrl, label: Google Maps directions link, widget: string, required: false, hint: "A normal Google Maps link for the 'Get directions' text." }
+          - { name: email, label: Email address, widget: string }
+          - { name: instagramHandle, label: Instagram name, widget: string, hint: "e.g. @thefasciaguy" }
+          - { name: instagramUrl, label: Instagram link, widget: string }
+          - { name: facebookUrl, label: Facebook link, widget: string, required: false }
+          - { name: bookingUrl, label: Online booking link (Cliniko), widget: string, hint: "Every 'Book' button on the site goes here." }
+          - { name: bookingLabel, label: Booking button text (footer), widget: string }
+          - { name: contactFormLabel, label: Contact form button text (footer), widget: string }
+          - { name: visitHeading, label: "'Visit' heading", widget: string }
+          - { name: getInTouchHeading, label: "'Get in touch' heading", widget: string }
+
+      - name: site
+        label: Website name, menu & footer
+        file: src/content/site.yaml
+        fields:
+          - { name: businessName, label: Business name, widget: string }
+          - { name: tagline, label: Tagline, widget: string }
+          - name: navLinks
+            label: Menu links (in order)
+            label_singular: link
+            widget: list
+            summary: "{{fields.label}}"
+            hint: "Use /#about style links to jump to a section on the home page."
+            fields:
+              - { name: label, label: Text in the menu, widget: string }
+              - { name: href, label: Where it goes, widget: string, hint: "e.g. /#about, /contact or /8-week-program" }
+          - { name: bookButtonLabel, label: Top-right booking button text, widget: string }
+          - { name: footerNote, label: Text after the copyright, widget: string }
+
+      - name: seo
+        label: Google search & social sharing (SEO)
+        file: src/content/seo.yaml
+        fields:
+          - name: home
+            label: Home page
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string, hint: "Shown in Google results and the browser tab. Aim for under 60 characters." }
+              - { name: description, label: Page description, widget: text, hint: "Shown under the title in Google. Aim for 120-160 characters." }
+          - name: program
+            label: 8-Week Program page
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: description, label: Page description, widget: text }
+          - name: contact
+            label: Contact page
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: description, label: Page description, widget: text }
+          - { name: socialImage, label: Sharing image, widget: image, required: false, choose_url: false, hint: "Shown when the site is shared on Facebook, messages, etc. Best size: 1200 x 630 pixels." }
+          - { name: socialImageAlt, label: Sharing image description, widget: string, required: false }

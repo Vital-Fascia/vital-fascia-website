@@ -1,0 +1,36 @@
+---
+import Photo from './Photo.astro';
+import { getContent } from '../lib/content';
+const h = await getContent('hero');
+const contact = await getContent('contact');
+const primaryHref = h.primaryButton.href === '#' ? contact.bookingUrl : h.primaryButton.href;
+---
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">{h.eyebrow}</span>
+      <h1>{h.headingStart}<em>{h.headingEmphasis}</em>{h.headingEnd}</h1>
+      <p class="lede intro">{h.intro}</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href={primaryHref} target="_blank" rel="noopener">{h.primaryButton.label}</a>
+        <a class="btn btn-ghost" href={h.secondaryButton.href}>{h.secondaryButton.label}</a>
+      </div>
+    </div>
+    <Photo class="hero-photo" image={h.photo} alt={h.photoAlt} placeholder={h.photoPlaceholder} loading="eager" sizes="(max-width: 700px) 100vw, 560px" />
+  </div>
+</section>
+
+<style>
+  .hero { padding-top: calc(var(--header-h) + clamp(48px, 7vw, 96px)); padding-bottom: clamp(56px, 7vw, 96px); background: var(--bone); }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  h1 { font-size: clamp(40px, 5.6vw, 68px); line-height: 1.08; }
+  h1 em { font-style: italic; color: var(--olive); }
+  .intro { margin-top: 22px; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 36px; }
+  .hero :global(.hero-photo) { width: 100%; aspect-ratio: 4/5; }
+  @media (max-width: 700px) {
+    .hero { padding-top: calc(var(--header-h) + clamp(40px, 10vw, 72px)); }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero :global(.hero-photo) { order: -1; aspect-ratio: 4/3; }
+  }
+</style>

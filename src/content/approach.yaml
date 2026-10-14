@@ -1,0 +1,14 @@
+visible: true
+eyebrow: The approach
+heading: Your body doesn't work in isolation. Neither should your treatment.
+body: "Fascia connects every muscle, joint and organ into one continuous, whole-body network. Pain in one place is often tension held somewhere else entirely. Rather than chasing the sore spot, I look at how your whole system moves, holds and compensates, then treat the pattern, not just the symptom."
+diagramTitle: One connected system
+diagramPoints:
+  - { label: Jaw }
+  - { label: Neck & shoulders }
+  - { label: Upper back }
+  - { label: Spine & core, highlight: true }
+  - { label: Hips }
+  - { label: Knees }
+  - { label: Feet }
+diagramCaption: Everything is connected. Tension rarely stays where it started.

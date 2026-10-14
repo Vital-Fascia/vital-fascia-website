@@ -1,0 +1,17 @@
+visitHeading: Visit
+addressLines:
+  - Suite 6/21-25 Knox St
+  - Double Bay NSW 2028
+hours: "[Opening hours - TODO: confirm with client]"
+# TODO: paste the Google Maps "Embed a map" link (the src="..." part) here.
+mapEmbedUrl: "https://www.google.com/maps?q=Suite+6%2F21-25+Knox+St%2C+Double+Bay+NSW+2028&output=embed"
+mapLinkUrl: "https://www.google.com/maps/search/?api=1&query=Suite+6%2F21-25+Knox+St%2C+Double+Bay+NSW+2028"
+getInTouchHeading: Get in touch
+email: thefasciaguy92@gmail.com
+instagramHandle: "@thefasciaguy"
+instagramUrl: https://instagram.com/thefasciaguy
+facebookUrl: https://www.facebook.com/profile.php?id=61575781771306
+# TODO: add the real Cliniko booking link (leave "#" until then).
+bookingUrl: "#"
+bookingLabel: Book a Session
+contactFormLabel: Send a message
