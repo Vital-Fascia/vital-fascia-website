@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // TODO: confirm the production domain once DNS is pointed at Cloudflare.
-const site = process.env.SITE_URL ?? 'https://www.vitalfascia.com.au';
+const site = process.env.SITE_URL?.trim() || 'https://www.vitalfascia.com.au';
 
 /** Dev only: the dev server doesn't serve public/admin/index.html at /admin (Cloudflare does). */
 const serveAdminIndex = {
