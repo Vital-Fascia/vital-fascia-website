@@ -9,9 +9,8 @@ backend:
   name: github
   repo: Vital-Fascia/vital-fascia-website
   branch: main
-  # TODO: replace with the URL of the deployed sveltia-cms-auth Cloudflare Worker,
-  # e.g. https://sveltia-cms-auth.<your-subdomain>.workers.dev  (only needed for GitHub login)
-  base_url: https://YOUR-SVELTIA-CMS-AUTH-WORKER.example.workers.dev
+  # URL of the deployed sveltia-cms-auth Cloudflare Worker (handles GitHub login).
+  base_url: https://sveltia-cms-auth.getjameswebb.workers.dev
 
 site_url: https://www.vitalfascia.com.au
 display_url: https://www.vitalfascia.com.au
