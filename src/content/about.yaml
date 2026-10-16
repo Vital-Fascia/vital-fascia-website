@@ -1,18 +1,20 @@
 visible: true
 eyebrow: About Alex
 heading: The guy behind Vital Fascia
-pullQuote: "The sore spot is rarely the cause. It's just the loudest part of the story."
+pullQuote: The sore spot is rarely the cause. It's just the loudest part of the story.
 paragraphs:
-  - "Alex May started out treating symptoms like most therapists do: the sore shoulder, the tight hip, the nagging lower back. What changed everything was noticing how rarely the sore spot was actually the cause."
-  - "Vital Fascia grew out of that shift: a practice built on understanding the whole system, not just soothing the loudest part of it. Alex is based in Double Bay and works with desk workers, runners, gym-goers and anyone whose body has been trying to tell them something for a while."
-signature: "- Alex"
-# TODO: "nine in ten clients" claim is from the design prototype and is NOT confirmed. Verify or delete.
+  - 'Alex May started out treating symptoms like most therapists do: the sore shoulder, the tight hip, the nagging lower back. What changed everything was noticing how rarely the sore spot was actually the cause.'
+  - 'Vital Fascia grew out of that shift: a practice built on understanding the whole system, not just soothing the loudest part of it. Alex is based in Double Bay and works with desk workers, runners, gym-goers and anyone whose body has been trying to tell them something for a while.'
+signature: '- Alex'
 statValue: 9 in 10
 statLabel: clients report improvement in how they move within their first month
-# TODO: qualification placeholders - confirm real credentials with the client.
 credentials:
-  - { title: "[Qualification]", detail: "[Institution, year]" }
-  - { title: "[Qualification]", detail: "[Institution, year]" }
-  - { title: "[Association / membership]", detail: "[Details]" }
-photoAlt: ""
-photoPlaceholder: "[Portrait photo - Alex, natural light]"
+  - title: '[Qualification]'
+    detail: '[Institution, year]'
+  - title: '[Qualification]'
+    detail: '[Institution, year]'
+  - title: '[Association / membership]'
+    detail: '[Details]'
+photo: ../assets/uploads/pasted-image-1792125362102.png
+photoAlt: ''
+photoPlaceholder: '[Portrait photo - Alex, natural light]'
