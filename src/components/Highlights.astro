@@ -3,12 +3,12 @@ import { getContent } from '../lib/content';
 const d = await getContent('highlights');
 ---
 {d.visible && d.items.length > 0 && (
-  <div class="stat-strip">
+  <div class="stats">
     <div class="wrap stat-row">
       {d.items.map((s: any) => (
         <div class="stat">
-          <div class="stat-num">{s.value}</div>
-          <div class="stat-label">{s.label}</div>
+          <span class="stat-num" data-count>{s.value}</span>
+          <span class="stat-label">{s.label}</span>
         </div>
       ))}
     </div>
@@ -16,10 +16,9 @@ const d = await getContent('highlights');
 )}
 
 <style>
-  .stat-strip { background: var(--charcoal); padding-block: 32px; }
-  .stat-row { display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
-  .stat { flex: 1; min-width: 160px; }
-  .stat-num { font-family: var(--font-display); font-size: clamp(26px, 3vw, 34px); color: var(--cream); }
-  .stat-label { font-size: 13px; color: var(--cream-muted); margin-top: 4px; }
-  @media (max-width: 700px) { .stat-row { gap: 24px; } .stat { min-width: 120px; } }
+  .stats { background: var(--bone); padding-bottom: clamp(36px, 5vw, 56px); }
+  .stat-row { display: flex; flex-wrap: wrap; gap: 14px clamp(28px, 6vw, 72px); padding-top: 28px; border-top: 1px solid var(--stone-line); }
+  .stat { display: flex; align-items: baseline; gap: 12px; }
+  .stat-num { font-family: var(--font-display); font-size: clamp(26px, 3vw, 34px); color: var(--olive); font-variant-numeric: tabular-nums; }
+  .stat-label { font-size: 14px; color: var(--ink-muted); }
 </style>

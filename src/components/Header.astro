@@ -1,63 +1,255 @@
 ---
+import SocialLinks from './SocialLinks.astro';
 import { getContent } from '../lib/content';
 const site = await getContent('site');
 const contact = await getContent('contact');
+const bookHref = contact.bookingUrl;
 ---
-<header class="site-header">
+<header class="site-header" data-header>
   <div class="wrap header-row">
     <a href="/" class="logo">{site.businessName}</a>
     <nav class="nav-links" aria-label="Primary">
-      {site.navLinks.map((l: any) => <a href={l.href}>{l.label}</a>)}
+      {site.navLinks.map((l: any) => (
+        <a href={l.href} class:list={{ secondary: l.tag }}>
+          <span>{l.label}</span>
+          {l.tag && <small class="tag">{l.tag}</small>}
+        </a>
+      ))}
     </nav>
     <div class="header-actions">
-      <a class="btn btn-primary btn-sm book" href={contact.bookingUrl} target="_blank" rel="noopener">{site.bookButtonLabel}</a>
+      <a class="btn btn-primary btn-sm book" href={bookHref}>
+        <span class="long">{site.bookButtonLabel}</span><span class="short">{site.bookButtonShortLabel}</span>
+      </a>
       <button type="button" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
-  <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile" hidden>
-    {site.navLinks.map((l: any) => <a href={l.href}>{l.label}</a>)}
-    <a class="btn btn-primary" href={contact.bookingUrl} target="_blank" rel="noopener">{site.bookButtonLabel}</a>
-  </nav>
 </header>
 
+<nav id="mobile-menu" class="mobile-menu dark" aria-label="Mobile" hidden>
+  <div class="menu-links">
+    {site.navLinks.map((l: any, i: number) => (
+      <a href={l.href} style={`--i:${i}`}>
+        <span>{l.label}</span>
+        {l.tag && <small class="tag">{l.tag}</small>}
+      </a>
+    ))}
+  </div>
+  <div class="menu-foot" style={`--i:${site.navLinks.length}`}>
+    <a class="btn btn-primary btn-arrow" href={bookHref}>{site.bookButtonLabel}</a>
+    <p class="note">{site.menuNote}</p>
+    <SocialLinks class="menu-socials" size={36} />
+  </div>
+</nav>
+
+<a class="book-bar" href={bookHref} data-book-bar aria-hidden="true" tabindex="-1">
+  <span>{site.bookButtonLabel}</span>
+  <span class="sub">{site.menuNote}</span>
+</a>
+
 <script>
-  const btn = document.querySelector<HTMLButtonElement>('.hamburger');
-  const menu = document.getElementById('mobile-menu');
+  const header = document.querySelector<HTMLElement>('[data-header]')!;
+  const btn = header.querySelector<HTMLButtonElement>('.hamburger')!;
+  const menu = document.getElementById('mobile-menu')!;
+  const root = document.documentElement;
+  const inertTargets = () => document.querySelectorAll<HTMLElement>('#main, footer, .skip-link, [data-book-bar]');
+  let scrollY = 0;
+
+  const focusables = () =>
+    [...header.querySelectorAll<HTMLElement>('a[href], button'), ...menu.querySelectorAll<HTMLElement>('a[href], button')].filter(
+      (el) => el.offsetParent !== null || el === btn,
+    );
+
   const setOpen = (open: boolean) => {
-    if (!btn || !menu) return;
+    if (open === !menu.hidden) return;
     btn.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', String(open));
     btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    menu.hidden = !open;
-    document.body.style.overflow = open ? 'hidden' : '';
+    root.classList.toggle('menu-open', open);
+    inertTargets().forEach((el) => (open ? el.setAttribute('inert', '') : el.removeAttribute('inert')));
+    if (open) {
+      // lock body scroll without losing the scroll position
+      scrollY = window.scrollY;
+      document.body.style.cssText = `position:fixed;top:-${scrollY}px;left:0;right:0;`;
+      menu.hidden = false;
+      requestAnimationFrame(() => menu.classList.add('show'));
+      menu.querySelector<HTMLElement>('a')?.focus({ preventScroll: true });
+    } else {
+      menu.classList.remove('show');
+      const done = () => {
+        menu.hidden = true;
+        document.body.style.cssText = '';
+        root.style.scrollBehavior = 'auto';
+        window.scrollTo(0, scrollY);
+        root.style.scrollBehavior = '';
+      };
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) done();
+      else setTimeout(done, 230);
+    }
   };
-  btn?.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
-  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+
+  btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    setOpen(open);
+    if (!open) btn.focus();
+  });
+  menu.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      // let in-page anchors scroll after the lock is released
+      const href = a.getAttribute('href') || '';
+      const hash = href.includes('#') ? href.slice(href.indexOf('#')) : '';
+      const samePage = hash && (href.startsWith('#') || href.split('#')[0] === location.pathname || href.split('#')[0] === '/' && location.pathname === '/');
+      if (samePage) {
+        const target = document.querySelector(hash);
+        if (target) {
+          setOpen(false);
+          setTimeout(() => target.scrollIntoView(), 240);
+          history.pushState(null, '', hash);
+          return;
+        }
+      }
+      setOpen(false);
+    }),
+  );
+  document.addEventListener('keydown', (e) => {
+    if (menu.hidden) return;
+    if (e.key === 'Escape') { setOpen(false); btn.focus(); return; }
+    if (e.key === 'Tab') {
+      const f = focusables();
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+  // close if the viewport grows past the mobile breakpoint
+  matchMedia('(min-width: 1121px)').addEventListener('change', (m) => m.matches && setOpen(false));
+
+  // Header condenses + gains a shadow after a little scroll
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 40);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Scroll-spy: highlight the nav link whose section is in view
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.nav-links a')];
+  const map = new Map<Element, HTMLAnchorElement>();
+  links.forEach((a) => {
+    const url = new URL(a.href);
+    if (url.pathname === location.pathname && url.hash) {
+      const sec = document.querySelector(url.hash);
+      if (sec) map.set(sec, a);
+    } else if (url.pathname === location.pathname && !url.hash && url.pathname !== '/') {
+      a.setAttribute('aria-current', 'page');
+      a.classList.add('active');
+    }
+  });
+  if (map.size && 'IntersectionObserver' in window) {
+    const visible = new Set<Element>();
+    const order = [...map.keys()];
+    const update = () => {
+      const current = order.filter((s) => visible.has(s)).pop();
+      links.forEach((a) => { a.classList.remove('active'); a.removeAttribute('aria-current'); });
+      if (current) { const a = map.get(current)!; a.classList.add('active'); a.setAttribute('aria-current', 'location'); }
+    };
+    const spy = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)));
+        update();
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    order.forEach((s) => spy.observe(s));
+  }
+
+  // Mobile sticky booking bar: appears after the hero, hides at the final CTA / footer
+  const bar = document.querySelector<HTMLElement>('[data-book-bar]')!;
+  const hero = document.querySelector('.hero');
+  const end = [document.getElementById('book'), document.querySelector('footer')].filter(Boolean) as Element[];
+  if (hero && end.length && 'IntersectionObserver' in window) {
+    let heroOut = false;
+    const ending = new Set<Element>();
+    const sync = () => {
+      const show = heroOut && ending.size === 0;
+      bar.classList.toggle('show', show);
+      bar.setAttribute('aria-hidden', String(!show));
+      bar.tabIndex = show ? 0 : -1;
+    };
+    new IntersectionObserver((e) => { heroOut = !e[0].isIntersecting && e[0].boundingClientRect.top < 0; sync(); }).observe(hero);
+    const endIo = new IntersectionObserver((entries) => {
+      entries.forEach((e) => (e.isIntersecting ? ending.add(e.target) : ending.delete(e.target)));
+      sync();
+    });
+    end.forEach((el) => endIo.observe(el));
+  }
 </script>
 
 <style>
-  .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 241, 231, 0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--stone-line); }
-  .header-row { display: flex; align-items: center; justify-content: space-between; height: var(--header-h); }
-  .logo { font-family: var(--font-display); font-size: 22px; font-weight: 500; letter-spacing: .01em; }
-  .nav-links { display: flex; align-items: center; gap: 36px; font-size: 15px; }
-  .nav-links a { padding: 6px 0; color: var(--ink-muted); }
-  .nav-links a:hover { color: var(--ink); }
-  .header-actions { display: flex; align-items: center; gap: 20px; }
-  .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; background: transparent; border: 0; padding: 0; }
-  .hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); transition: transform .2s ease, opacity .2s ease; }
+  .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 241, 231, 0.92); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 1px solid var(--stone-line); transition: box-shadow .3s ease, border-color .3s ease, background .3s ease; }
+  .site-header.scrolled { box-shadow: 0 8px 22px -16px rgba(34, 30, 25, 0.35); border-bottom-color: rgba(74, 82, 64, 0.3); }
+  .header-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: var(--header-h); transition: height .3s var(--ease); }
+  .scrolled .header-row { height: calc(var(--header-h) - 14px); }
+  .logo { font-family: var(--font-display); font-size: 22px; font-weight: 500; letter-spacing: .01em; white-space: nowrap; }
+
+  .nav-links { display: flex; align-items: center; gap: clamp(18px, 2vw, 30px); font-size: 14.5px; }
+  .nav-links a { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 10px 0; color: var(--ink-muted); transition: color .2s ease; white-space: nowrap; }
+  .nav-links a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 4px; height: 1.5px; background: var(--olive); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+  .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+  .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+  .nav-links a.secondary { color: var(--ink-muted); opacity: .9; }
+  .tag { font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; color: var(--olive); border: 1px solid var(--stone-line); background: var(--sand); padding: 2px 7px; border-radius: 20px; }
+
+  .header-actions { display: flex; align-items: center; gap: 8px; }
+  .book .short { display: none; }
+  .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; margin-right: -10px; background: transparent; border: 0; padding: 0; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); transition: transform .25s var(--ease), opacity .2s ease; }
   .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .hamburger.open span:nth-child(2) { opacity: 0; }
   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  .mobile-menu { position: fixed; inset: var(--header-h) 0 0 0; z-index: 99; background: var(--bone); display: flex; flex-direction: column; padding: 36px var(--gutter); gap: 8px; overflow-y: auto; }
+
+  /* Full-viewport overlay. It's a sibling of the header so the header's backdrop-filter
+     can't turn it into a header-sized containing block. */
+  .mobile-menu { position: fixed; inset: 0; z-index: 99; height: 100dvh; background: var(--charcoal); color: var(--cream); display: flex; flex-direction: column; padding: calc(var(--header-h) + 12px) var(--gutter) max(24px, env(safe-area-inset-bottom)); overflow-y: auto; overscroll-behavior: contain; opacity: 0; transform: translateY(-10px); transition: opacity .22s ease, transform .22s var(--ease); }
   .mobile-menu[hidden] { display: none; }
-  .mobile-menu a:not(.btn) { font-family: var(--font-display); font-size: 28px; padding: 14px 0; border-bottom: 1px solid var(--stone-line); }
-  .mobile-menu .btn { margin-top: 20px; align-self: flex-start; }
-  @media (max-width: 980px) {
+  .mobile-menu.show { opacity: 1; transform: none; }
+  .menu-links { display: flex; flex-direction: column; }
+  .menu-links a { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-family: var(--font-display); font-size: clamp(21px, 6vw, 24px); line-height: 1.2; padding: 13px 0; border-bottom: 1px solid rgba(242, 236, 221, 0.16); min-height: 48px; opacity: 0; transform: translateY(8px); transition: opacity .3s ease, transform .3s var(--ease); transition-delay: calc(var(--i) * 40ms + 60ms); }
+  .menu-links .tag { font-family: var(--font-body); background: transparent; color: var(--cream-muted); border-color: rgba(242, 236, 221, 0.3); }
+  .mobile-menu.show .menu-links a, .mobile-menu.show .menu-foot { opacity: 1; transform: none; }
+  .menu-foot { margin-top: auto; padding-top: 28px; display: flex; flex-direction: column; align-items: stretch; gap: 14px; flex-shrink: 0; opacity: 0; transform: translateY(8px); transition: opacity .3s ease, transform .3s var(--ease); transition-delay: calc(var(--i) * 40ms + 60ms); }
+  .menu-foot .btn { width: 100%; height: 52px; flex-shrink: 0; }
+  .note { text-align: center; font-size: 13.5px; color: var(--cream-muted); }
+  .menu-foot :global(.menu-socials) { justify-content: center; }
+  :global(.menu-open) .site-header { background: var(--charcoal); border-bottom-color: rgba(242, 236, 221, 0.16); }
+  :global(.menu-open) .logo { color: var(--cream); }
+  :global(.menu-open) .hamburger span { background: var(--cream); }
+  :global(.menu-open) .site-header .btn-primary { background: var(--cream); border-color: var(--cream); color: var(--charcoal); }
+
+  /* Sticky booking bar (phones only, home page) */
+  .book-bar { display: none; }
+
+  @media (max-width: 1120px) {
     .nav-links { display: none; }
     .hamburger { display: flex; }
-    .header-actions .book { display: none; }
+  }
+  @media (max-width: 420px) {
+    .book .long { display: none; }
+    .book .short { display: inline; }
+    .logo { font-size: 20px; }
+  }
+  @media (max-width: 700px) {
+    .book-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: flex; align-items: center; justify-content: flex-start; gap: 12px; padding: 12px var(--gutter) max(12px, env(safe-area-inset-bottom)); background: var(--olive); color: var(--cream); font-weight: 600; font-size: 15px; transform: translateY(110%); transition: transform .4s var(--ease); visibility: hidden; }
+    .book-bar.show { transform: none; visibility: visible; }
+    .book-bar .sub { font-weight: 400; font-size: 12.5px; color: var(--cream); opacity: .9; }
+    .book-bar::after { content: '→'; margin-left: auto; font-size: 18px; }
+  }
+  @media (max-height: 460px) and (orientation: landscape) {
+    .menu-links { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; }
+    .menu-links a { padding: 8px 0; min-height: 44px; }
+    .menu-foot { padding-top: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu, .menu-links a, .menu-foot, .book-bar, .header-row { transition: none; }
+    .mobile-menu { transform: none; }
+    .menu-links a, .menu-foot { opacity: 1; transform: none; }
   }
 </style>

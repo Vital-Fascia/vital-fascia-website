@@ -1,0 +1,19 @@
+---
+import Photo from './Photo.astro';
+import { getContent } from '../lib/content';
+const d = await getContent('imageBreak');
+---
+{d.visible && (
+  <figure class="break">
+    <Photo class="break-photo" image={d.photo} alt={d.photoAlt} placeholder={d.photoPlaceholder} sizes="100vw" />
+    {d.caption && <figcaption class="cap"><span class="wrap">{d.caption}</span></figcaption>}
+  </figure>
+)}
+
+<style>
+  .break { position: relative; margin: 0; background: var(--charcoal); }
+  .break :global(.break-photo) { width: 100%; aspect-ratio: 21 / 9; border-radius: 0; border: 0; }
+  .cap { position: absolute; inset: auto 0 0 0; padding-block: clamp(20px, 3vw, 40px); background: linear-gradient(to top, rgba(34, 30, 25, 0.7), transparent); color: var(--cream); font-family: var(--font-display); font-style: italic; font-size: clamp(20px, 2.6vw, 30px); }
+  .cap .wrap { display: block; }
+  @media (max-width: 700px) { .break :global(.break-photo) { aspect-ratio: 4 / 5; max-height: 78svh; } }
+</style>

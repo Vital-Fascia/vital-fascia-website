@@ -1,42 +1,264 @@
 ---
 import { getContent } from '../lib/content';
 const d = await getContent('approach');
+
+// Abstract line figure on a 240 x 560 grid. Left-side paths are mirrored for the right side.
+const W = 240;
+const mirror = (p: string) => p.replace(/(-?\d+\.?\d*)[ ,](-?\d+\.?\d*)/g, (_m, x, y) => `${W - Number(x)} ${y}`);
+const both = (p: string) => [p, mirror(p)];
+const silhouette = [
+  'M108 92 C96 94 78 96 68 106 C60 114 58 130 56 152 C54 190 48 226 44 258 C44 270 56 270 56 256',
+  'M66 128 C62 170 58 214 56 252',
+  'M70 124 C74 166 84 200 85 240 C86 266 80 292 78 312',
+  'M78 312 C70 360 76 420 80 470 C82 500 80 520 76 538 C70 546 70 553 80 553 L100 553 C104 546 100 540 100 538',
+  'M118 324 C114 380 108 430 104 470 C102 500 102 520 100 538',
+  'M78 312 C92 326 108 328 120 326',
+].flatMap(both);
+const head = ['M110 74 L108 92', 'M130 74 L132 92'];
+// Region centres (percent positions are derived from these). Knees & feet get a dot on each leg.
+const nodes: Record<string, { x: number; y: number; dots: [number, number][] }> = {
+  jaw: { x: 120, y: 68, dots: [[120, 68]] },
+  neck: { x: 120, y: 106, dots: [[120, 106]] },
+  'upper-back': { x: 120, y: 162, dots: [[120, 162]] },
+  core: { x: 120, y: 236, dots: [[120, 236]] },
+  hips: { x: 120, y: 306, dots: [[120, 306]] },
+  knees: { x: 120, y: 420, dots: [[92, 420], [148, 420]] },
+  feet: { x: 120, y: 540, dots: [[90, 540], [150, 540]] },
+};
+const order = ['jaw', 'neck', 'upper-back', 'core', 'hips', 'knees', 'feet'];
+// Fascial chain segments between neighbouring regions (highlight when in the active range)
+const segs: { a: string; b: string; d: string[] }[] = [
+  { a: 'jaw', b: 'neck', d: ['M120 68 C122 82 118 94 120 106'] },
+  { a: 'neck', b: 'upper-back', d: ['M120 106 C116 126 124 144 120 162'] },
+  { a: 'upper-back', b: 'core', d: ['M120 162 C124 190 116 212 120 236'] },
+  { a: 'core', b: 'hips', d: ['M120 236 C116 262 124 284 120 306'] },
+  { a: 'hips', b: 'knees', d: ['M120 306 C108 340 98 380 92 420', 'M120 306 C132 340 142 380 148 420'] },
+  { a: 'knees', b: 'feet', d: ['M92 420 C94 460 88 500 90 540', 'M148 420 C146 460 152 500 150 540'] },
+];
+// Long spiral lines that cross the body, decorative (the "wrapping" character of fascia)
+const spiral = 'M68 110 C92 168 152 226 150 300 C148 346 100 380 92 420 C88 460 94 500 90 540';
+const deco = both(spiral);
+const regionMap = Object.fromEntries(d.regions.map((r: any) => [r.id, r]));
+const first = d.symptoms[0];
 ---
 {d.visible && (
-  <section id="approach" class="approach band">
+  <section id="approach" class="approach band dark" data-approach>
     <div class="wrap grid">
-      <div>
-        <span class="eyebrow eyebrow-dark">{d.eyebrow}</span>
-        <h2>{d.heading}</h2>
-        <p class="body">{d.body}</p>
+      <div class="head">
+        <span class="eyebrow eyebrow-dark" data-reveal>{d.eyebrow}</span>
+        <h2 data-reveal data-reveal-delay="80">{d.heading}</h2>
       </div>
-      <div class="diagram">
+
+      <div class="diagram" data-reveal>
         <span class="d-title">{d.diagramTitle}</span>
-        <ol class="points">
-          {d.diagramPoints.map((p: any) => (
-            <li class:list={{ hl: p.highlight }}><span class="label">{p.highlight ? <b>{p.label}</b> : p.label}</span></li>
+        <div class="fig" data-fig>
+          <svg viewBox={`0 0 ${W} 560`} role="img" aria-label={d.diagramTitle} class="svg" preserveAspectRatio="xMidYMid meet">
+            <g class="sil">
+              <ellipse cx="120" cy="46" rx="22" ry="28" pathLength="1" />
+              {head.map((p, i) => <path pathLength="1" d={p} style={`--d:${i * 60}ms`} />)}
+              {silhouette.map((p, i) => <path pathLength="1" d={p} style={`--d:${100 + i * 90}ms`} />)}
+            </g>
+            <g class="deco">
+              {deco.map((p, i) => <path pathLength="1" d={p} style={`--d:${500 + i * 250}ms`} />)}
+            </g>
+            <g class="chain">
+              {segs.map((s, i) => (
+                <g class="seg" data-a={s.a} data-b={s.b}>
+                  {s.d.map((p) => <path pathLength="1" d={p} style={`--d:${700 + i * 160}ms`} />)}
+                </g>
+              ))}
+            </g>
+            <g class="dots">
+              {order.map((id) => nodes[id].dots.map(([x, y]) => (
+                <g class="dot" data-id={id}>
+                  <circle class="halo" cx={x} cy={y} r="11" />
+                  <circle class="core" cx={x} cy={y} r="4.5" />
+                </g>
+              )))}
+            </g>
+          </svg>
+          {order.map((id) => (
+            <button type="button" class="node" data-id={id} style={`left:${(nodes[id].x / W) * 100}%;top:${(nodes[id].y / 560) * 100}%`} aria-pressed="false" aria-label={regionMap[id]?.label}>
+              <span class="lab" aria-hidden="true">{regionMap[id]?.label}</span>
+            </button>
           ))}
-        </ol>
-        <p class="d-caption">{d.diagramCaption}</p>
+        </div>
+        <p class="caption" aria-live="polite" data-caption>{regionMap[first.region]?.caption}</p>
+        <ul class="chips" aria-label="Symptoms">
+          {d.symptoms.map((s: any) => (
+            <li><button type="button" class="chip" data-region={s.region} aria-pressed="false">{s.label}</button></li>
+          ))}
+        </ul>
+        <p class="hint">{d.diagramHint}</p>
+      </div>
+
+      <div class="body-col">
+        <p class="body" data-reveal>{d.body}</p>
+        <div class="compare" data-reveal data-reveal-delay="100">
+          <h3 class="cmp-h">{d.compareHeading}</h3>
+          <div class="cmp">
+            <div class="col left">
+              <h4>{d.compareLeft.title}</h4>
+              <ul>{d.compareLeft.points.map((p: string) => <li>{p}</li>)}</ul>
+            </div>
+            <div class="col right">
+              <h4>{d.compareRight.title}</h4>
+              <ul>{d.compareRight.points.map((p: string) => <li>{p}</li>)}</ul>
+            </div>
+          </div>
+        </div>
+        <p class="d-caption" data-reveal>{d.diagramCaption}</p>
       </div>
     </div>
+    <script type="application/json" id="approach-data" set:html={JSON.stringify({ regions: d.regions, symptoms: d.symptoms, order })}></script>
   </section>
 )}
 
+<script>
+  const root = document.querySelector<HTMLElement>('[data-approach]');
+  if (root) {
+    const data = JSON.parse(document.getElementById('approach-data')!.textContent || '{}');
+    const fig = root.querySelector<HTMLElement>('[data-fig]')!;
+    const caption = root.querySelector<HTMLElement>('[data-caption]')!;
+    const nodes = [...fig.querySelectorAll<HTMLElement>('.node')];
+    const dots = [...fig.querySelectorAll<SVGGElement>('.dot')];
+    const segs = [...fig.querySelectorAll<SVGGElement>('.seg')];
+    const chips = [...root.querySelectorAll<HTMLButtonElement>('.chip')];
+    const order: string[] = data.order;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let timer: number | undefined;
+
+    const select = (id: string, captionOverride?: string) => {
+      const region = data.regions.find((r: any) => r.id === id);
+      if (!region) return;
+      const set = new Set<string>([id, ...region.related]);
+      const idx = [...set].map((s) => order.indexOf(s)).filter((n) => n >= 0);
+      const lo = Math.min(...idx), hi = Math.max(...idx);
+      nodes.forEach((n) => {
+        n.classList.toggle('on', n.dataset.id === id);
+        n.classList.toggle('rel', n.dataset.id !== id && set.has(n.dataset.id!));
+        n.setAttribute('aria-pressed', String(n.dataset.id === id));
+      });
+      dots.forEach((g) => {
+        g.classList.toggle('on', g.dataset.id === id);
+        g.classList.toggle('rel', g.dataset.id !== id && set.has(g.dataset.id!));
+      });
+      segs.forEach((s) => {
+        const a = order.indexOf(s.dataset.a!), b = order.indexOf(s.dataset.b!);
+        s.classList.toggle('hot', a >= lo && b <= hi);
+      });
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.region === id)));
+      caption.textContent = captionOverride ?? region.caption;
+    };
+
+    const stopCycle = () => { if (timer) { clearInterval(timer); timer = undefined; } };
+    const interact = (id: string) => { stopCycle(); select(id); };
+
+    nodes.forEach((n) => {
+      n.addEventListener('click', () => interact(n.dataset.id!));
+      n.addEventListener('pointerenter', (e) => { if ((e as PointerEvent).pointerType === 'mouse') interact(n.dataset.id!); });
+      n.addEventListener('focus', () => interact(n.dataset.id!));
+    });
+    chips.forEach((c) => c.addEventListener('click', () => interact(c.dataset.region!)));
+
+    // Default state: first symptom. Auto-cycles slowly while in view until the user interacts.
+    const symptoms: any[] = data.symptoms;
+    select(symptoms[0].region);
+    if (!reduce && 'IntersectionObserver' in window) {
+      let i = 0;
+      const start = () => {
+        if (timer) return;
+        timer = window.setInterval(() => { i = (i + 1) % symptoms.length; select(symptoms[i].region); }, 4500);
+      };
+      new IntersectionObserver((e) => {
+        const seen = e[0].isIntersecting;
+        fig.classList.toggle('in', fig.classList.contains('in') || seen);
+        if (seen && timer === undefined && !fig.dataset.touched) start();
+        else if (!seen && timer) { clearInterval(timer); timer = undefined; }
+      }, { threshold: 0.35 }).observe(fig);
+      const touch = () => { fig.dataset.touched = '1'; stopCycle(); };
+      fig.addEventListener('pointerdown', touch);
+      root.querySelector('.chips')!.addEventListener('pointerdown', touch);
+      fig.addEventListener('focusin', touch);
+      root.querySelector('.chips')!.addEventListener('focusin', touch);
+    } else {
+      fig.classList.add('in');
+    }
+  }
+</script>
+
 <style>
   .approach { background: var(--charcoal); color: var(--cream); }
-  .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(40px, 6vw, 90px); align-items: center; margin-top: 20px; }
+  .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; grid-template-areas: 'head diagram' 'body diagram'; column-gap: clamp(40px, 6vw, 90px); align-items: start; align-content: start; }
+  .head { grid-area: head; }
+  .diagram { grid-area: diagram; display: flex; flex-direction: column; align-items: center; }
+  .body-col { grid-area: body; }
   h2 { font-size: clamp(30px, 4vw, 46px); color: var(--cream); }
-  .body { color: var(--cream-muted); font-size: 18px; line-height: 1.7; margin-top: 22px; max-width: 520px; }
-  .diagram { display: flex; flex-direction: column; align-items: center; }
-  .d-title { font-family: var(--font-display); font-style: italic; font-size: 18px; margin-bottom: 26px; }
-  .points { width: 280px; padding-top: 0; list-style: none; }
-  .points li { position: relative; height: 88px; padding-left: 60px; }
-  .points li:last-child { height: 84px; }
-  .points li::before { content: ''; position: absolute; left: 24px; top: 0; width: 16px; height: 16px; border-radius: 50%; background: var(--sage); }
-  .points li.hl::before { background: var(--cream); }
-  .points li:not(:last-child)::after { content: ''; position: absolute; left: 31px; top: 16px; width: 2px; height: 72px; border-radius: 2px; background: rgba(242, 236, 221, 0.4); }
-  .label { display: block; margin-top: -2px; font-size: 15px; line-height: 20px; }
-  .d-caption { font-size: 14px; color: var(--cream-muted); margin-top: 22px; max-width: 280px; text-align: center; line-height: 1.5; }
-  @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } .diagram { order: -1; } }
+  .body { color: var(--cream); opacity: .88; font-size: 18px; line-height: 1.7; margin-top: 22px; max-width: 540px; }
+  .d-title { font-family: var(--font-display); font-style: italic; font-size: 18px; margin-bottom: 18px; }
+  .d-caption { margin-top: 32px; font-family: var(--font-display); font-style: italic; font-size: 19px; color: var(--cream-muted); max-width: 480px; }
+
+  /* ---- figure ---- */
+  .fig { position: relative; width: min(100%, 300px); aspect-ratio: 240 / 560; }
+  .svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .svg path, .svg ellipse { fill: none; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+  .sil path, .sil ellipse { stroke: var(--cream); stroke-opacity: .55; stroke-width: 1.4; }
+  .deco path { stroke: var(--sage); stroke-opacity: .5; stroke-width: 1.2; }
+  .chain path { stroke: var(--sage); stroke-opacity: .75; stroke-width: 1.8; transition: stroke .4s ease, stroke-opacity .4s ease, stroke-width .4s ease; }
+  .seg.hot path { stroke: var(--cream); stroke-opacity: 1; stroke-width: 2.6; }
+  .dot .core { fill: var(--sage); transition: fill .3s ease; }
+  .dot .halo { fill: var(--sage); opacity: 0; transform-box: fill-box; transform-origin: center; }
+  .dot.on .core { fill: var(--cream); }
+  .dot.on .halo, .dot.rel .halo { opacity: .35; animation: pulse 2.2s ease-in-out infinite; }
+  .dot.rel .core { fill: var(--cream); fill-opacity: .8; }
+  @keyframes pulse { 0%, 100% { transform: scale(.7); opacity: .4; } 50% { transform: scale(1.25); opacity: .12; } }
+
+  /* draw-in when scrolled into view: lines first, then nodes */
+  :global(.js) .fig:not(.in) :is(.svg path, .svg ellipse) { stroke-dashoffset: 1; }
+  :global(.js) .fig:not(.in) .dots { opacity: 0; }
+  .dots { transition: opacity .8s ease 1.9s; }
+  .fig.in :is(.svg path, .svg ellipse) { animation: draw 1.5s var(--ease) both; animation-delay: var(--d, 0ms); }
+  @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+  .node { position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px; padding: 0; border: 0; border-radius: 50%; background: transparent; }
+  .node:focus-visible { outline: 2px solid var(--cream); outline-offset: 0; }
+  .lab { position: absolute; left: calc(50% + 14px); top: 50%; transform: translateY(-50%); white-space: nowrap; font-size: 12.5px; background: rgba(34, 30, 25, 0.92); color: var(--cream); padding: 3px 9px; border: 1px solid rgba(242, 236, 221, 0.25); border-radius: 20px; opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+  .node[data-id='knees'] .lab, .node[data-id='feet'] .lab { left: calc(50% + 46px); }
+  .node.on .lab, .node.rel .lab { opacity: 1; }
+  .node.rel .lab { opacity: .75; }
+
+  .caption { min-height: 3.1em; margin-top: 20px; text-align: center; max-width: 320px; font-family: var(--font-display); font-style: italic; font-size: 19px; line-height: 1.4; color: var(--cream); }
+  .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 12px; list-style: none; padding: 0; }
+  .chip { min-height: 44px; padding: 0 18px; border-radius: 30px; border: 1px solid rgba(242, 236, 221, 0.4); background: transparent; color: var(--cream); font-size: 14px; transition: background .25s ease, color .25s ease, border-color .25s ease; }
+  .chip:hover { border-color: var(--cream); }
+  .chip[aria-pressed='true'] { background: var(--cream); color: var(--charcoal); border-color: var(--cream); }
+  .hint { margin-top: 12px; font-size: 13px; color: var(--cream-muted); text-align: center; }
+
+  /* ---- comparison ---- */
+  .compare { margin-top: 40px; }
+  .cmp-h { font-size: 15px; font-family: var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--cream-muted); font-weight: 600; margin-bottom: 14px; }
+  .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .col { padding: 20px 20px 22px; border: 1px solid rgba(242, 236, 221, 0.18); border-radius: var(--radius); }
+  .col h4 { font-family: var(--font-display); font-size: 19px; font-weight: 500; margin-bottom: 12px; }
+  .col ul { display: flex; flex-direction: column; gap: 10px; }
+  .col li { font-size: 14.5px; line-height: 1.5; padding-left: 18px; position: relative; color: var(--cream); opacity: .85; }
+  .col li::before { content: ''; position: absolute; left: 0; top: 9px; width: 8px; height: 1.5px; background: currentColor; opacity: .6; }
+  .col.left h4 { color: var(--cream-muted); font-style: italic; }
+  .col.right { background: rgba(143, 160, 124, 0.12); border-color: rgba(143, 160, 124, 0.55); }
+  .col.right li { opacity: 1; }
+  .col.right li::before { background: var(--sage); opacity: 1; height: 2px; }
+
+  @media (max-width: 980px) {
+    .grid { grid-template-columns: 1fr; grid-template-areas: 'head' 'diagram' 'body'; }
+    .diagram { margin-top: 36px; }
+    .fig { width: min(70vw, 240px); }
+  }
+  @media (max-width: 560px) { .cmp { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) {
+    .fig.in :is(.svg path, .svg ellipse) { animation: none; }
+    :global(.js) .fig:not(.in) :is(.svg path, .svg ellipse) { stroke-dashoffset: 0; }
+    :global(.js) .fig:not(.in) .dots { opacity: 1; }
+    .dots { transition: none; }
+    .dot.on .halo, .dot.rel .halo { animation: none; }
+  }
 </style>

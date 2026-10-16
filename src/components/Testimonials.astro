@@ -1,72 +1,125 @@
 ---
 import { getContent } from '../lib/content';
 const d = await getContent('testimonials');
+const [featured, ...rest] = d.items;
 ---
 {d.visible && d.items.length > 0 && (
-  <section id="testimonials" class="testimonials band" data-carousel>
+  <section id="testimonials" class="testimonials band dark" data-carousel>
     <div class="wrap">
       <div class="head">
         <div>
-          <span class="eyebrow">{d.eyebrow}</span>
-          <h2>{d.heading}</h2>
+          <span class="eyebrow" data-reveal>{d.eyebrow}</span>
+          <h2 data-reveal data-reveal-delay="80">{d.heading}</h2>
         </div>
-        <div class="controls">
-          <button type="button" class="arrow" data-dir="-1" aria-label="Scroll testimonials left">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
-          </button>
-          <button type="button" class="arrow" data-dir="1" aria-label="Scroll testimonials right">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
-          </button>
+        <a class="rating" href={d.ratingUrl} data-reveal data-reveal-delay="120" target={d.ratingUrl.startsWith('http') ? '_blank' : undefined} rel="noopener">
+          <span class="stars" aria-hidden="true">★★★★★</span>
+          <span class="rv"><strong data-count>{d.ratingValue}</strong> {d.ratingText}</span>
+        </a>
+      </div>
+
+      <figure class="feature" data-reveal>
+        <div class="stars" role="img" aria-label={`${featured.rating} out of 5 stars`}>{'★'.repeat(featured.rating)}</div>
+        <blockquote>“{featured.quote}”</blockquote>
+        <figcaption>
+          <span class="name">{featured.name}</span>
+          {featured.detail && <span class="ctx">{featured.detail}</span>}
+          {featured.source && <span class="source">{featured.source}</span>}
+        </figcaption>
+      </figure>
+    </div>
+
+    {rest.length > 0 && (
+      <div class="carousel">
+        <div class="scroll" tabindex="0" role="region" aria-label="More client testimonials" data-scroll>
+          {rest.map((t: any) => (
+            <figure class="card card-lift">
+              <div class="stars" role="img" aria-label={`${t.rating} out of 5 stars`}>{'★'.repeat(t.rating)}</div>
+              <blockquote>“{t.quote}”</blockquote>
+              <div class="divider"></div>
+              <figcaption>
+                <span class="name">{t.name}</span>
+                {t.detail && <span class="ctx">{t.detail}</span>}
+              </figcaption>
+              {t.source && <span class="source">{t.source}</span>}
+            </figure>
+          ))}
+        </div>
+        <div class="wrap controls-row">
+          <div class="progress" aria-hidden="true"><span data-bar></span></div>
+          <div class="controls">
+            <button type="button" class="arrow" data-dir="-1" aria-label="Previous testimonials">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+            </button>
+            <button type="button" class="arrow" data-dir="1" aria-label="Next testimonials">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="carousel">
-      <div class="scroll" tabindex="0" role="region" aria-label="Client testimonials">
-        {d.items.map((t: any) => (
-          <figure class="card">
-            <div class="stars" role="img" aria-label={`${t.rating} out of 5 stars`}>{'★'.repeat(t.rating)}</div>
-            <blockquote>“{t.quote}”</blockquote>
-            <div class="divider"></div>
-            <figcaption>
-              <span class="name">{t.name}</span>
-              {t.detail && <span class="ctx">{t.detail}</span>}
-            </figcaption>
-            {t.source && <span class="source">{t.source}</span>}
-          </figure>
-        ))}
-      </div>
-    </div>
+    )}
   </section>
 )}
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
-    const track = root.querySelector<HTMLElement>('.scroll');
-    root.querySelectorAll<HTMLButtonElement>('.arrow').forEach((b) =>
-      b.addEventListener('click', () => track?.scrollBy({ left: Number(b.dataset.dir) * 260, behavior: 'smooth' })),
+    const track = root.querySelector<HTMLElement>('[data-scroll]');
+    if (!track) return;
+    const prev = root.querySelector<HTMLButtonElement>('[data-dir="-1"]')!;
+    const next = root.querySelector<HTMLButtonElement>('[data-dir="1"]')!;
+    const bar = root.querySelector<HTMLElement>('[data-bar]')!;
+    const sync = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      const x = track.scrollLeft;
+      prev.disabled = x <= 2;
+      next.disabled = x >= max - 2;
+      bar.style.width = `${max > 0 ? 25 + (x / max) * 75 : 100}%`;
+    };
+    const step = () => (track.querySelector<HTMLElement>('.card')?.offsetWidth ?? 320) + 20;
+    [prev, next].forEach((b) =>
+      b.addEventListener('click', () => track.scrollBy({ left: Number(b.dataset.dir) * step(), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })),
     );
+    track.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
   });
 </script>
 
 <style>
   .testimonials { background: var(--olive); color: var(--cream); }
-  .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px 32px; flex-wrap: wrap; }
   .head .eyebrow { color: var(--cream); }
   h2 { font-size: clamp(30px, 4vw, 44px); color: var(--cream); font-style: italic; font-weight: 400; }
-  .controls { display: flex; gap: 10px; margin-bottom: 6px; }
-  .arrow { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid rgba(242, 236, 221, 0.5); background: transparent; color: var(--cream); display: flex; align-items: center; justify-content: center; padding: 0; }
-  .arrow:hover { background: rgba(242, 236, 221, 0.14); }
-  .arrow svg { width: 18px; height: 18px; }
-  .arrow:focus-visible, .scroll:focus-visible { outline-color: var(--cream); }
-  .carousel { padding-inline: var(--gutter); margin-top: 44px; }
-  .scroll { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 10px; scrollbar-width: none; }
-  .scroll::-webkit-scrollbar { display: none; }
-  .card { scroll-snap-align: start; flex: 0 0 auto; width: 230px; background: var(--white); color: var(--ink); border-radius: var(--radius); padding: 28px 24px; display: flex; flex-direction: column; margin: 0; }
+  .rating { display: inline-flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 15px; color: var(--cream); border-bottom: 1px solid rgba(242, 236, 221, 0.45); transition: border-color .2s ease; }
+  .rating:hover { border-bottom-color: var(--cream); }
+  .rating strong { font-family: var(--font-display); font-size: 24px; font-weight: 500; font-variant-numeric: tabular-nums; }
   .stars { color: var(--gold); font-size: 14px; letter-spacing: 3px; }
-  blockquote { font-family: var(--font-display); font-style: italic; font-size: 17px; line-height: 1.5; margin: 16px 0 0; flex-grow: 1; }
+
+  .feature { margin: clamp(36px, 5vw, 56px) 0 0; max-width: 900px; }
+  .feature blockquote { margin: 18px 0 0; font-family: var(--font-display); font-style: italic; font-size: clamp(25px, 3.6vw, 36px); line-height: 1.3; }
+  .feature figcaption { margin-top: 24px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+  .feature .name { font-weight: 600; }
+  .feature .ctx, .feature .source { font-size: 14px; color: var(--cream); opacity: .85; }
+  .feature .source { text-transform: uppercase; letter-spacing: .08em; font-size: 11.5px; }
+
+  .carousel { margin-top: clamp(36px, 5vw, 56px); }
+  .scroll { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px var(--gutter) 14px; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
+  .scroll::-webkit-scrollbar { display: none; }
+  .scroll:focus-visible { outline: 2px solid var(--cream); outline-offset: -2px; }
+  .card { scroll-snap-align: start; flex: 0 0 340px; background: var(--white); color: var(--ink); border-radius: var(--radius); padding: 30px 28px; display: flex; flex-direction: column; margin: 0; border: 1px solid transparent; }
+  .card blockquote { font-family: var(--font-display); font-style: italic; font-size: 19px; line-height: 1.5; margin: 16px 0 0; flex-grow: 1; }
   .divider { width: 100%; height: 1px; background: var(--stone-line); margin: 22px 0 16px; }
-  .name { font-weight: 600; display: block; margin-bottom: 2px; font-size: 15px; }
-  .ctx { color: var(--ink-muted); font-size: 13.5px; }
-  .source { display: block; margin-top: 12px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-muted); }
-  @media (max-width: 560px) { .card { width: 78vw; } }
+  .card .name { font-weight: 600; display: block; margin-bottom: 2px; font-size: 15px; }
+  .card .ctx { color: var(--ink-muted); font-size: 13.5px; }
+  .card .source { display: block; margin-top: 12px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-muted); }
+
+  .controls-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 20px; }
+  .progress { flex: 1; max-width: 220px; height: 2px; background: rgba(242, 236, 221, 0.25); }
+  .progress span { display: block; height: 100%; background: var(--cream); transition: width .3s ease; }
+  .controls { display: flex; gap: 10px; }
+  .arrow { width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid rgba(242, 236, 221, 0.6); background: transparent; color: var(--cream); display: flex; align-items: center; justify-content: center; padding: 0; transition: background .2s ease, opacity .2s ease; }
+  .arrow:hover:not(:disabled) { background: rgba(242, 236, 221, 0.14); }
+  .arrow:disabled { opacity: .35; cursor: default; }
+  .arrow svg { width: 18px; height: 18px; }
+  @media (max-width: 560px) { .card { flex-basis: 82vw; } }
+  @media (prefers-reduced-motion: reduce) { .progress span { transition: none; } }
 </style>

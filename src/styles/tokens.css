@@ -26,11 +26,16 @@
   /* Layout */
   --wrap-max: 1180px;
   --gutter: clamp(22px, 5vw, 64px);
-  --band-pad: clamp(76px, 9vw, 136px);
-  --band-pad-tight: clamp(52px, 6vw, 84px);
+  --band-pad: clamp(60px, 9vw, 136px);
+  --band-pad-tight: clamp(48px, 6vw, 84px);
   --header-h: 80px;
   --radius: 2px;
   --radius-btn: 3px;
+
+  /* Motion: calm, slow eases */
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --dur: .6s;
+  --shadow-lift: 0 14px 30px -18px rgba(34, 30, 25, 0.35);
 }
 @media (max-width: 700px) {
   :root { --header-h: 64px; }

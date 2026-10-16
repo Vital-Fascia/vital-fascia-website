@@ -2,18 +2,61 @@ visible: true
 eyebrow: What I help with
 heading: Common issues, treated at the source
 issues:
-  - { title: Neck & shoulder tension, description: The desk-bound tightness that creeps up by mid-afternoon and never fully lets go. }
-  - { title: Lower back pain, description: Often the loudest symptom of a pattern that started somewhere else entirely. }
-  - { title: Hip & glute tightness, description: Common in runners, cyclists and anyone who sits most of the day. }
-  - { title: Running & training injuries, description: Overuse patterns, compensations and the niggles that keep resurfacing. }
-  - { title: Postural imbalance, description: "Rounded shoulders, forward head carry, an uneven pelvis: seen and addressed together." }
-  - { title: Recovery & mobility limits, description: Getting range of motion back after injury, surgery or years of guarding. }
+  - title: Neck & shoulder tension
+    icon: neck
+    description: "The desk-bound tightness that creeps up by mid-afternoon and never fully lets go."
+  - title: Lower back pain
+    icon: back
+    description: "Often the loudest symptom of a pattern that started somewhere else entirely."
+  - title: Hip & glute tightness
+    icon: hips
+    description: "Common in runners, cyclists and anyone who sits most of the day."
+  - title: Running & training injuries
+    icon: running
+    description: "Overuse patterns, compensations and the niggles that keep resurfacing."
+  - title: Postural imbalance
+    icon: posture
+    description: "Rounded shoulders, forward head carry, an uneven pelvis: seen and addressed together."
+  - title: Recovery & mobility limits
+    icon: mobility
+    description: "Getting range of motion back after injury, surgery or years of guarding."
+learnMoreLabel: Book a session
 treatmentsEyebrow: How I work
 treatmentsHeading: A toolkit, matched to your pattern
 treatments:
-  - { name: Remedial massage, description: Broad, whole-body groundwork }
-  - { name: Myofascial release, description: Slow work on the connective web }
-  - { name: Trigger point therapy, description: Targeted release of referred pain }
-  - { name: Myofascial cupping, description: Decompression for stubborn tightness }
-  - { name: Dry needling, description: Precise relief for deep tension }
-  - { name: Corrective exercise, description: Movement that makes it stick }
+  - name: Remedial massage
+    icon: massage
+    description: Broad, whole-body groundwork that settles the system and shows where the tension is held.
+    detail: "[Placeholder detail] A grounded, hands-on session that reduces general tightness, improves circulation and gives us a clear read on how you hold yourself before anything more specific is needed."
+    photoAlt: ""
+    photoPlaceholder: "[Photo - hands-on remedial massage]"
+  - name: Myofascial release
+    icon: web
+    description: Slow, sustained work on the connective web, easing restriction across whole chains of tissue.
+    detail: "[Placeholder detail] Gentle, patient pressure held long enough for fascia to soften and glide again. Often the key to patterns that keep returning in the same place."
+    photoAlt: ""
+    photoPlaceholder: "[Photo - myofascial release, forearm or hand]"
+  - name: Trigger point therapy
+    icon: target
+    description: Targeted release of the tight knots that refer pain somewhere else in the body.
+    detail: "[Placeholder detail] Focused pressure on specific tender points that refer pain elsewhere, such as a shoulder knot that shows up as a headache. Precise and always within your comfort."
+    photoAlt: ""
+    photoPlaceholder: "[Photo - trigger point work]"
+  - name: Myofascial cupping
+    icon: cup
+    description: Gentle decompression that lifts and mobilises stubborn, thickened tissue.
+    detail: "[Placeholder detail] Soft suction cups lift the tissue rather than compress it, helping stuck areas move again. Used selectively, and often combined with movement."
+    photoAlt: ""
+    photoPlaceholder: "[Photo - cupping on the back]"
+  - name: Dry needling
+    icon: needle
+    description: Precise, fine-needle relief for deep tension that hands alone can't reach.
+    detail: "[Placeholder detail] Very fine needles placed into tight, reactive muscle to reset it quickly. Only with your consent, and only when it's the right tool for your pattern."
+    photoAlt: ""
+    photoPlaceholder: "[Photo - dry needling]"
+  - name: Corrective exercise
+    icon: exercise
+    description: Simple movement that retrains the pattern, so the results stay with you.
+    detail: "[Placeholder detail] A short, personalised set of drills to practise between sessions. Small, repeatable and built around what your body actually needs, not a generic routine."
+    photoAlt: ""
+    photoPlaceholder: "[Photo - corrective exercise demo]"

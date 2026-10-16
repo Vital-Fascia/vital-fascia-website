@@ -7,30 +7,44 @@ const primaryHref = h.primaryButton.href === '#' ? contact.bookingUrl : h.primar
 ---
 <section class="hero">
   <div class="wrap hero-grid">
-    <div>
-      <span class="eyebrow">{h.eyebrow}</span>
-      <h1>{h.headingStart}<em>{h.headingEmphasis}</em>{h.headingEnd}</h1>
-      <p class="lede intro">{h.intro}</p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href={primaryHref} target="_blank" rel="noopener">{h.primaryButton.label}</a>
+    <div class="copy">
+      <span class="eyebrow rise" style="--d:0ms">{h.eyebrow}</span>
+      <h1 class="rise" style="--d:90ms">{h.headingStart}<em>{h.headingEmphasis}</em>{h.headingEnd}</h1>
+      <p class="lede intro rise" style="--d:200ms">{h.intro}</p>
+      <div class="cta-row rise" style="--d:300ms">
+        <a class="btn btn-primary btn-arrow" href={primaryHref}>{h.primaryButton.label}</a>
         <a class="btn btn-ghost" href={h.secondaryButton.href}>{h.secondaryButton.label}</a>
       </div>
     </div>
-    <Photo class="hero-photo" image={h.photo} alt={h.photoAlt} placeholder={h.photoPlaceholder} loading="eager" sizes="(max-width: 700px) 100vw, 560px" />
+    <div class="frame rise" style="--d:260ms">
+      <Photo class="hero-photo" image={h.photo} alt={h.photoAlt} placeholder={h.photoPlaceholder} loading="eager" zoom={false} sizes="(max-width: 700px) 100vw, 560px" />
+      {h.photoCaption && <span class="chip">{h.photoCaption}</span>}
+    </div>
   </div>
 </section>
 
 <style>
-  .hero { padding-top: calc(var(--header-h) + clamp(48px, 7vw, 96px)); padding-bottom: clamp(56px, 7vw, 96px); background: var(--bone); }
+  .hero { padding-top: calc(var(--header-h) + clamp(36px, 7vw, 96px)); padding-bottom: clamp(40px, 6vw, 80px); background: var(--bone); }
   .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
   h1 { font-size: clamp(40px, 5.6vw, 68px); line-height: 1.08; }
   h1 em { font-style: italic; color: var(--olive); }
   .intro { margin-top: 22px; }
-  .cta-row { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 36px; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
+  /* slightly offset frame behind the photo, with a caption chip overlapping its corner */
+  .frame { position: relative; isolation: isolate; }
+  .frame::before { content: ''; position: absolute; inset: 18px -16px -16px 18px; border: 1px solid var(--stone); border-radius: var(--radius); z-index: -1; }
   .hero :global(.hero-photo) { width: 100%; aspect-ratio: 4/5; }
+  .chip { position: absolute; left: -14px; bottom: 28px; background: var(--bone); color: var(--ink); border: 1px solid var(--stone-line); padding: 9px 16px; font-size: 13px; letter-spacing: .02em; box-shadow: var(--shadow-lift); }
+  .rise { animation: rise .9s var(--ease) both; animation-delay: var(--d, 0ms); }
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
   @media (max-width: 700px) {
-    .hero { padding-top: calc(var(--header-h) + clamp(40px, 10vw, 72px)); }
+    /* headline first, photo after the CTAs: the message is the hook from Instagram */
     .hero-grid { grid-template-columns: 1fr; }
-    .hero :global(.hero-photo) { order: -1; aspect-ratio: 4/3; }
+    .hero :global(.hero-photo) { aspect-ratio: 4/3; }
+    .frame { margin-right: 14px; }
+    .frame::before { inset: 14px -12px -12px 14px; }
+    .chip { left: 12px; bottom: 14px; }
+    .cta-row .btn { flex: 1 1 100%; }
   }
+  @media (prefers-reduced-motion: reduce) { .rise { animation: none; } }
 </style>

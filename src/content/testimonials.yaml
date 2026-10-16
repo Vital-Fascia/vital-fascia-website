@@ -1,7 +1,12 @@
 visible: true
 eyebrow: What clients say
+# TODO: "Loved by clients" is placeholder wording - confirm the heading with Alex.
 heading: Loved by clients
+ratingValue: "4.9"
+ratingText: "on Google · [XX] reviews"
+ratingUrl: "#"
 # TODO: these testimonials come from the design prototype and are NOT confirmed real. Replace with real reviews (with permission) or hide this section.
+# The FIRST testimonial is shown large; the rest scroll in the carousel.
 items:
   - { quote: "I finally understand why my back kept going out - it's never just the back.", name: Sarah, detail: "Marketing Manager, 34", source: Via Google, rating: 5 }
   - { quote: "Alex treats the whole picture, not just the sore spot. First time that's actually made sense to me.", name: Tom, detail: "Runner, 34", source: Via Instagram, rating: 5 }

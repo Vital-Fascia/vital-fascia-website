@@ -3,12 +3,31 @@ eyebrow: The approach
 heading: Your body doesn't work in isolation. Neither should your treatment.
 body: "Fascia connects every muscle, joint and organ into one continuous, whole-body network. Pain in one place is often tension held somewhere else entirely. Rather than chasing the sore spot, I look at how your whole system moves, holds and compensates, then treat the pattern, not just the symptom."
 diagramTitle: One connected system
-diagramPoints:
-  - { label: Jaw }
-  - { label: Neck & shoulders }
-  - { label: Upper back }
-  - { label: Spine & core, highlight: true }
-  - { label: Hips }
-  - { label: Knees }
-  - { label: Feet }
+diagramHint: Tap a body area or a symptom to see how it connects.
+regions:
+  - { id: jaw, label: Jaw, related: [neck, upper-back], caption: "Jaw tension often travels down into the neck and shoulders." }
+  - { id: neck, label: Neck & shoulders, related: [jaw, upper-back, core], caption: "Neck tension is often tied to the jaw and the upper back, not just the neck." }
+  - { id: upper-back, label: Upper back, related: [neck, core, hips], caption: "A stiff upper back makes the neck and lower back work harder." }
+  - { id: core, label: Spine & core, related: [upper-back, hips, feet], caption: "Lower back pain often traces to hips and feet." }
+  - { id: hips, label: Hips, related: [core, knees, feet], caption: "Tight hips change how the back and knees load." }
+  - { id: knees, label: Knees, related: [hips, feet], caption: "Knee pain is often a hip or foot story." }
+  - { id: feet, label: Feet, related: [knees, hips, core], caption: "How your feet land echoes all the way up to your back." }
+symptoms:
+  - { label: Lower back pain, region: core }
+  - { label: Neck tension, region: neck }
+  - { label: Knee pain, region: knees }
+  - { label: Jaw clenching, region: jaw }
 diagramCaption: Everything is connected. Tension rarely stays where it started.
+compareHeading: Two ways to approach pain
+compareLeft:
+  title: Symptom-chasing
+  points:
+    - Treats wherever it hurts today
+    - Relief that fades within days
+    - You return when it flares up
+compareRight:
+  title: Pattern-led
+  points:
+    - Finds where the tension actually starts
+    - Treatment plus tools you can use
+    - You understand your body and rely on it less

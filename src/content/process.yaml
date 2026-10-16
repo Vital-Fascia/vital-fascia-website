@@ -2,9 +2,11 @@ visible: true
 eyebrow: The process
 heading: A journey, not a quick fix
 intro: Five steps, every time, so treatment builds toward independence rather than another appointment.
+timelineStart: Session 1
+timelineEnd: Ongoing
 steps:
-  - { title: Understand, description: "A real conversation: your history, your patterns, what you've already tried." }
-  - { title: Assess, description: "A whole-body movement and posture assessment, not just the painful area." }
-  - { title: Treat, description: "Hands-on work with the modality suited to your pattern, not a default routine." }
-  - { title: Move, description: Simple movement work that retrains the pattern in between sessions. }
-  - { title: Empower, description: Tools and understanding to manage your own body long after treatment ends. }
+  - { title: Understand, icon: conversation, when: Session 1, description: "A real conversation: your history, your patterns, what you've already tried.", detail: "What you leave with: a clear picture of what's likely going on." }
+  - { title: Assess, icon: posture, when: Session 1, description: "A whole-body movement and posture assessment, not just the painful area.", detail: "What happens: simple movement and posture checks, head to toe." }
+  - { title: Treat, icon: hands, when: Every session, description: "Hands-on work with the modality suited to your pattern, not a default routine.", detail: "What happens: hands-on work matched to what we found." }
+  - { title: Move, icon: movement, when: Between sessions, description: Simple movement work that retrains the pattern in between sessions., detail: "What you leave with: two or three short drills, no gym needed." }
+  - { title: Empower, icon: compass, when: Ongoing, description: Tools and understanding to manage your own body long after treatment ends., detail: "What you leave with: the confidence to manage it yourself." }

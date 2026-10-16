@@ -1,10 +1,17 @@
 businessName: Vital Fascia
 tagline: Soft-tissue therapy in Double Bay
 navLinks:
+  - { label: Approach, href: "/#approach" }
+  - { label: Process, href: "/#process" }
+  - { label: Treatments, href: "/#work-with-me" }
+  - { label: Stories, href: "/#testimonials" }
   - { label: About, href: "/#about" }
-  - { label: My Approach, href: "/#approach" }
-  - { label: 8-Week Program, href: "/8-week-program" }
-  - { label: Work With Me, href: "/#work-with-me" }
+  - { label: Free guide, href: "/#resource" }
   - { label: Contact, href: "/contact" }
+  - { label: 8-Week Program, href: "/8-week-program", tag: Coming soon }
 bookButtonLabel: Book Now
+bookButtonShortLabel: Book
+menuNote: Double Bay · @thefasciaguy
+newsletterName: The Fascia Flow
+newsletterText: Occasional notes on fascia, movement and recovery.
 footerNote: All rights reserved.

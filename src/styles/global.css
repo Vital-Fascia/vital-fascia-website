@@ -23,6 +23,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 img { max-width: 100%; height: auto; }
 ::selection { background: var(--olive); color: var(--cream); }
 :focus-visible { outline: 2px solid var(--olive); outline-offset: 3px; }
+.dark :focus-visible { outline-color: var(--cream); }
 
 .skip-link {
   position: absolute; left: 12px; top: -60px; z-index: 200;
@@ -47,8 +48,16 @@ img { max-width: 100%; height: auto; }
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   height: 52px; padding: 0 30px; border-radius: var(--radius-btn);
   font-size: 15px; font-weight: 600; letter-spacing: .01em; white-space: nowrap;
-  transition: background .18s ease, color .18s ease, border-color .18s ease;
+  transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
 }
+/* Arrow on primary CTAs, nudges right on hover (pure CSS, no markup needed) */
+.btn-arrow::after {
+  content: ''; width: 16px; height: 16px; background: currentColor; flex: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8h10M9 4l4 4-4 4'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8h10M9 4l4 4-4 4'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform .25s var(--ease);
+}
+.btn-arrow:hover::after { transform: translateX(4px); }
 .btn-sm { height: 42px; padding: 0 22px; font-size: 14px; }
 .btn-primary { background: var(--olive); color: var(--cream); border: 1px solid var(--olive); }
 .btn-primary:hover { background: var(--olive-dark); border-color: var(--olive-dark); }
@@ -72,3 +81,25 @@ img { max-width: 100%; height: auto; }
 .form-dark .field input, .form-dark .field textarea { background: rgba(242, 236, 221, 0.06); border-color: rgba(242, 236, 221, 0.35); color: var(--cream); }
 .form-dark .field input::placeholder { color: rgba(242, 236, 221, 0.55); }
 .form-dark .field input:focus, .form-dark .field textarea:focus { outline-color: var(--cream); }
+
+/* ---------- Motion system ----------
+   Hidden states only apply when JS is running (html.js), so content is always
+   visible if scripts fail. Everything is disabled under reduced motion. */
+.js [data-reveal] {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js [data-reveal].in { opacity: 1; transform: none; }
+
+/* Shared card hover: lift + border tint + shadow (hover-capable devices only) */
+.card-lift { transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+@media (hover: hover) {
+  .card-lift:hover { transform: translateY(-3px); border-color: rgba(74, 82, 64, 0.45); box-shadow: var(--shadow-lift); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .card-lift, .card-lift:hover { transform: none; transition: none; }
+  .btn-arrow:hover::after { transform: none; }
+}

@@ -1,43 +1,151 @@
 ---
+import Icon from './Icon.astro';
+import Photo from './Photo.astro';
 import { getContent } from '../lib/content';
 const d = await getContent('services');
+const contact = await getContent('contact');
 ---
 {d.visible && (
-  <section id="help" class="band-tight services">
+  <section id="help" class="band help">
     <div class="wrap">
-      <span class="eyebrow">{d.eyebrow}</span>
-      <h2 class="h2">{d.heading}</h2>
+      <span class="eyebrow" data-reveal>{d.eyebrow}</span>
+      <h2 class="h2" data-reveal data-reveal-delay="80">{d.heading}</h2>
       <span class="rule"></span>
-      <ul class="help-grid">
-        {d.issues.map((i: any) => (
-          <li class="help-card"><h3>{i.title}</h3><p>{i.description}</p></li>
+    </div>
+    <div class="issues-wrap">
+      <ul class="issues" tabindex="0" aria-label={d.heading}>
+        {d.issues.map((i: any, n: number) => (
+          <li class="issue card-lift" data-reveal data-reveal-delay={(n % 3) * 80}>
+            <Icon name={i.icon} />
+            <h3>{i.title}</h3>
+            <p>{i.description}</p>
+            {d.learnMoreLabel && <a class="more" href={contact.bookingUrl}>{d.learnMoreLabel}<span aria-hidden="true"> →</span></a>}
+          </li>
         ))}
       </ul>
-      <div class="modalities">
-        <span class="eyebrow">{d.treatmentsEyebrow}</span>
-        <h3 class="m-heading">{d.treatmentsHeading}</h3>
-        <ul class="modality-list">
-          {d.treatments.map((t: any) => (
-            <li class="modality-item"><span class="m-name">{t.name}</span><span class="m-desc">{t.description}</span></li>
-          ))}
-        </ul>
+    </div>
+
+    <div class="wrap modalities">
+      <span class="eyebrow">{d.treatmentsEyebrow}</span>
+      <h3 class="m-heading">{d.treatmentsHeading}</h3>
+      <div class="mod" data-tabs style={`--n:${d.treatments.length}`}>
+        {d.treatments.map((t: any, i: number) => (
+          <div class:list={['mod-item', { open: i === 0 }]}>
+            <h4 class="mod-h">
+              <button type="button" id={`mod-tab-${i}`} aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`mod-panel-${i}`}>
+                <Icon name={t.icon} class="m-icon" />
+                <span class="m-text"><span class="m-name">{t.name}</span><span class="m-desc">{t.description}</span></span>
+                <span class="chev" aria-hidden="true"></span>
+              </button>
+            </h4>
+            <div class="panel" id={`mod-panel-${i}`} role="region" aria-labelledby={`mod-tab-${i}`}>
+              <div class="panel-in">
+                <Photo class="mod-photo" image={t.photo} alt={t.photoAlt} placeholder={t.photoPlaceholder} zoom={false} sizes="(max-width: 900px) 100vw, 560px" />
+                <p class="detail">{t.detail}</p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 )}
 
+<script>
+  // Issue-card hover redraw is CSS only. Modalities: one open at a time (tabs on desktop, accordion on mobile).
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
+    const items = [...root.querySelectorAll<HTMLElement>('.mod-item')];
+    const open = (item: HTMLElement) => {
+      items.forEach((it) => {
+        const on = it === item;
+        it.classList.toggle('open', on);
+        it.querySelector('button')!.setAttribute('aria-expanded', String(on));
+      });
+    };
+    items.forEach((it) => {
+      const b = it.querySelector('button')!;
+      b.addEventListener('click', () => {
+        // On phones allow collapsing the open one; on desktop one is always selected.
+        if (it.classList.contains('open') && matchMedia('(max-width: 900px)').matches) {
+          it.classList.remove('open');
+          b.setAttribute('aria-expanded', 'false');
+        } else open(it);
+      });
+      b.addEventListener('keydown', (e) => {
+        const k = (e as KeyboardEvent).key;
+        const i = items.indexOf(it);
+        const to = k === 'ArrowDown' ? i + 1 : k === 'ArrowUp' ? i - 1 : k === 'Home' ? 0 : k === 'End' ? items.length - 1 : -1;
+        if (to >= 0 && to < items.length) {
+          e.preventDefault();
+          items[to].querySelector('button')!.focus();
+        }
+      });
+    });
+  });
+</script>
+
 <style>
-  .services { background: var(--sand); }
-  .help-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 44px; }
-  .help-card { background: var(--bone); border: 1px solid var(--stone-line); padding: 28px 24px; }
-  .help-card h3 { font-size: 19px; margin-bottom: 8px; }
-  .help-card p { font-size: 15px; line-height: 1.55; color: var(--ink-muted); }
-  .modalities { margin-top: 64px; border-top: 1px solid var(--stone-line); padding-top: 44px; }
-  .m-heading { font-size: 22px; }
-  .modality-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 28px; margin-top: 28px; }
-  .modality-item { display: flex; flex-direction: column; gap: 4px; padding: 16px 0; border-bottom: 1px solid var(--stone-line); }
-  .m-name { font-size: 16px; font-weight: 600; }
-  .m-desc { font-size: 14px; color: var(--ink-muted); line-height: 1.5; }
-  @media (max-width: 980px) { .help-grid, .modality-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 700px) { .help-grid, .modality-list { grid-template-columns: 1fr; } }
+  .help { background: var(--bone); padding-bottom: clamp(52px, 7vw, 100px); }
+  .issues-wrap { max-width: var(--wrap-max); margin-inline: auto; }
+  .issues { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 44px 0 0; padding-inline: var(--gutter); list-style: none; }
+  .issue { position: relative; background: var(--white); border: 1px solid var(--stone-line); padding: 28px 26px 26px; display: flex; flex-direction: column; border-radius: var(--radius); }
+  .issue :global(.icon) { color: var(--olive); margin-bottom: 18px; width: 48px; height: 48px; }
+  .issue h3 { font-size: 20px; margin-bottom: 8px; }
+  .issue p { font-size: 15px; line-height: 1.55; color: var(--ink-muted); }
+  .more { margin-top: 0; max-height: 0; overflow: hidden; font-size: 14px; font-weight: 600; color: var(--olive); opacity: 0; transform: translateY(4px); transition: opacity .25s ease, transform .25s var(--ease); align-self: flex-start; }
+  .more:focus-visible { opacity: 1; transform: none; max-height: 2em; margin-top: 14px; }
+  @media (hover: hover) {
+    .issue:hover .more { opacity: 1; transform: none; max-height: 2em; margin-top: 14px; }
+    .issue:hover :global(.icon *) { animation: icon-draw .9s var(--ease) both; }
+  }
+  @media (hover: none) { .more { display: none; } }
+
+  .modalities { margin-top: clamp(56px, 7vw, 96px); border-top: 1px solid var(--stone-line); padding-top: clamp(36px, 5vw, 56px); }
+  .m-heading { font-size: clamp(24px, 3vw, 32px); }
+  .mod { display: grid; grid-template-columns: minmax(300px, 0.9fr) 1.1fr; column-gap: clamp(32px, 5vw, 72px); margin-top: 32px; align-items: start; }
+  .mod-item { display: contents; }
+  .mod-h { margin: 0; grid-column: 1; font-family: inherit; font-weight: inherit; letter-spacing: 0; }
+  .mod-h button { display: flex; align-items: center; gap: 16px; width: 100%; min-height: 64px; text-align: left; padding: 14px 4px; background: transparent; border: 0; border-bottom: 1px solid var(--stone-line); color: var(--ink); position: relative; transition: background .2s ease; }
+  .mod-h button :global(.m-icon) { width: 36px; height: 36px; color: var(--olive); opacity: .75; transition: opacity .2s ease; }
+  .m-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+  .m-name { font-size: 17px; font-weight: 600; }
+  .m-desc { font-size: 13.5px; color: var(--ink-muted); line-height: 1.4; }
+  .chev { width: 10px; height: 10px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); flex: none; opacity: .5; transition: transform .3s var(--ease); }
+  .mod-item.open .mod-h button :global(.m-icon) { opacity: 1; }
+  .mod-item.open .mod-h button::after { content: ''; position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%; background: var(--olive); }
+  .mod-h button:hover { background: rgba(74, 82, 64, 0.05); }
+  /* desktop: panel sits in the right column spanning every row, only the open one shows */
+  .panel { grid-column: 2; grid-row: 1 / span var(--n); display: none; }
+  .mod-item.open .panel { display: block; animation: panel-in .5s var(--ease) both; }
+  .panel-in { display: grid; gap: 22px; }
+  .panel :global(.mod-photo) { width: 100%; aspect-ratio: 4/3; }
+  .detail { font-size: 17px; line-height: 1.7; color: var(--ink-muted); max-width: 540px; }
+  @keyframes panel-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 980px) { .issues { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  /* phones: horizontal snap row with a peek of the next card, keeps this section short */
+  @media (max-width: 700px) {
+    .issues { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px; margin-top: 32px; padding-bottom: 14px; scrollbar-width: none; scroll-padding-inline: var(--gutter); }
+    .issues::-webkit-scrollbar { display: none; }
+    .issue { flex: 0 0 78%; scroll-snap-align: start; }
+    .issue:last-child { margin-right: var(--gutter); }
+  }
+  @media (max-width: 900px) {
+    .mod { display: block; }
+    .mod-item { display: block; }
+    .mod-h button { min-height: 60px; }
+    .mod-item.open .chev { transform: rotate(45deg); opacity: 1; }
+    .panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s var(--ease); animation: none !important; }
+    .panel-in { overflow: hidden; min-height: 0; padding-top: 0; }
+    .panel { visibility: hidden; transition: grid-template-rows .4s var(--ease), visibility 0s .4s; }
+    .mod-item.open .panel { grid-template-rows: 1fr; display: grid; visibility: visible; transition: grid-template-rows .4s var(--ease), visibility 0s; }
+    .mod-item.open .panel-in { padding: 16px 0 24px; }
+    .panel :global(.mod-photo) { aspect-ratio: 16/10; }
+    .detail { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mod-item.open .panel { animation: none; }
+    .panel { transition: none; }
+    .issue:hover :global(.icon *) { animation: none; }
+  }
 </style>

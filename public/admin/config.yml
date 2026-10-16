@@ -49,16 +49,17 @@ collections:
             widget: object
             fields:
               - { name: label, label: Button text, widget: string }
-              - { name: href, label: Where it goes, widget: string, hint: "Use #approach to scroll to a section on this page." }
+              - { name: href, label: Where it goes, widget: string, hint: "Use #resource to scroll to the free guide, or #approach for the approach section." }
+          - { name: photoCaption, label: Small caption on the photo, widget: string, required: false, hint: "e.g. 'Double Bay · 1:1 treatment'. Leave empty to hide." }
           - { name: photo, label: Photo, widget: image, required: false, choose_url: false, hint: "Portrait-shaped photo works best (4:5). Until you add one, a grey placeholder is shown." }
           - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false, hint: "Describe what is in the photo, e.g. 'Alex treating a client's shoulder'. Important for accessibility and Google." }
           - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
 
       - name: highlights
-        label: "2. Key numbers strip"
+        label: "2. Key numbers (under the top banner)"
         file: src/content/highlights.yaml
         fields:
-          - { name: visible, label: Show this section on the website, widget: boolean, default: true, hint: "Switch off to hide the whole strip. Only show numbers that are true and up to date." }
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true, hint: "Switch off to hide the numbers. Only show figures that are true and up to date. The rating lives in Client testimonials; the '9 in 10' figure lives in About." }
           - name: items
             label: Numbers
             label_singular: number
@@ -83,6 +84,9 @@ collections:
             field: { name: text, label: Point, widget: string }
             hint: "Short sentences describing what your clients experience. Drag to re-order."
           - { name: closing, label: Closing line, widget: text }
+          - { name: photo, label: Photo, widget: image, required: false, choose_url: false, hint: "Natural-light lifestyle photo (a desk worker or runner). Cropped to fit; portrait or square works best." }
+          - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false }
+          - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
 
       - name: services
         label: "4. Services & treatments"
@@ -98,7 +102,9 @@ collections:
             summary: "{{fields.title}}"
             fields:
               - { name: title, label: Issue, widget: string }
+              - { name: icon, label: Icon, widget: select, default: posture, options: [{ label: Neck & shoulders, value: neck }, { label: Lower back, value: back }, { label: Hips, value: hips }, { label: Running, value: running }, { label: Posture, value: posture }, { label: Mobility, value: mobility }] }
               - { name: description, label: Short description, widget: text }
+          - { name: learnMoreLabel, label: Link text on each issue card, widget: string, required: false, hint: "e.g. 'Book a session'. Appears when a visitor hovers a card." }
           - { name: treatmentsEyebrow, label: Small line above the treatments heading, widget: string }
           - { name: treatmentsHeading, label: Treatments heading, widget: string }
           - name: treatments
@@ -108,7 +114,12 @@ collections:
             summary: "{{fields.name}}"
             fields:
               - { name: name, label: Treatment name, widget: string }
-              - { name: description, label: One-line description, widget: string }
+              - { name: icon, label: Icon, widget: select, default: massage, options: [{ label: Massage, value: massage }, { label: Web (myofascial), value: web }, { label: Target (trigger point), value: target }, { label: Cup, value: cup }, { label: Needle, value: needle }, { label: Exercise, value: exercise }] }
+              - { name: description, label: One-line description, widget: string, hint: "Shown in the list. Aim for one sentence." }
+              - { name: detail, label: Longer description, widget: text, hint: "2-3 lines shown next to the photo when this treatment is selected." }
+              - { name: photo, label: Photo, widget: image, required: false, choose_url: false, hint: "Landscape photo (4:3) works best." }
+              - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false }
+              - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
 
       - name: approach
         label: "5. My approach"
@@ -119,16 +130,50 @@ collections:
           - { name: heading, label: Heading, widget: string }
           - { name: body, label: Paragraph, widget: text }
           - { name: diagramTitle, label: Diagram title, widget: string }
-          - name: diagramPoints
-            label: Body diagram (top to bottom)
-            label_singular: point
+          - { name: diagramHint, label: Instruction under the diagram, widget: string }
+          - name: regions
+            label: Body areas on the diagram
+            label_singular: area
             widget: list
             summary: "{{fields.label}}"
-            hint: "Each point is a dot on the diagram. Tick 'Highlight' for the one to emphasise."
+            hint: "Seven areas are drawn on the figure. Only edit the wording; don't change the area ID."
             fields:
-              - { name: label, label: Body area, widget: string }
-              - { name: highlight, label: Highlight this point, widget: boolean, default: false }
+              - { name: id, label: Area ID (don't change), widget: select, options: [jaw, neck, upper-back, core, hips, knees, feet] }
+              - { name: label, label: Name shown, widget: string }
+              - { name: related, label: Connected areas (IDs), widget: list, field: { name: id, label: Area ID, widget: string }, hint: "Which other areas light up when this one is selected." }
+              - { name: caption, label: One-line explanation, widget: string, hint: "Shown under the diagram when this area is selected." }
+          - name: symptoms
+            label: Symptom buttons
+            label_singular: symptom
+            widget: list
+            summary: "{{fields.label}}"
+            fields:
+              - { name: label, label: Symptom, widget: string, hint: "e.g. Lower back pain" }
+              - { name: region, label: Body area it highlights (ID), widget: select, options: [jaw, neck, upper-back, core, hips, knees, feet] }
           - { name: diagramCaption, label: Diagram caption, widget: string }
+          - { name: compareHeading, label: Comparison heading, widget: string }
+          - name: compareLeft
+            label: Comparison - left column
+            widget: object
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: points, label: Points, widget: list, field: { name: text, label: Point, widget: string } }
+          - name: compareRight
+            label: Comparison - right column
+            widget: object
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: points, label: Points, widget: list, field: { name: text, label: Point, widget: string } }
+
+      - name: imageBreak
+        label: "5b. Wide photo (between Approach and Process)"
+        file: src/content/image-break.yaml
+        fields:
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true }
+          - { name: photo, label: Photo, widget: image, required: false, choose_url: false, hint: "Wide photo. Shown 21:9 on computers and 4:5 on phones, so keep the subject near the centre." }
+          - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false }
+          - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
+          - { name: caption, label: Caption over the photo (optional), widget: string, required: false }
 
       - name: process
         label: "6. How it works (process)"
@@ -138,6 +183,8 @@ collections:
           - { name: eyebrow, label: Small line above the heading, widget: string }
           - { name: heading, label: Heading, widget: string }
           - { name: intro, label: Introduction, widget: text }
+          - { name: timelineStart, label: Timeline label - start, widget: string, hint: "e.g. Session 1" }
+          - { name: timelineEnd, label: Timeline label - end, widget: string, hint: "e.g. Ongoing" }
           - name: steps
             label: Steps (in order)
             label_singular: step
@@ -146,7 +193,10 @@ collections:
             hint: "Steps are numbered automatically. Five fits the layout best."
             fields:
               - { name: title, label: Step name, widget: string }
+              - { name: icon, label: Icon, widget: select, default: compass, options: [{ label: Conversation, value: conversation }, { label: Posture, value: posture }, { label: Hands, value: hands }, { label: Movement, value: movement }, { label: Compass, value: compass }] }
+              - { name: when, label: When it happens (optional), widget: string, required: false, hint: "e.g. Session 1" }
               - { name: description, label: Description, widget: text }
+              - { name: detail, label: Extra line shown on hover (optional), widget: string, required: false, hint: "e.g. 'What you leave with: ...'" }
 
       - name: offers
         label: "7. Pricing & offers"
@@ -155,38 +205,61 @@ collections:
           - { name: visible, label: Show this section on the website, widget: boolean, default: true }
           - { name: eyebrow, label: Small line above the heading, widget: string }
           - { name: heading, label: Heading, widget: string }
-          - name: session
-            label: Session card (left)
-            widget: object
+          - name: items
+            label: Offers (cards)
+            label_singular: offer
+            widget: list
+            summary: "{{fields.title}} ({{fields.status}})"
+            hint: "Each offer is a card. Set the status to 'Coming soon' for a teaser card or 'Available now' for a full card."
             fields:
-              - { name: badge, label: Badge, widget: string }
+              - { name: status, label: Status, widget: select, options: [{ label: Available now, value: active }, { label: Coming soon, value: soon }] }
+              - { name: badge, label: Badge, widget: string, hint: "e.g. Available now" }
               - { name: title, label: Title, widget: string }
-              - { name: details, label: Length and location, widget: string }
-              - { name: price, label: Price, widget: string, hint: "Include the dollar sign, e.g. $150. [$XXX] is a placeholder." }
+              - { name: details, label: Length and location, widget: string, required: false }
+              - { name: description, label: Description (used by coming-soon cards), widget: text, required: false }
+              - { name: price, label: Price, widget: string, required: false, hint: "Include the dollar sign, e.g. $150. [$XXX] is a placeholder." }
               - { name: priceNote, label: Text after the price, widget: string, required: false, hint: "e.g. ' per session'. Keep the leading space." }
               - name: includes
-                label: What's included
+                label: What's included (or what it will include)
                 label_singular: item
                 widget: list
+                required: false
                 field: { name: text, label: Item, widget: string }
+              - name: expect
+                label: What to expect (short facts)
+                label_singular: fact
+                widget: list
+                required: false
+                summary: "{{fields.label}}: {{fields.value}}"
+                fields:
+                  - { name: label, label: Label, widget: string, hint: "e.g. Duration, What to wear" }
+                  - { name: value, label: Value, widget: string }
+              - { name: rebate, label: Health fund / rebate line, widget: string, required: false, hint: "e.g. 'Rebates available with most health funds (HICAPS)'. Only add once confirmed." }
+              - { name: photo, label: Photo (coming-soon cards), widget: image, required: false, choose_url: false }
+              - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false }
+              - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
               - { name: buttonLabel, label: Button text, widget: string }
-          - name: program
-            label: 8-week program card (right)
-            widget: object
+              - { name: buttonHref, label: Button goes to, widget: string, hint: "Use # to use the booking link from Contact details." }
+          - { name: faqHeading, label: Questions heading, widget: string }
+          - name: faqs
+            label: Frequently asked questions
+            label_singular: question
+            widget: list
+            summary: "{{fields.question}}"
             fields:
-              - { name: badge, label: Badge, widget: string, hint: "e.g. Coming soon" }
-              - { name: title, label: Title, widget: string }
-              - { name: description, label: Description, widget: text }
-              - { name: buttonLabel, label: Button text, widget: string }
-              - { name: buttonHref, label: Button goes to, widget: string, hint: "Leave as /8-week-program to open the program page." }
+              - { name: question, label: Question, widget: string }
+              - { name: answer, label: Answer, widget: text }
 
       - name: testimonials
         label: "8. Client testimonials"
         file: src/content/testimonials.yaml
         fields:
-          - { name: visible, label: Show this section on the website, widget: boolean, default: true, hint: "Only publish real testimonials, with the client's permission." }
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true, hint: "Only publish real testimonials, with the client's permission. The FIRST testimonial is shown large; the rest scroll sideways." }
           - { name: eyebrow, label: Small line above the heading, widget: string }
           - { name: heading, label: Heading, widget: string }
+          - { name: ratingValue, label: Average rating, widget: string, hint: "e.g. 4.9. Only show a figure that is true and up to date." }
+          - { name: ratingText, label: Text after the rating, widget: string, hint: "e.g. 'on Google · 48 reviews'" }
+          - { name: ratingUrl, label: Link to the reviews page, widget: string }
           - name: items
             label: Testimonials
             label_singular: testimonial
@@ -206,12 +279,23 @@ collections:
           - { name: visible, label: Show this section on the website, widget: boolean, default: true }
           - { name: eyebrow, label: Small line above the heading, widget: string }
           - { name: heading, label: Heading, widget: string }
+          - { name: pullQuote, label: Pull-quote from Alex, widget: text, hint: "Shown in large type above the story." }
           - name: paragraphs
             label: Story (one entry per paragraph)
             label_singular: paragraph
             widget: list
             field: { name: text, label: Paragraph, widget: text }
           - { name: signature, label: Sign-off, widget: string }
+          - { name: statValue, label: Highlighted figure, widget: string, hint: "e.g. 9 in 10. Only show claims that are true." }
+          - { name: statLabel, label: What the figure means, widget: string }
+          - name: credentials
+            label: Qualifications & memberships
+            label_singular: qualification
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: Qualification, widget: string }
+              - { name: detail, label: Where / when, widget: string }
           - { name: photo, label: Portrait photo, widget: image, required: false, choose_url: false, hint: "Portrait-shaped photo works best (3:4)." }
           - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false }
           - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
@@ -228,6 +312,10 @@ collections:
             label_singular: paragraph
             widget: list
             field: { name: text, label: Paragraph, widget: text }
+          - { name: guideTitle, label: Guide cover - title, widget: string }
+          - { name: guideSubtitle, label: Guide cover - subtitle, widget: string }
+          - { name: guideBrand, label: Guide cover - brand name, widget: string }
+          - { name: guidePages, label: Guide cover - small print, widget: string, hint: "e.g. '8 pages · free PDF'" }
           - { name: nameLabel, label: Name box - label, widget: string }
           - { name: namePlaceholder, label: Name box - example text, widget: string }
           - { name: emailLabel, label: Email box - label, widget: string }
@@ -244,6 +332,9 @@ collections:
           - { name: heading, label: Heading, widget: string }
           - { name: text, label: Supporting line, widget: text }
           - { name: buttonLabel, label: Button text, widget: string }
+          - { name: photo, label: Background photo, widget: image, required: false, choose_url: false, hint: "Full-width photo shown behind the text under a dark overlay." }
+          - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false }
+          - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
 
   # -------------------------------------------------------------- OTHER PAGES
   - name: other_pages
@@ -320,13 +411,24 @@ collections:
             label_singular: line
             widget: list
             field: { name: line, label: Address line, widget: string }
-          - { name: hours, label: Opening hours, widget: text, hint: "Shown in the website footer, e.g. 'Mon-Fri, 7am-6pm'." }
+          - name: hours
+            label: Opening hours
+            label_singular: row
+            widget: list
+            summary: "{{fields.days}}: {{fields.time}}"
+            hint: "Shown as a small table in the website footer."
+            fields:
+              - { name: days, label: Days, widget: string, hint: "e.g. Monday - Friday" }
+              - { name: time, label: Hours, widget: string, hint: "e.g. 7:00am - 6:00pm, or Closed" }
           - { name: mapEmbedUrl, label: Google Maps embed link, widget: string, required: false, hint: "In Google Maps: Share > Embed a map > copy the address inside src=\"...\". Leave empty to hide the map." }
           - { name: mapLinkUrl, label: Google Maps directions link, widget: string, required: false, hint: "A normal Google Maps link for the 'Get directions' text." }
           - { name: email, label: Email address, widget: string }
           - { name: instagramHandle, label: Instagram name, widget: string, hint: "e.g. @thefasciaguy" }
           - { name: instagramUrl, label: Instagram link, widget: string }
-          - { name: facebookUrl, label: Facebook link, widget: string, required: false }
+          - { name: facebookUrl, label: Facebook link, widget: string, required: false, hint: "Not shown on the website at the moment." }
+          - { name: youtubeUrl, label: YouTube link, widget: string, required: false, hint: "Leave empty to hide the icon." }
+          - { name: tiktokUrl, label: TikTok link, widget: string, required: false, hint: "Leave empty to hide the icon." }
+          - { name: whatsappUrl, label: WhatsApp link, widget: string, required: false, hint: "e.g. https://wa.me/61400000000 (country code, no + or spaces). Leave empty to hide the icon." }
           - { name: bookingUrl, label: Online booking link (Cliniko), widget: string, hint: "Every 'Book' button on the site goes here." }
           - { name: bookingLabel, label: Booking button text (footer), widget: string }
           - { name: contactFormLabel, label: Contact form button text (footer), widget: string }
@@ -348,7 +450,12 @@ collections:
             fields:
               - { name: label, label: Text in the menu, widget: string }
               - { name: href, label: Where it goes, widget: string, hint: "e.g. /#about, /contact or /8-week-program" }
-          - { name: bookButtonLabel, label: Top-right booking button text, widget: string }
+              - { name: tag, label: Small tag next to the link (optional), widget: string, required: false, hint: "e.g. Coming soon" }
+          - { name: bookButtonLabel, label: Booking button text, widget: string }
+          - { name: bookButtonShortLabel, label: Booking button text on small phones, widget: string, hint: "A shorter version, e.g. Book" }
+          - { name: menuNote, label: Small line under the booking button in the phone menu, widget: string }
+          - { name: newsletterName, label: Newsletter name (footer), widget: string }
+          - { name: newsletterText, label: Newsletter one-liner (footer), widget: string }
           - { name: footerNote, label: Text after the copyright, widget: string }
 
       - name: seo

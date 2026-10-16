@@ -10,15 +10,18 @@ interface Props {
   sizes?: string;
   dark?: boolean;
   loading?: 'lazy' | 'eager';
+  /** Slow 1.02 -> 1 settle as the image enters view. Off for above-the-fold images. */
+  zoom?: boolean;
 }
-const { image, alt = '', placeholder, class: className, sizes = '(max-width: 700px) 100vw, 560px', loading = 'lazy' } = Astro.props;
+const { image, alt = '', placeholder, class: className, sizes = '(max-width: 700px) 100vw, 560px', loading = 'lazy', zoom = true } = Astro.props;
 ---
 {image ? (
-  <div class:list={['photo', className]}>
+  <div class:list={['photo', className]} data-zoom={zoom ? '' : undefined}>
     <Image src={image} alt={alt} widths={[480, 800, 1200]} sizes={sizes} loading={loading} />
   </div>
 ) : (
-  <div class:list={['photo', 'ph', className]} aria-hidden="true">
+  <div class:list={['photo', 'ph', className]} aria-hidden="true" data-zoom={zoom ? '' : undefined}>
+    <span class="ph-bg"></span>
     <span class="ph-cap">{placeholder}</span>
   </div>
 )}
@@ -26,7 +29,16 @@ const { image, alt = '', placeholder, class: className, sizes = '(max-width: 700
 <style>
   .photo { position: relative; overflow: hidden; border-radius: var(--radius); }
   .photo :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .ph { display: flex; align-items: flex-end; background: linear-gradient(150deg, var(--sand) 0%, var(--stone) 100%); border: 1px solid var(--stone-line); }
-  .ph::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(115deg, rgba(34, 30, 25, 0.05) 0 2px, transparent 2px 34px); }
+  .ph { display: flex; align-items: flex-end; border: 1px solid var(--stone-line); }
+  .ph-bg { position: absolute; inset: 0; background: linear-gradient(150deg, var(--sand) 0%, var(--stone) 100%); }
+  .ph-bg::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(115deg, rgba(34, 30, 25, 0.05) 0 2px, transparent 2px 34px); }
   .ph-cap { position: relative; z-index: 1; padding: 18px 20px; font-family: var(--font-display); font-style: italic; font-size: 14px; color: var(--ink-muted); background: linear-gradient(to top, rgba(245, 241, 231, 0.82), rgba(245, 241, 231, 0)); width: 100%; }
+
+  :global(.js) .photo[data-zoom] > :global(img), :global(.js) .photo[data-zoom] > .ph-bg {
+    transform: scale(1.02); transition: transform 1.4s var(--ease);
+  }
+  :global(.js) .photo[data-zoom].in > :global(img), :global(.js) .photo[data-zoom].in > .ph-bg { transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .photo[data-zoom] > :global(img), :global(.js) .photo[data-zoom] > .ph-bg { transform: none; transition: none; }
+  }
 </style>

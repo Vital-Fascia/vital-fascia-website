@@ -31,6 +31,7 @@ if (seo.socialImage) {
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="theme-color" content="#4a5240" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.businessName} />
@@ -52,6 +53,7 @@ if (seo.socialImage) {
     <ContactFooter />
     <script>
       import '../scripts/forms';
+      import '../scripts/motion';
     </script>
   </body>
 </html>

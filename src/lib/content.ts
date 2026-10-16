@@ -4,13 +4,13 @@ import { getEntry } from 'astro:content';
 type Single =
   | 'site' | 'contact' | 'seo' | 'hero' | 'highlights' | 'whoItsFor' | 'services'
   | 'approach' | 'process' | 'offers' | 'testimonials' | 'about' | 'freeResource'
-  | 'finalCta' | 'programPage' | 'contactPage';
+  | 'finalCta' | 'imageBreak' | 'programPage' | 'contactPage';
 
 const ids: Record<Single, string> = {
   site: 'site', contact: 'contact', seo: 'seo', hero: 'hero', highlights: 'highlights',
   whoItsFor: 'who-its-for', services: 'services', approach: 'approach', process: 'process',
   offers: 'offers', testimonials: 'testimonials', about: 'about', freeResource: 'free-resource',
-  finalCta: 'final-cta', programPage: 'program-page', contactPage: 'contact-page',
+  finalCta: 'final-cta', imageBreak: 'image-break', programPage: 'program-page', contactPage: 'contact-page',
 };
 
 export async function getContent<K extends Single>(name: K) {

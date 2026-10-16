@@ -10,6 +10,7 @@ import { z } from 'astro/zod';
 
 const link = z.object({ label: z.string(), href: z.string() });
 const cta = link;
+const navLink = z.object({ label: z.string(), href: z.string(), tag: z.string().optional() });
 const seo = z.object({
   title: z.string(),
   description: z.string(),
@@ -24,8 +25,12 @@ export const collections = {
     schema: z.object({
       businessName: z.string(),
       tagline: z.string(),
-      navLinks: z.array(link),
+      navLinks: z.array(navLink),
       bookButtonLabel: z.string(),
+      bookButtonShortLabel: z.string(),
+      menuNote: z.string(),
+      newsletterName: z.string(),
+      newsletterText: z.string(),
       footerNote: z.string(),
     }),
   }),
@@ -35,7 +40,7 @@ export const collections = {
     schema: z.object({
       visitHeading: z.string(),
       addressLines: z.array(z.string()),
-      hours: z.string(),
+      hours: z.array(z.object({ days: z.string(), time: z.string() })),
       mapEmbedUrl: z.string().optional(),
       mapLinkUrl: z.string().optional(),
       getInTouchHeading: z.string(),
@@ -43,6 +48,9 @@ export const collections = {
       instagramHandle: z.string(),
       instagramUrl: z.string(),
       facebookUrl: z.string().optional(),
+      youtubeUrl: z.string().optional(),
+      tiktokUrl: z.string().optional(),
+      whatsappUrl: z.string().optional(),
       bookingUrl: z.string(),
       bookingLabel: z.string(),
       contactFormLabel: z.string(),
@@ -72,6 +80,7 @@ export const collections = {
         intro: z.string(),
         primaryButton: cta,
         secondaryButton: cta,
+        photoCaption: z.string().optional(),
         photo: image().optional(),
         photoAlt: z.string().optional(),
         photoPlaceholder: z.string(),
@@ -88,27 +97,49 @@ export const collections = {
 
   whoItsFor: defineCollection({
     loader: glob({ pattern: 'who-its-for.yaml', base: './src/content' }),
-    schema: z.object({
-      ...section,
-      eyebrow: z.string(),
-      heading: z.string(),
-      intro: z.string(),
-      signs: z.array(z.string()),
-      closing: z.string(),
-    }),
+    schema: ({ image }) =>
+      z.object({
+        ...section,
+        eyebrow: z.string(),
+        heading: z.string(),
+        intro: z.string(),
+        signs: z.array(z.string()),
+        closing: z.string(),
+        photo: image().optional(),
+        photoAlt: z.string().optional(),
+        photoPlaceholder: z.string(),
+      }),
   }),
 
   services: defineCollection({
     loader: glob({ pattern: 'services.yaml', base: './src/content' }),
-    schema: z.object({
-      ...section,
-      eyebrow: z.string(),
-      heading: z.string(),
-      issues: z.array(z.object({ title: z.string(), description: z.string() })),
-      treatmentsEyebrow: z.string(),
-      treatmentsHeading: z.string(),
-      treatments: z.array(z.object({ name: z.string(), description: z.string() })),
-    }),
+    schema: ({ image }) =>
+      z.object({
+        ...section,
+        eyebrow: z.string(),
+        heading: z.string(),
+        issues: z.array(
+          z.object({
+            title: z.string(),
+            icon: z.enum(['neck', 'back', 'hips', 'running', 'posture', 'mobility']).default('posture'),
+            description: z.string(),
+          }),
+        ),
+        learnMoreLabel: z.string().optional(),
+        treatmentsEyebrow: z.string(),
+        treatmentsHeading: z.string(),
+        treatments: z.array(
+          z.object({
+            name: z.string(),
+            icon: z.enum(['massage', 'web', 'target', 'cup', 'needle', 'exercise']).default('massage'),
+            description: z.string(),
+            detail: z.string(),
+            photo: image().optional(),
+            photoAlt: z.string().optional(),
+            photoPlaceholder: z.string(),
+          }),
+        ),
+      }),
   }),
 
   approach: defineCollection({
@@ -119,9 +150,33 @@ export const collections = {
       heading: z.string(),
       body: z.string(),
       diagramTitle: z.string(),
-      diagramPoints: z.array(z.object({ label: z.string(), highlight: z.boolean().default(false) })),
+      diagramHint: z.string(),
+      regions: z.array(
+        z.object({
+          id: z.enum(['jaw', 'neck', 'upper-back', 'core', 'hips', 'knees', 'feet']),
+          label: z.string(),
+          related: z.array(z.string()),
+          caption: z.string(),
+        }),
+      ),
+      symptoms: z.array(z.object({ label: z.string(), region: z.string() })),
       diagramCaption: z.string(),
+      compareHeading: z.string(),
+      compareLeft: z.object({ title: z.string(), points: z.array(z.string()) }),
+      compareRight: z.object({ title: z.string(), points: z.array(z.string()) }),
     }),
+  }),
+
+  imageBreak: defineCollection({
+    loader: glob({ pattern: 'image-break.yaml', base: './src/content' }),
+    schema: ({ image }) =>
+      z.object({
+        ...section,
+        photo: image().optional(),
+        photoAlt: z.string().optional(),
+        photoPlaceholder: z.string(),
+        caption: z.string().optional(),
+      }),
   }),
 
   process: defineCollection({
@@ -131,33 +186,49 @@ export const collections = {
       eyebrow: z.string(),
       heading: z.string(),
       intro: z.string(),
-      steps: z.array(z.object({ title: z.string(), description: z.string() })),
+      timelineStart: z.string(),
+      timelineEnd: z.string(),
+      steps: z.array(
+        z.object({
+          title: z.string(),
+          icon: z.enum(['conversation', 'posture', 'hands', 'movement', 'compass']).default('compass'),
+          when: z.string().optional(),
+          description: z.string(),
+          detail: z.string().optional(),
+        }),
+      ),
     }),
   }),
 
   offers: defineCollection({
     loader: glob({ pattern: 'offers.yaml', base: './src/content' }),
-    schema: z.object({
-      ...section,
-      eyebrow: z.string(),
-      heading: z.string(),
-      session: z.object({
-        badge: z.string(),
-        title: z.string(),
-        details: z.string(),
-        price: z.string(),
-        priceNote: z.string(),
-        includes: z.array(z.string()),
-        buttonLabel: z.string(),
+    schema: ({ image }) =>
+      z.object({
+        ...section,
+        eyebrow: z.string(),
+        heading: z.string(),
+        items: z.array(
+          z.object({
+            status: z.enum(['active', 'soon']),
+            badge: z.string(),
+            title: z.string(),
+            details: z.string().optional(),
+            description: z.string().optional(),
+            price: z.string().optional(),
+            priceNote: z.string().optional(),
+            includes: z.array(z.string()).default([]),
+            expect: z.array(z.object({ label: z.string(), value: z.string() })).default([]),
+            rebate: z.string().optional(),
+            photo: image().optional(),
+            photoAlt: z.string().optional(),
+            photoPlaceholder: z.string().optional(),
+            buttonLabel: z.string(),
+            buttonHref: z.string(),
+          }),
+        ),
+        faqHeading: z.string(),
+        faqs: z.array(z.object({ question: z.string(), answer: z.string() })),
       }),
-      program: z.object({
-        badge: z.string(),
-        title: z.string(),
-        description: z.string(),
-        buttonLabel: z.string(),
-        buttonHref: z.string(),
-      }),
-    }),
   }),
 
   testimonials: defineCollection({
@@ -166,6 +237,9 @@ export const collections = {
       ...section,
       eyebrow: z.string(),
       heading: z.string(),
+      ratingValue: z.string(),
+      ratingText: z.string(),
+      ratingUrl: z.string(),
       items: z.array(
         z.object({
           quote: z.string(),
@@ -185,8 +259,12 @@ export const collections = {
         ...section,
         eyebrow: z.string(),
         heading: z.string(),
+        pullQuote: z.string(),
         paragraphs: z.array(z.string()),
         signature: z.string(),
+        statValue: z.string(),
+        statLabel: z.string(),
+        credentials: z.array(z.object({ title: z.string(), detail: z.string() })),
         photo: image().optional(),
         photoAlt: z.string().optional(),
         photoPlaceholder: z.string(),
@@ -200,6 +278,10 @@ export const collections = {
       eyebrow: z.string(),
       heading: z.string(),
       paragraphs: z.array(z.string()),
+      guideTitle: z.string(),
+      guideSubtitle: z.string(),
+      guideBrand: z.string(),
+      guidePages: z.string(),
       nameLabel: z.string(),
       namePlaceholder: z.string(),
       emailLabel: z.string(),
@@ -212,12 +294,16 @@ export const collections = {
 
   finalCta: defineCollection({
     loader: glob({ pattern: 'final-cta.yaml', base: './src/content' }),
-    schema: z.object({
-      ...section,
-      heading: z.string(),
-      text: z.string(),
-      buttonLabel: z.string(),
-    }),
+    schema: ({ image }) =>
+      z.object({
+        ...section,
+        heading: z.string(),
+        text: z.string(),
+        buttonLabel: z.string(),
+        photo: image().optional(),
+        photoAlt: z.string().optional(),
+        photoPlaceholder: z.string(),
+      }),
   }),
 
   programPage: defineCollection({

@@ -1,21 +1,29 @@
 ---
+import Photo from './Photo.astro';
 import { getContent } from '../lib/content';
 const d = await getContent('finalCta');
 const contact = await getContent('contact');
 ---
 {d.visible && (
-  <section id="book" class="cta band">
-    <div class="wrap">
-      <h2>{d.heading}</h2>
-      <p>{d.text}</p>
-      <a class="btn btn-primary" href={contact.bookingUrl} target="_blank" rel="noopener">{d.buttonLabel}</a>
+  <section id="book" class="cta dark">
+    <Photo class="cta-photo" image={d.photo} alt={d.photoAlt} placeholder={d.photoPlaceholder} zoom={false} sizes="100vw" />
+    <div class="shade" aria-hidden="true"></div>
+    <div class="wrap inner">
+      <h2 data-reveal>{d.heading}</h2>
+      <p data-reveal data-reveal-delay="80">{d.text}</p>
+      <a class="btn btn-primary btn-arrow" href={contact.bookingUrl} data-reveal data-reveal-delay="160">{d.buttonLabel}</a>
     </div>
   </section>
 )}
 
 <style>
-  .cta { background: var(--charcoal); color: var(--cream); text-align: center; }
-  h2 { color: var(--cream); font-size: clamp(32px, 4.4vw, 50px); max-width: 680px; margin-inline: auto; }
-  p { color: var(--cream-muted); font-size: 18px; margin: 20px auto 0; max-width: 480px; }
+  .cta { position: relative; isolation: isolate; color: var(--cream); text-align: center; padding-block: clamp(96px, 14vw, 190px); overflow: hidden; background: var(--charcoal); }
+  .cta :global(.cta-photo) { position: absolute; inset: 0; z-index: -2; border-radius: 0; border: 0; }
+  .cta :global(.cta-photo .ph-cap) { display: none; }
+  .cta :global(.cta-photo .ph-bg) { background: linear-gradient(150deg, #5a5446 0%, #2c2822 100%); }
+  .shade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(to bottom, rgba(34, 30, 25, 0.55), rgba(34, 30, 25, 0.78)); }
+  h2 { color: var(--cream); font-size: clamp(32px, 4.6vw, 54px); max-width: 700px; margin-inline: auto; line-height: 1.12; }
+  p { color: var(--cream); opacity: .92; font-size: 18px; margin: 20px auto 0; max-width: 480px; }
   .btn { margin-top: 36px; }
+  @media (max-width: 700px) { .btn { width: 100%; } }
 </style>

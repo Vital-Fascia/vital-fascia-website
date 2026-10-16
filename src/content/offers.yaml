@@ -1,22 +1,43 @@
 visible: true
 eyebrow: Work with me
 heading: 1:1 treatment, built around your pattern
-session:
-  badge: Available now
-  title: Initial Session
-  details: 75 minutes · in-clinic, Double Bay
-  # TODO: prices are placeholders - confirm with client.
-  price: "[$XXX]"
-  priceNote: " per session"
-  includes:
-    - Whole-body movement & posture assessment
-    - Hands-on treatment matched to your pattern
-    - A simple, personalised take-home movement plan
-    - Follow-up sessions from [$XXX] · 60 minutes
-  buttonLabel: Book a Session
-program:
-  badge: Coming soon
-  title: 8-Week 1:1 Program
-  description: A structured, in-person program for people who want lasting change, not just relief. Currently in development.
-  buttonLabel: Find out more
-  buttonHref: /8-week-program
+items:
+  - status: active
+    badge: Available now
+    title: Initial Session
+    details: 75 minutes · in-clinic, Double Bay
+    # TODO: prices are placeholders - confirm with client.
+    price: "[$XXX]"
+    priceNote: " per session"
+    includes:
+      - Whole-body movement & posture assessment
+      - Hands-on treatment matched to your pattern
+      - A simple, personalised take-home movement plan
+      - Follow-up sessions from [$XXX] · 60 minutes
+    expect:
+      - { label: Duration, value: "[75 minutes]" }
+      - { label: Where, value: "Double Bay clinic" }
+      - { label: What to wear, value: "[Comfortable, loose clothing]" }
+    rebate: "[Health fund rebates - HICAPS available. TODO: confirm with client]"
+    buttonLabel: Book a Session
+    buttonHref: "#"
+  - status: soon
+    badge: Coming soon
+    title: 8-Week 1:1 Program
+    details: In person · Double Bay
+    description: A structured, in-person program for people who want lasting change, not just relief. Currently in development.
+    includes:
+      - "[What it will include - item 1]"
+      - "[What it will include - item 2]"
+      - "[What it will include - item 3]"
+    photoAlt: ""
+    photoPlaceholder: "[Photo - program preview]"
+    buttonLabel: Register interest
+    buttonHref: /8-week-program#waitlist
+faqHeading: Before your first visit
+# TODO: placeholder answers - confirm every policy with the client.
+faqs:
+  - { question: What happens in my first session?, answer: "[Placeholder] We talk through your history, assess how you move, then treat. You leave with a simple plan for between sessions." }
+  - { question: What should I wear?, answer: "[Placeholder] Comfortable, loose clothing you can move in. Shorts and a t-shirt are ideal." }
+  - { question: Can I claim on my health fund?, answer: "[Placeholder] Rebates depend on your provider and cover. HICAPS availability to be confirmed." }
+  - { question: What is the cancellation policy?, answer: "[Placeholder] Please give at least 24 hours' notice to change or cancel a booking. Policy to be confirmed." }

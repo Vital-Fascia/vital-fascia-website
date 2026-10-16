@@ -1,0 +1,39 @@
+---
+// Single-weight (1.5px) rounded line icons on a 48px grid, hand-drawn feel, not anatomical.
+// Used for issues, treatments and process steps. Strokes redraw on hover (see .icon-draw).
+interface Props { name: string; class?: string }
+const { name, class: className } = Astro.props;
+
+const paths: Record<string, string> = {
+  // issues
+  neck: '<circle cx="24" cy="12" r="6"/><path d="M20.5 18c.4 4-.5 7-2.5 10M27.5 18c-.4 4 .5 7 2.5 10"/><path d="M5 41c2-9 8-12.5 13-13M43 41c-2-9-8-12.5-13-13"/><path d="M9 24c2-2.5 4-2.5 6 0M33 24c2-2.5 4-2.5 6 0"/>',
+  back: '<path d="M24 5c-3 7-3 13 0 19s3 12 0 19"/><path d="M19 11h10M18 18h12M18 25h12M19 32h10M20 39h8"/><ellipse cx="24" cy="32" rx="14" ry="9" stroke-opacity=".45"/>',
+  hips: '<path d="M6 11c3 9 6 12 11 14M42 11c-3 9-6 12-11 14"/><path d="M17 25c0 8 3 13 7 16 4-3 7-8 7-16"/><circle cx="12" cy="33" r="3.5"/><circle cx="36" cy="33" r="3.5"/>',
+  running: '<circle cx="30" cy="9" r="3.5"/><path d="M28 15l-6 10 8 6-2 11"/><path d="M22 19l-8 4M28 17l8 4"/><path d="M22 25l-7 7-5 3"/>',
+  posture: '<circle cx="21" cy="8" r="3.5"/><path d="M21 14c-4 7 3 10 0 17s-2 10-2 13"/><path d="M33 5v38" stroke-opacity=".45"/><path d="M13 18l8-1"/>',
+  mobility: '<path d="M5 40a19 19 0 0138 0"/><path d="M24 40L36 19"/><path d="M30 17l7 1-1 7"/><circle cx="24" cy="40" r="2.5"/>',
+  // treatments
+  massage: '<path d="M5 28c4-6 8-6 12 0s8 6 12 0 7-5 14-1"/><path d="M5 18c4-6 8-6 12 0s8 6 12 0 7-5 14-1" stroke-opacity=".5"/><path d="M5 38c4-6 8-6 12 0s8 6 12 0 7-5 14-1" stroke-opacity=".5"/>',
+  web: '<path d="M6 11c11 6 25 6 36 0M6 24c11 6 25 6 36 0M6 37c11 6 25 6 36 0"/><path d="M13 7c-3 11-3 23 0 35M24 8c-2 10-2 22 0 33M35 7c3 11 3 23 0 35" stroke-opacity=".5"/>',
+  target: '<circle cx="24" cy="24" r="3"/><circle cx="24" cy="24" r="10"/><path d="M24 4v6M24 38v6M4 24h6M38 24h6" />',
+  cup: '<path d="M10 20h28M12 20v3c0 9 5 16 12 16s12-7 12-16v-3"/><path d="M18 8c0 3 2 4 2 7M24 6c0 3 2 4 2 7M30 8c0 3 2 4 2 7" stroke-opacity=".55"/>',
+  needle: '<path d="M38 10L13 36"/><path d="M32 6l10 10"/><path d="M13 36l-3 5 5-3z"/><path d="M8 24c3-2 5 0 6 3" stroke-opacity=".5"/>',
+  exercise: '<circle cx="24" cy="8" r="3.5"/><path d="M24 13v14"/><path d="M10 19l14-4 14 4"/><path d="M24 27l-8 14M24 27l8 14"/>',
+  // process
+  conversation: '<path d="M6 10h22a2 2 0 012 2v12a2 2 0 01-2 2H17l-6 5v-5H6a2 2 0 01-2-2V12a2 2 0 012-2z"/><path d="M34 18h8a2 2 0 012 2v12a2 2 0 01-2 2h-3v5l-6-5H22a2 2 0 01-2-2" stroke-opacity=".6"/>',
+  hands: '<path d="M10 28V16a2.5 2.5 0 015 0v8M15 22V11a2.5 2.5 0 015 0v11M20 22V9a2.5 2.5 0 015 0v13M25 22V12a2.5 2.5 0 015 0v16c0 8-5 13-12 13-5 0-8-3-11-8l-3-5a2.5 2.5 0 014-3l3 4"/>',
+  movement: '<circle cx="20" cy="8" r="3.5"/><path d="M20 14l4 10 9 4M24 24l-8 5-6 9M20 14l-8 5"/><path d="M33 12c4 2 6 6 6 10" stroke-opacity=".5"/>',
+  compass: '<circle cx="24" cy="24" r="17"/><path d="M30 18l-4 9-9 3 4-9z"/><circle cx="24" cy="24" r="1.5"/>',
+};
+// let every stroke be redrawn with stroke-dashoffset
+const inner = (paths[name] ?? '').replace(/<(path|circle|ellipse) /g, '<$1 pathLength="1" ');
+---
+<svg class:list={['icon', className]} viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" set:html={inner}></svg>
+
+<style is:global>
+  .icon { width: 48px; height: 48px; display: block; flex: none; }
+  .icon * { stroke-dasharray: 1; stroke-dashoffset: 0; }
+  .icon-draw .icon * { animation: icon-draw .9s var(--ease) both; }
+  @keyframes icon-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .icon-draw .icon * { animation: none; } }
+</style>
