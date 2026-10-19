@@ -3,3 +3,4 @@ visible: true
 items:
   - { value: 3+, label: Years in practice }
   - { value: 500+, label: Sessions delivered }
+  - { value: 4.9 / 5, label: Average client rating }

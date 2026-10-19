@@ -1,22 +1,36 @@
 visible: true
+startOpen: true
 eyebrow: The approach
 heading: Your body doesn't work in isolation. Neither should your treatment.
 body: "Fascia connects every muscle, joint and organ into one continuous, whole-body network. Pain in one place is often tension held somewhere else entirely. Rather than chasing the sore spot, I look at how your whole system moves, holds and compensates, then treat the pattern, not just the symptom."
 diagramTitle: One connected system
 diagramHint: Tap a body area or a symptom to see how it connects.
+figureTitle: A back view of the body with a line of fascia linking the jaw, neck, upper back, lower back, hip, knee and ankle.
 regions:
-  - { id: jaw, label: Jaw, related: [neck, upper-back], caption: "Jaw tension often travels down into the neck and shoulders." }
-  - { id: neck, label: Neck & shoulders, related: [jaw, upper-back, core], caption: "Neck tension is often tied to the jaw and the upper back, not just the neck." }
-  - { id: upper-back, label: Upper back, related: [neck, core, hips], caption: "A stiff upper back makes the neck and lower back work harder." }
-  - { id: core, label: Spine & core, related: [upper-back, hips, feet], caption: "Lower back pain often traces to hips and feet." }
-  - { id: hips, label: Hips, related: [core, knees, feet], caption: "Tight hips change how the back and knees load." }
-  - { id: knees, label: Knees, related: [hips, feet], caption: "Knee pain is often a hip or foot story." }
-  - { id: feet, label: Feet, related: [knees, hips, core], caption: "How your feet land echoes all the way up to your back." }
+  - { id: jaw, label: Jaw, symptom: jaw-clenching }
+  - { id: neck, label: Neck & shoulders, symptom: neck-tension }
+  - { id: upperback, label: Upper back, symptom: neck-tension }
+  - { id: core, label: Spine & core, symptom: lower-back-pain }
+  - { id: hip, label: Hips, symptom: lower-back-pain }
+  - { id: knee, label: Knees, symptom: knee-pain }
+  - { id: ankle, label: Feet, symptom: knee-pain }
 symptoms:
-  - { label: Lower back pain, region: core }
-  - { label: Neck tension, region: neck }
-  - { label: Knee pain, region: knees }
-  - { label: Jaw clenching, region: jaw }
+  - id: neck-tension
+    label: Neck tension
+    nodes: [jaw, neck, upperback]
+    caption: "Neck tension is often tied to the jaw and the upper back, not just the neck."
+  - id: jaw-clenching
+    label: Jaw clenching
+    nodes: [jaw, neck]
+    caption: "Jaw clenching often travels down into the neck and shoulders, and tension there can feed back into the jaw."
+  - id: lower-back-pain
+    label: Lower back pain
+    nodes: [upperback, core, hip, knee]
+    caption: "Lower back pain often involves the glutes, hamstrings and lats, which all pull on the same sheet of fascia across the lower back."
+  - id: knee-pain
+    label: Knee pain
+    nodes: [core, hip, knee, ankle]
+    caption: "Knee pain is often driven by the hips above and the ankle and foot below."
 diagramCaption: Everything is connected. Tension rarely stays where it started.
 compareHeading: Two ways to approach pain
 compareLeft:

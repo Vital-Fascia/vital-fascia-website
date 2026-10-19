@@ -1,0 +1,38 @@
+---
+// A section that can fold down to just its header. The visitor decides whether to open it.
+// Without JS everything stays open (the folded state only applies under html.js).
+import { getContent } from '../lib/content';
+interface Props { id: string; open?: boolean }
+const { id, open = false } = Astro.props;
+const site = await getContent('site');
+---
+<div class:list={['collapse', { open }]} data-collapse data-show={site.showLabel} data-hide={site.hideLabel}>
+  <div class="c-head">
+    <div class="c-title"><slot name="head" /></div>
+    <button type="button" class="c-toggle" aria-expanded={open ? 'true' : 'false'} aria-controls={`${id}-body`}>
+      <span class="c-label">{open ? site.hideLabel : site.showLabel}</span>
+      <span class="c-icon" aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="c-body" id={`${id}-body`}>
+    <div class="c-inner"><slot /></div>
+  </div>
+</div>
+
+<style>
+  .c-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+  .c-title { min-width: 0; }
+  .c-toggle { display: none; align-items: center; gap: 10px; flex: none; min-height: 44px; padding: 0 18px; border: 1.5px solid currentColor; border-radius: 30px; background: transparent; color: inherit; font-size: 14px; font-weight: 600; letter-spacing: .02em; transition: background .2s ease, color .2s ease, opacity .2s ease; margin-bottom: 4px; opacity: .85; }
+  .c-toggle:hover { opacity: 1; }
+  :global(.js) .c-toggle { display: inline-flex; }
+  .c-icon { width: 9px; height: 9px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .4s var(--ease); }
+  .open .c-icon { transform: translateY(2px) rotate(225deg); }
+  :global(.js) .c-body { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows .55s var(--ease), visibility 0s .55s; }
+  :global(.js) .open .c-body { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows .55s var(--ease), visibility 0s; }
+  :global(.js) .c-inner { overflow: hidden; min-height: 0; }
+  @media (max-width: 560px) { .c-head { flex-direction: column; align-items: flex-start; gap: 14px; } .c-toggle { margin-bottom: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .c-body, :global(.js) .open .c-body { transition: none; }
+    .c-icon { transition: none; }
+  }
+</style>

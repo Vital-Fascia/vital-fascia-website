@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalPage from '../components/LegalPage.astro';
+import { getContent } from '../lib/content';
+
+export function getStaticPaths() {
+  return [
+    { params: { legal: 'privacy-policy' }, props: { key: 'privacy' } },
+    { params: { legal: 'terms-of-service' }, props: { key: 'terms' } },
+    { params: { legal: 'refund-policy' }, props: { key: 'refund' } },
+  ];
+}
+const { key } = Astro.props;
+const legal = await getContent('legal');
+const page = legal[key];
+---
+<BaseLayout page="legal" title={page.title} description={page.intro}>
+  <LegalPage title={page.title} intro={page.intro} sections={page.sections} />
+</BaseLayout>

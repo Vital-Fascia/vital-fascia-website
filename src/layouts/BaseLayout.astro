@@ -6,12 +6,14 @@ import ContactFooter from '../components/ContactFooter.astro';
 import { getContent } from '../lib/content';
 
 interface Props {
-  page: 'home' | 'program' | 'contact';
+  page: 'home' | 'program' | 'contact' | 'legal';
+  title?: string;
+  description?: string;
 }
-const { page } = Astro.props;
+const { page, title, description } = Astro.props;
 const site = await getContent('site');
 const seo = await getContent('seo');
-const meta = seo[page];
+const meta = page === 'legal' ? { title: `${title} | ${site.businessName}`, description: description ?? '' } : seo[page];
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 let ogImage: string | undefined;
@@ -54,6 +56,7 @@ if (seo.socialImage) {
     <script>
       import '../scripts/forms';
       import '../scripts/motion';
+      import '../scripts/collapse';
     </script>
   </body>
 </html>

@@ -16,9 +16,8 @@ const primaryHref = h.primaryButton.href === '#' ? contact.bookingUrl : h.primar
         <a class="btn btn-ghost" href={h.secondaryButton.href}>{h.secondaryButton.label}</a>
       </div>
     </div>
-    <div class="frame rise" style="--d:260ms">
+    <div class="rise" style="--d:260ms">
       <Photo class="hero-photo" image={h.photo} alt={h.photoAlt} placeholder={h.photoPlaceholder} loading="eager" zoom={false} sizes="(max-width: 700px) 100vw, 560px" />
-      {h.photoCaption && <span class="chip">{h.photoCaption}</span>}
     </div>
   </div>
 </section>
@@ -30,20 +29,13 @@ const primaryHref = h.primaryButton.href === '#' ? contact.bookingUrl : h.primar
   h1 em { font-style: italic; color: var(--olive); }
   .intro { margin-top: 22px; }
   .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
-  /* slightly offset frame behind the photo, with a caption chip overlapping its corner */
-  .frame { position: relative; isolation: isolate; }
-  .frame::before { content: ''; position: absolute; inset: 18px -16px -16px 18px; border: 1px solid var(--stone); border-radius: var(--radius); z-index: -1; }
   .hero :global(.hero-photo) { width: 100%; aspect-ratio: 4/5; }
-  .chip { position: absolute; left: -14px; bottom: 28px; background: var(--bone); color: var(--ink); border: 1px solid var(--stone-line); padding: 9px 16px; font-size: 13px; letter-spacing: .02em; box-shadow: var(--shadow-lift); }
   .rise { animation: rise .9s var(--ease) both; animation-delay: var(--d, 0ms); }
   @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
   @media (max-width: 700px) {
     /* headline first, photo after the CTAs: the message is the hook from Instagram */
     .hero-grid { grid-template-columns: 1fr; }
     .hero :global(.hero-photo) { aspect-ratio: 4/3; }
-    .frame { margin-right: 14px; }
-    .frame::before { inset: 14px -12px -12px 14px; }
-    .chip { left: 12px; bottom: 14px; }
     .cta-row .btn { flex: 1 1 100%; }
   }
   @media (prefers-reduced-motion: reduce) { .rise { animation: none; } }

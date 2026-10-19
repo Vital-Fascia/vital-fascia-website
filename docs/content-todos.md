@@ -4,13 +4,14 @@ The home page copy was taken from the design prototype, which contains wording t
 
 | Where in the CMS | Item | Status |
 | --- | --- | --- |
-| Home page > Key numbers | "3+ yrs", "500+ sessions" | Unconfirmed, from the design. Verify or hide |
-| Home page > Client testimonials | Average rating "4.9", "[XX] reviews", reviews link | Unconfirmed; replace with the real Google figure and link |
+| Home page > Key numbers | "3+ yrs", "500+ sessions", "4.9 / 5 average client rating" | Unconfirmed, from the design. Verify or hide |
 | Home page > Client testimonials | Heading "Loved by clients" | Placeholder wording, flag for Alex |
-| Home page > About | "9 in 10" stat, pull-quote, qualification placeholders | Unconfirmed / placeholders |
 | Home page > Pricing & offers | Rebate/HICAPS line, "What to expect" facts, FAQ answers, 8-week teaser bullets | Placeholders, confirm with client |
 | Home page > Services | Longer treatment descriptions | Placeholder filler |
-| Contact details | YouTube, TikTok, WhatsApp links | Placeholder links; replace with real accounts (blank hides the icon). Facebook icon deliberately not shown yet |
+| Contact details | TikTok link | Placeholder; replace with the real account (blank hides the icon). YouTube and Facebook icons are not shown |
+| Home page > Free discovery call | Copy, "2 hours" call-back promise, form endpoint | Confirm with client; form submission still to be connected |
+| Home page > The process | Steps 5-7 | Placeholder titles and text |
+| Other pages > Legal pages | Privacy, Terms, Refund Policy | Template text only; replace before launch |
 | Location | Brief said Sydney CBD, site says Double Bay | Left as Double Bay, confirm |
 | Home page > Client testimonials | Six testimonials (Sarah, Tom, Priya, Marcus, Liv, Ben) | Unconfirmed, from the design. Replace with real reviews (with permission) or hide |
 | Home page > About | "Roughly nine in ten clients report a noticeable improvement..." | Unconfirmed claim. Verify or delete |

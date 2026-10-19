@@ -20,7 +20,7 @@ issues:
   - title: Recovery & mobility limits
     icon: mobility
     description: "Getting range of motion back after injury, surgery or years of guarding."
-learnMoreLabel: Book a session
+treatmentsStartOpen: false
 treatmentsEyebrow: How I work
 treatmentsHeading: A toolkit, matched to your pattern
 treatments:

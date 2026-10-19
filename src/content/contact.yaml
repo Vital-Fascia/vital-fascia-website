@@ -16,10 +16,8 @@ instagramHandle: "@thefasciaguy"
 instagramUrl: https://instagram.com/thefasciaguy
 facebookUrl: https://www.facebook.com/profile.php?id=61575781771306
 # TODO: add the real Cliniko booking link (leave "#" until then).
-# TODO: placeholder social links - replace with the real accounts (leave blank to hide an icon).
-youtubeUrl: https://www.youtube.com/@thefasciaguy
+# TODO: TikTok link is a placeholder - replace with the real account (leave blank to hide an icon).
 tiktokUrl: https://www.tiktok.com/@thefasciaguy
-whatsappUrl: https://wa.me/61400000000
+whatsappUrl: https://wa.me/61449637920
 bookingUrl: "#"
 bookingLabel: Book a Session
-contactFormLabel: Send a message

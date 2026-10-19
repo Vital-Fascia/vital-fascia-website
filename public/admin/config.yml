@@ -50,16 +50,15 @@ collections:
             fields:
               - { name: label, label: Button text, widget: string }
               - { name: href, label: Where it goes, widget: string, hint: "Use #resource to scroll to the free guide, or #approach for the approach section." }
-          - { name: photoCaption, label: Small caption on the photo, widget: string, required: false, hint: "e.g. 'Double Bay · 1:1 treatment'. Leave empty to hide." }
           - { name: photo, label: Photo, widget: image, required: false, choose_url: false, hint: "Portrait-shaped photo works best (4:5). Until you add one, a grey placeholder is shown." }
           - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false, hint: "Describe what is in the photo, e.g. 'Alex treating a client's shoulder'. Important for accessibility and Google." }
           - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
 
       - name: highlights
-        label: "2. Key numbers (under the top banner)"
+        label: "2. Key numbers (dark band under the top banner)"
         file: src/content/highlights.yaml
         fields:
-          - { name: visible, label: Show this section on the website, widget: boolean, default: true, hint: "Switch off to hide the numbers. Only show figures that are true and up to date. The rating lives in Client testimonials; the '9 in 10' figure lives in About." }
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true, hint: "Switch off to hide the numbers. Only show figures that are true and up to date." }
           - name: items
             label: Numbers
             label_singular: number
@@ -104,7 +103,7 @@ collections:
               - { name: title, label: Issue, widget: string }
               - { name: icon, label: Icon, widget: select, default: posture, options: [{ label: Neck & shoulders, value: neck }, { label: Lower back, value: back }, { label: Hips, value: hips }, { label: Running, value: running }, { label: Posture, value: posture }, { label: Mobility, value: mobility }] }
               - { name: description, label: Short description, widget: text }
-          - { name: learnMoreLabel, label: Link text on each issue card, widget: string, required: false, hint: "e.g. 'Book a session'. Appears when a visitor hovers a card." }
+          - { name: treatmentsStartOpen, label: "'How I work' starts open", widget: boolean, default: false, hint: "Visitors can always open or close this part. Off = collapsed until they open it." }
           - { name: treatmentsEyebrow, label: Small line above the treatments heading, widget: string }
           - { name: treatmentsHeading, label: Treatments heading, widget: string }
           - name: treatments
@@ -126,31 +125,35 @@ collections:
         file: src/content/approach.yaml
         fields:
           - { name: visible, label: Show this section on the website, widget: boolean, default: true }
+          - { name: startOpen, label: Starts open, widget: boolean, default: true, hint: "Visitors can always open or close this section. Off = collapsed until they open it." }
           - { name: eyebrow, label: Small line above the heading, widget: string }
           - { name: heading, label: Heading, widget: string }
           - { name: body, label: Paragraph, widget: text }
           - { name: diagramTitle, label: Diagram title, widget: string }
           - { name: diagramHint, label: Instruction under the diagram, widget: string }
+          - { name: figureTitle, label: Diagram description (for screen readers), widget: string }
           - name: regions
             label: Body areas on the diagram
             label_singular: area
             widget: list
             summary: "{{fields.label}}"
-            hint: "Seven areas are drawn on the figure. Only edit the wording; don't change the area ID."
+            hint: "Seven areas sit on the figure. Only edit the wording; don't change the area ID."
             fields:
-              - { name: id, label: Area ID (don't change), widget: select, options: [jaw, neck, upper-back, core, hips, knees, feet] }
+              - { name: id, label: Area ID (don't change), widget: select, options: [jaw, neck, upperback, core, hip, knee, ankle] }
               - { name: label, label: Name shown, widget: string }
-              - { name: related, label: Connected areas (IDs), widget: list, field: { name: id, label: Area ID, widget: string }, hint: "Which other areas light up when this one is selected." }
-              - { name: caption, label: One-line explanation, widget: string, hint: "Shown under the diagram when this area is selected." }
+              - { name: symptom, label: Symptom button this area selects, widget: select, options: [{ label: Neck tension, value: neck-tension }, { label: Jaw clenching, value: jaw-clenching }, { label: Lower back pain, value: lower-back-pain }, { label: Knee pain, value: knee-pain }] }
           - name: symptoms
             label: Symptom buttons
             label_singular: symptom
             widget: list
             summary: "{{fields.label}}"
+            hint: "The first one is shown when the page loads. Keep the four IDs."
             fields:
-              - { name: label, label: Symptom, widget: string, hint: "e.g. Lower back pain" }
-              - { name: region, label: Body area it highlights (ID), widget: select, options: [jaw, neck, upper-back, core, hips, knees, feet] }
-          - { name: diagramCaption, label: Diagram caption, widget: string }
+              - { name: id, label: Symptom ID (don't change), widget: select, options: [neck-tension, jaw-clenching, lower-back-pain, knee-pain] }
+              - { name: label, label: Button text, widget: string }
+              - { name: nodes, label: Body areas that light up (top to bottom), widget: list, field: { name: node, label: Area ID, widget: select, options: [jaw, neck, upperback, core, hip, knee, ankle] } }
+              - { name: caption, label: One-line explanation, widget: text, hint: "Shown under the figure." }
+          - { name: diagramCaption, label: Closing line, widget: string }
           - { name: compareHeading, label: Comparison heading, widget: string }
           - name: compareLeft
             label: Comparison - left column
@@ -165,36 +168,24 @@ collections:
               - { name: title, label: Title, widget: string }
               - { name: points, label: Points, widget: list, field: { name: text, label: Point, widget: string } }
 
-      - name: imageBreak
-        label: "5b. Wide photo (between Approach and Process)"
-        file: src/content/image-break.yaml
-        fields:
-          - { name: visible, label: Show this section on the website, widget: boolean, default: true }
-          - { name: photo, label: Photo, widget: image, required: false, choose_url: false, hint: "Wide photo. Shown 21:9 on computers and 4:5 on phones, so keep the subject near the centre." }
-          - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false }
-          - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
-          - { name: caption, label: Caption over the photo (optional), widget: string, required: false }
-
       - name: process
         label: "6. How it works (process)"
         file: src/content/process.yaml
         fields:
           - { name: visible, label: Show this section on the website, widget: boolean, default: true }
+          - { name: startOpen, label: Starts open, widget: boolean, default: false, hint: "Visitors can always open or close this section. Off = collapsed until they open it." }
           - { name: eyebrow, label: Small line above the heading, widget: string }
           - { name: heading, label: Heading, widget: string }
           - { name: intro, label: Introduction, widget: text }
-          - { name: timelineStart, label: Timeline label - start, widget: string, hint: "e.g. Session 1" }
-          - { name: timelineEnd, label: Timeline label - end, widget: string, hint: "e.g. Ongoing" }
           - name: steps
             label: Steps (in order)
             label_singular: step
             widget: list
             summary: "{{fields.title}}"
-            hint: "Steps are numbered automatically. Five fits the layout best."
+            hint: "Steps are numbered automatically. Eight fits the layout best (two rows of four)."
             fields:
               - { name: title, label: Step name, widget: string }
-              - { name: icon, label: Icon, widget: select, default: compass, options: [{ label: Conversation, value: conversation }, { label: Posture, value: posture }, { label: Hands, value: hands }, { label: Movement, value: movement }, { label: Compass, value: compass }] }
-              - { name: when, label: When it happens (optional), widget: string, required: false, hint: "e.g. Session 1" }
+              - { name: icon, label: Icon, widget: select, default: compass, options: [{ label: Conversation, value: conversation }, { label: Posture, value: posture }, { label: Hands, value: hands }, { label: Movement, value: movement }, { label: Compass, value: compass }, { label: Massage, value: massage }, { label: Web, value: web }, { label: Target, value: target }, { label: Cup, value: cup }, { label: Needle, value: needle }, { label: Exercise, value: exercise }, { label: Neck, value: neck }, { label: Back, value: back }, { label: Hips, value: hips }, { label: Running, value: running }, { label: Mobility, value: mobility }] }
               - { name: description, label: Description, widget: text }
               - { name: detail, label: Extra line shown on hover (optional), widget: string, required: false, hint: "e.g. 'What you leave with: ...'" }
 
@@ -254,12 +245,9 @@ collections:
         label: "8. Client testimonials"
         file: src/content/testimonials.yaml
         fields:
-          - { name: visible, label: Show this section on the website, widget: boolean, default: true, hint: "Only publish real testimonials, with the client's permission. The FIRST testimonial is shown large; the rest scroll sideways." }
+          - { name: visible, label: Show this section on the website, widget: boolean, default: true, hint: "Only publish real testimonials, with the client's permission. They appear in a slider with arrows and dots." }
           - { name: eyebrow, label: Small line above the heading, widget: string }
           - { name: heading, label: Heading, widget: string }
-          - { name: ratingValue, label: Average rating, widget: string, hint: "e.g. 4.9. Only show a figure that is true and up to date." }
-          - { name: ratingText, label: Text after the rating, widget: string, hint: "e.g. 'on Google · 48 reviews'" }
-          - { name: ratingUrl, label: Link to the reviews page, widget: string }
           - name: items
             label: Testimonials
             label_singular: testimonial
@@ -286,23 +274,13 @@ collections:
             widget: list
             field: { name: text, label: Paragraph, widget: text }
           - { name: signature, label: Sign-off, widget: string }
-          - { name: statValue, label: Highlighted figure, widget: string, hint: "e.g. 9 in 10. Only show claims that are true." }
-          - { name: statLabel, label: What the figure means, widget: string }
-          - name: credentials
-            label: Qualifications & memberships
-            label_singular: qualification
-            widget: list
-            summary: "{{fields.title}}"
-            fields:
-              - { name: title, label: Qualification, widget: string }
-              - { name: detail, label: Where / when, widget: string }
           - { name: photo, label: Portrait photo, widget: image, required: false, choose_url: false, hint: "Portrait-shaped photo works best (3:4)." }
           - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false }
           - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
 
-      - name: freeResource
-        label: "10. Free resource sign-up"
-        file: src/content/free-resource.yaml
+      - name: discoveryCall
+        label: "10. Free discovery call"
+        file: src/content/discovery-call.yaml
         fields:
           - { name: visible, label: Show this section on the website, widget: boolean, default: true }
           - { name: eyebrow, label: Small line above the heading, widget: string }
@@ -312,17 +290,21 @@ collections:
             label_singular: paragraph
             widget: list
             field: { name: text, label: Paragraph, widget: text }
-          - { name: guideTitle, label: Guide cover - title, widget: string }
-          - { name: guideSubtitle, label: Guide cover - subtitle, widget: string }
-          - { name: guideBrand, label: Guide cover - brand name, widget: string }
-          - { name: guidePages, label: Guide cover - small print, widget: string, hint: "e.g. '8 pages · free PDF'" }
+          - { name: stepsHeading, label: "'What happens next' heading", widget: string }
+          - name: steps
+            label: What happens next (in order)
+            label_singular: step
+            widget: list
+            field: { name: text, label: Step, widget: string }
           - { name: nameLabel, label: Name box - label, widget: string }
           - { name: namePlaceholder, label: Name box - example text, widget: string }
+          - { name: phoneLabel, label: Phone box - label, widget: string }
+          - { name: phonePlaceholder, label: Phone box - example text, widget: string }
           - { name: emailLabel, label: Email box - label, widget: string }
           - { name: emailPlaceholder, label: Email box - example text, widget: string }
           - { name: buttonLabel, label: Button text, widget: string }
           - { name: finePrint, label: Small print under the button, widget: string }
-          - { name: successMessage, label: Message shown after signing up, widget: string }
+          - { name: successMessage, label: Message shown after sending, widget: string }
 
       - name: finalCta
         label: "11. Final call to action"
@@ -382,6 +364,59 @@ collections:
           - { name: finePrint, label: Small print under the button, widget: string }
           - { name: successMessage, label: Message shown after signing up, widget: string }
 
+      - name: legal
+        label: Legal pages (privacy, terms, refunds, site map)
+        file: src/content/legal.yaml
+        fields:
+          - name: privacy
+            label: Privacy Policy
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: intro, label: Introduction, widget: text }
+              - name: sections
+                label: Sections
+                label_singular: section
+                widget: list
+                summary: "{{fields.heading}}"
+                fields:
+                  - { name: heading, label: Heading, widget: string }
+                  - { name: body, label: Text, widget: text }
+          - name: terms
+            label: Terms of Service
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: intro, label: Introduction, widget: text }
+              - name: sections
+                label: Sections
+                label_singular: section
+                widget: list
+                summary: "{{fields.heading}}"
+                fields:
+                  - { name: heading, label: Heading, widget: string }
+                  - { name: body, label: Text, widget: text }
+          - name: refund
+            label: Refund Policy
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: intro, label: Introduction, widget: text }
+              - name: sections
+                label: Sections
+                label_singular: section
+                widget: list
+                summary: "{{fields.heading}}"
+                fields:
+                  - { name: heading, label: Heading, widget: string }
+                  - { name: body, label: Text, widget: text }
+          - name: sitemap
+            label: Site map page
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: intro, label: Introduction, widget: text }
+
       - name: contactPage
         label: Contact page (message form)
         file: src/content/contact-page.yaml
@@ -426,12 +461,10 @@ collections:
           - { name: instagramHandle, label: Instagram name, widget: string, hint: "e.g. @thefasciaguy" }
           - { name: instagramUrl, label: Instagram link, widget: string }
           - { name: facebookUrl, label: Facebook link, widget: string, required: false, hint: "Not shown on the website at the moment." }
-          - { name: youtubeUrl, label: YouTube link, widget: string, required: false, hint: "Leave empty to hide the icon." }
           - { name: tiktokUrl, label: TikTok link, widget: string, required: false, hint: "Leave empty to hide the icon." }
-          - { name: whatsappUrl, label: WhatsApp link, widget: string, required: false, hint: "e.g. https://wa.me/61400000000 (country code, no + or spaces). Leave empty to hide the icon." }
+          - { name: whatsappUrl, label: WhatsApp link, widget: string, required: false, hint: "e.g. https://wa.me/61449637920 (country code, no + or spaces). Leave empty to hide the icon." }
           - { name: bookingUrl, label: Online booking link (Cliniko), widget: string, hint: "Every 'Book' button on the site goes here." }
           - { name: bookingLabel, label: Booking button text (footer), widget: string }
-          - { name: contactFormLabel, label: Contact form button text (footer), widget: string }
           - { name: visitHeading, label: "'Visit' heading", widget: string }
           - { name: getInTouchHeading, label: "'Get in touch' heading", widget: string }
 
@@ -454,9 +487,9 @@ collections:
           - { name: bookButtonLabel, label: Booking button text, widget: string }
           - { name: bookButtonShortLabel, label: Booking button text on small phones, widget: string, hint: "A shorter version, e.g. Book" }
           - { name: menuNote, label: Small line under the booking button in the phone menu, widget: string }
-          - { name: newsletterName, label: Newsletter name (footer), widget: string }
-          - { name: newsletterText, label: Newsletter one-liner (footer), widget: string }
           - { name: footerNote, label: Text after the copyright, widget: string }
+          - { name: showLabel, label: Button text to open a collapsed section, widget: string, hint: "e.g. Show" }
+          - { name: hideLabel, label: Button text to close a section, widget: string, hint: "e.g. Hide" }
 
       - name: seo
         label: Google search & social sharing (SEO)

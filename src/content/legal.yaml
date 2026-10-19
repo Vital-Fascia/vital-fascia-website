@@ -1,0 +1,28 @@
+# TODO: all legal pages are TEMPLATES with placeholder text. Replace with real, professionally prepared policies before launch.
+privacy:
+  title: Privacy Policy
+  intro: "[Placeholder] How Vital Fascia collects, uses and protects your personal information."
+  sections:
+    - { heading: Information we collect, body: "[Placeholder text. This section will describe the personal information collected through the website, bookings and enquiry forms.]" }
+    - { heading: How we use your information, body: "[Placeholder text. This section will explain how your information is used to arrange appointments and respond to enquiries.]" }
+    - { heading: Sharing and storage, body: "[Placeholder text. This section will cover who information is shared with and how it is stored securely.]" }
+    - { heading: Your rights and contact, body: "[Placeholder text. This section will explain how to access or correct your information and who to contact.]" }
+terms:
+  title: Terms of Service
+  intro: "[Placeholder] The terms that apply when you use this website and book services with Vital Fascia."
+  sections:
+    - { heading: Using this website, body: "[Placeholder text. This section will set out acceptable use of the website and its content.]" }
+    - { heading: Bookings and services, body: "[Placeholder text. This section will describe how bookings are made, changed and cancelled.]" }
+    - { heading: Health information, body: "[Placeholder text. This section will clarify that website content is general information and not a substitute for personalised health advice.]" }
+    - { heading: Liability and changes, body: "[Placeholder text. This section will cover limits of liability and how these terms may change.]" }
+refund:
+  title: Refund Policy
+  intro: "[Placeholder] When refunds, credits and cancellations apply."
+  sections:
+    - { heading: Cancellations, body: "[Placeholder text. This section will describe the notice required to cancel or reschedule without charge.]" }
+    - { heading: Refunds, body: "[Placeholder text. This section will explain when a refund or credit may be offered.]" }
+    - { heading: Programs and packages, body: "[Placeholder text. This section will cover any program or package refund terms.]" }
+    - { heading: How to request a refund, body: "[Placeholder text. This section will explain how to contact us about a refund.]" }
+sitemap:
+  title: Site map
+  intro: All the pages on this website.
