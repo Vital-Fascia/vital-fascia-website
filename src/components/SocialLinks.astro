@@ -1,7 +1,6 @@
 ---
 import { Image } from 'astro:assets';
 import instagram from '../assets/icons/instagram.png';
-import youtube from '../assets/icons/youtube.png';
 import tiktok from '../assets/icons/tiktok.png';
 import whatsapp from '../assets/icons/whatsapp.png';
 import gmail from '../assets/icons/gmail.png';
@@ -14,7 +13,6 @@ const c = await getContent('contact');
 // Facebook is intentionally left out for now. Links come from contact.yaml; empty = hidden.
 const all = [
   { name: 'Instagram', src: instagram, href: c.instagramUrl },
-  { name: 'YouTube', src: youtube, href: c.youtubeUrl },
   { name: 'TikTok', src: tiktok, href: c.tiktokUrl },
   { name: 'WhatsApp', src: whatsapp, href: c.whatsappUrl },
   { name: 'Email', src: gmail, href: c.email ? `mailto:${c.email}` : '' },

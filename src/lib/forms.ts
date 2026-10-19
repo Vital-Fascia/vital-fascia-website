@@ -5,6 +5,6 @@
  */
 export const formEndpoints = {
   contact: '',
-  freeResource: '',
+  discoveryCall: '',
   programWaitlist: '',
 };

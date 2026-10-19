@@ -1,0 +1,20 @@
+visible: true
+eyebrow: Free discovery call
+heading: Book a free discovery call
+paragraphs:
+  - "Not sure if this is right for you? Leave your details and Alex will call you for a relaxed, no-pressure chat about what's going on and how he can help."
+  - "Alex will call you back within an average of 2 hours (during clinic hours) to talk it through and arrange your booking."
+stepsHeading: What happens next
+steps:
+  - Send your details
+  - Alex calls you, on average within 2 hours
+  - Arrange your first session together
+nameLabel: Name
+namePlaceholder: Your name
+phoneLabel: Phone
+phonePlaceholder: Best number to call
+emailLabel: Email address
+emailPlaceholder: you@email.com
+buttonLabel: Request a call
+finePrint: Your details are only used to arrange your call. No spam, ever.
+successMessage: Thanks! Alex will call you shortly, on average within 2 hours.

@@ -16,6 +16,13 @@ const seo = z.object({
   description: z.string(),
 });
 
+
+const legalPage = z.object({
+  title: z.string(),
+  intro: z.string(),
+  sections: z.array(z.object({ heading: z.string(), body: z.string() })),
+});
+
 /** Section on/off switch + shared heading fields. */
 const section = { visible: z.boolean().default(true) };
 
@@ -29,8 +36,8 @@ export const collections = {
       bookButtonLabel: z.string(),
       bookButtonShortLabel: z.string(),
       menuNote: z.string(),
-      newsletterName: z.string(),
-      newsletterText: z.string(),
+      showLabel: z.string(),
+      hideLabel: z.string(),
       footerNote: z.string(),
     }),
   }),
@@ -48,12 +55,10 @@ export const collections = {
       instagramHandle: z.string(),
       instagramUrl: z.string(),
       facebookUrl: z.string().optional(),
-      youtubeUrl: z.string().optional(),
       tiktokUrl: z.string().optional(),
       whatsappUrl: z.string().optional(),
       bookingUrl: z.string(),
       bookingLabel: z.string(),
-      contactFormLabel: z.string(),
     }),
   }),
 
@@ -80,7 +85,6 @@ export const collections = {
         intro: z.string(),
         primaryButton: cta,
         secondaryButton: cta,
-        photoCaption: z.string().optional(),
         photo: image().optional(),
         photoAlt: z.string().optional(),
         photoPlaceholder: z.string(),
@@ -125,7 +129,7 @@ export const collections = {
             description: z.string(),
           }),
         ),
-        learnMoreLabel: z.string().optional(),
+        treatmentsStartOpen: z.boolean().default(false),
         treatmentsEyebrow: z.string(),
         treatmentsHeading: z.string(),
         treatments: z.array(
@@ -146,20 +150,28 @@ export const collections = {
     loader: glob({ pattern: 'approach.yaml', base: './src/content' }),
     schema: z.object({
       ...section,
+      startOpen: z.boolean().default(true),
       eyebrow: z.string(),
       heading: z.string(),
       body: z.string(),
       diagramTitle: z.string(),
       diagramHint: z.string(),
+      figureTitle: z.string(),
       regions: z.array(
         z.object({
-          id: z.enum(['jaw', 'neck', 'upper-back', 'core', 'hips', 'knees', 'feet']),
+          id: z.enum(['jaw', 'neck', 'upperback', 'core', 'hip', 'knee', 'ankle']),
           label: z.string(),
-          related: z.array(z.string()),
+          symptom: z.enum(['neck-tension', 'jaw-clenching', 'lower-back-pain', 'knee-pain']),
+        }),
+      ),
+      symptoms: z.array(
+        z.object({
+          id: z.enum(['neck-tension', 'jaw-clenching', 'lower-back-pain', 'knee-pain']),
+          label: z.string(),
+          nodes: z.array(z.enum(['jaw', 'neck', 'upperback', 'core', 'hip', 'knee', 'ankle'])),
           caption: z.string(),
         }),
       ),
-      symptoms: z.array(z.object({ label: z.string(), region: z.string() })),
       diagramCaption: z.string(),
       compareHeading: z.string(),
       compareLeft: z.object({ title: z.string(), points: z.array(z.string()) }),
@@ -167,32 +179,18 @@ export const collections = {
     }),
   }),
 
-  imageBreak: defineCollection({
-    loader: glob({ pattern: 'image-break.yaml', base: './src/content' }),
-    schema: ({ image }) =>
-      z.object({
-        ...section,
-        photo: image().optional(),
-        photoAlt: z.string().optional(),
-        photoPlaceholder: z.string(),
-        caption: z.string().optional(),
-      }),
-  }),
-
   process: defineCollection({
     loader: glob({ pattern: 'process.yaml', base: './src/content' }),
     schema: z.object({
       ...section,
+      startOpen: z.boolean().default(false),
       eyebrow: z.string(),
       heading: z.string(),
       intro: z.string(),
-      timelineStart: z.string(),
-      timelineEnd: z.string(),
       steps: z.array(
         z.object({
           title: z.string(),
-          icon: z.enum(['conversation', 'posture', 'hands', 'movement', 'compass']).default('compass'),
-          when: z.string().optional(),
+          icon: z.enum(['conversation', 'posture', 'hands', 'movement', 'compass', 'massage', 'web', 'target', 'cup', 'needle', 'exercise', 'neck', 'back', 'hips', 'running', 'mobility']).default('compass'),
           description: z.string(),
           detail: z.string().optional(),
         }),
@@ -237,9 +235,6 @@ export const collections = {
       ...section,
       eyebrow: z.string(),
       heading: z.string(),
-      ratingValue: z.string(),
-      ratingText: z.string(),
-      ratingUrl: z.string(),
       items: z.array(
         z.object({
           quote: z.string(),
@@ -262,28 +257,25 @@ export const collections = {
         pullQuote: z.string(),
         paragraphs: z.array(z.string()),
         signature: z.string(),
-        statValue: z.string(),
-        statLabel: z.string(),
-        credentials: z.array(z.object({ title: z.string(), detail: z.string() })),
         photo: image().optional(),
         photoAlt: z.string().optional(),
         photoPlaceholder: z.string(),
       }),
   }),
 
-  freeResource: defineCollection({
-    loader: glob({ pattern: 'free-resource.yaml', base: './src/content' }),
+  discoveryCall: defineCollection({
+    loader: glob({ pattern: 'discovery-call.yaml', base: './src/content' }),
     schema: z.object({
       ...section,
       eyebrow: z.string(),
       heading: z.string(),
       paragraphs: z.array(z.string()),
-      guideTitle: z.string(),
-      guideSubtitle: z.string(),
-      guideBrand: z.string(),
-      guidePages: z.string(),
+      stepsHeading: z.string(),
+      steps: z.array(z.string()),
       nameLabel: z.string(),
       namePlaceholder: z.string(),
+      phoneLabel: z.string(),
+      phonePlaceholder: z.string(),
       emailLabel: z.string(),
       emailPlaceholder: z.string(),
       buttonLabel: z.string(),
@@ -304,6 +296,16 @@ export const collections = {
         photoAlt: z.string().optional(),
         photoPlaceholder: z.string(),
       }),
+  }),
+
+  legal: defineCollection({
+    loader: glob({ pattern: 'legal.yaml', base: './src/content' }),
+    schema: z.object({
+      privacy: legalPage,
+      terms: legalPage,
+      refund: legalPage,
+      sitemap: z.object({ title: z.string(), intro: z.string() }),
+    }),
   }),
 
   programPage: defineCollection({

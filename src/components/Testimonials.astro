@@ -1,125 +1,126 @@
 ---
 import { getContent } from '../lib/content';
 const d = await getContent('testimonials');
-const [featured, ...rest] = d.items;
 ---
 {d.visible && d.items.length > 0 && (
   <section id="testimonials" class="testimonials band dark" data-carousel>
     <div class="wrap">
-      <div class="head">
-        <div>
-          <span class="eyebrow" data-reveal>{d.eyebrow}</span>
-          <h2 data-reveal data-reveal-delay="80">{d.heading}</h2>
-        </div>
-        <a class="rating" href={d.ratingUrl} data-reveal data-reveal-delay="120" target={d.ratingUrl.startsWith('http') ? '_blank' : undefined} rel="noopener">
-          <span class="stars" aria-hidden="true">★★★★★</span>
-          <span class="rv"><strong data-count>{d.ratingValue}</strong> {d.ratingText}</span>
-        </a>
+      <span class="eyebrow" data-reveal>{d.eyebrow}</span>
+      <h2 data-reveal data-reveal-delay="80">{d.heading}</h2>
+
+      <div class="scroll" tabindex="0" role="region" aria-label="Client testimonials" data-scroll data-reveal data-reveal-delay="120">
+        {d.items.map((t: any) => (
+          <figure class="card">
+            <div class="stars" role="img" aria-label={`${t.rating} out of 5 stars`}>{'★'.repeat(t.rating)}</div>
+            <blockquote>“{t.quote}”</blockquote>
+            <div class="divider"></div>
+            <figcaption>
+              <span class="name">{t.name}</span>
+              {t.detail && <span class="ctx">{t.detail}</span>}
+            </figcaption>
+            {t.source && <span class="source">{t.source}</span>}
+          </figure>
+        ))}
       </div>
 
-      <figure class="feature" data-reveal>
-        <div class="stars" role="img" aria-label={`${featured.rating} out of 5 stars`}>{'★'.repeat(featured.rating)}</div>
-        <blockquote>“{featured.quote}”</blockquote>
-        <figcaption>
-          <span class="name">{featured.name}</span>
-          {featured.detail && <span class="ctx">{featured.detail}</span>}
-          {featured.source && <span class="source">{featured.source}</span>}
-        </figcaption>
-      </figure>
+      <div class="controls" data-controls>
+        <button type="button" class="arrow" data-dir="-1" aria-label="Previous testimonials">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+        </button>
+        <div class="dots" data-dots></div>
+        <button type="button" class="arrow" data-dir="1" aria-label="Next testimonials">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        </button>
+      </div>
     </div>
-
-    {rest.length > 0 && (
-      <div class="carousel">
-        <div class="scroll" tabindex="0" role="region" aria-label="More client testimonials" data-scroll>
-          {rest.map((t: any) => (
-            <figure class="card card-lift">
-              <div class="stars" role="img" aria-label={`${t.rating} out of 5 stars`}>{'★'.repeat(t.rating)}</div>
-              <blockquote>“{t.quote}”</blockquote>
-              <div class="divider"></div>
-              <figcaption>
-                <span class="name">{t.name}</span>
-                {t.detail && <span class="ctx">{t.detail}</span>}
-              </figcaption>
-              {t.source && <span class="source">{t.source}</span>}
-            </figure>
-          ))}
-        </div>
-        <div class="wrap controls-row">
-          <div class="progress" aria-hidden="true"><span data-bar></span></div>
-          <div class="controls">
-            <button type="button" class="arrow" data-dir="-1" aria-label="Previous testimonials">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
-            </button>
-            <button type="button" class="arrow" data-dir="1" aria-label="Next testimonials">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    )}
   </section>
 )}
 
 <script>
+  // Paged carousel: 3 / 2 / 1 cards per view (CSS), so cards always fill the width with none
+  // hanging off the edge. Arrows + dots live together under the cards. Recalculates on resize.
   document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
-    const track = root.querySelector<HTMLElement>('[data-scroll]');
-    if (!track) return;
+    const track = root.querySelector<HTMLElement>('[data-scroll]')!;
+    const dotsEl = root.querySelector<HTMLElement>('[data-dots]')!;
+    const controls = root.querySelector<HTMLElement>('[data-controls]')!;
     const prev = root.querySelector<HTMLButtonElement>('[data-dir="-1"]')!;
     const next = root.querySelector<HTMLButtonElement>('[data-dir="1"]')!;
-    const bar = root.querySelector<HTMLElement>('[data-bar]')!;
-    const sync = () => {
-      const max = track.scrollWidth - track.clientWidth;
-      const x = track.scrollLeft;
-      prev.disabled = x <= 2;
-      next.disabled = x >= max - 2;
-      bar.style.width = `${max > 0 ? 25 + (x / max) * 75 : 100}%`;
+    const count = track.children.length;
+    const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let pages = 1;
+
+    const perView = () => Math.max(1, parseInt(getComputedStyle(track).getPropertyValue('--per')) || 1);
+    const gap = () => parseFloat(getComputedStyle(track).columnGap) || 0;
+    const pageW = () => track.clientWidth + gap();
+    const maxLeft = () => track.scrollWidth - track.clientWidth;
+    const current = () => {
+      if (track.scrollLeft >= maxLeft() - 2) return pages - 1;
+      return Math.min(pages - 1, Math.round(track.scrollLeft / pageW()));
     };
-    const step = () => (track.querySelector<HTMLElement>('.card')?.offsetWidth ?? 320) + 20;
-    [prev, next].forEach((b) =>
-      b.addEventListener('click', () => track.scrollBy({ left: Number(b.dataset.dir) * step(), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })),
-    );
+    const go = (page: number) => {
+      const p = Math.max(0, Math.min(pages - 1, page));
+      track.scrollTo({ left: Math.min(p * pageW(), maxLeft()), behavior: reduce() ? 'auto' : 'smooth' });
+    };
+    const sync = () => {
+      const c = current();
+      prev.disabled = c <= 0;
+      next.disabled = c >= pages - 1;
+      dotsEl.querySelectorAll('button').forEach((b, i) => {
+        b.setAttribute('aria-current', String(i === c));
+        b.classList.toggle('on', i === c);
+      });
+    };
+    const build = () => {
+      pages = Math.max(1, Math.ceil(count / perView()));
+      controls.hidden = pages <= 1;
+      dotsEl.replaceChildren(
+        ...Array.from({ length: pages }, (_, i) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.setAttribute('aria-label', `Go to testimonials page ${i + 1} of ${pages}`);
+          b.addEventListener('click', () => go(i));
+          return b;
+        }),
+      );
+      sync();
+    };
+    prev.addEventListener('click', () => go(current() - 1));
+    next.addEventListener('click', () => go(current() + 1));
     track.addEventListener('scroll', sync, { passive: true });
-    window.addEventListener('resize', sync);
-    sync();
+    new ResizeObserver(build).observe(track);
+    build();
   });
 </script>
 
 <style>
   .testimonials { background: var(--olive); color: var(--cream); }
-  .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px 32px; flex-wrap: wrap; }
-  .head .eyebrow { color: var(--cream); }
+  .testimonials :global(.eyebrow) { color: var(--cream); }
   h2 { font-size: clamp(30px, 4vw, 44px); color: var(--cream); font-style: italic; font-weight: 400; }
-  .rating { display: inline-flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 15px; color: var(--cream); border-bottom: 1px solid rgba(242, 236, 221, 0.45); transition: border-color .2s ease; }
-  .rating:hover { border-bottom-color: var(--cream); }
-  .rating strong { font-family: var(--font-display); font-size: 24px; font-weight: 500; font-variant-numeric: tabular-nums; }
   .stars { color: var(--gold); font-size: 14px; letter-spacing: 3px; }
 
-  .feature { margin: clamp(36px, 5vw, 56px) 0 0; max-width: 900px; }
-  .feature blockquote { margin: 18px 0 0; font-family: var(--font-display); font-style: italic; font-size: clamp(25px, 3.6vw, 36px); line-height: 1.3; }
-  .feature figcaption { margin-top: 24px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
-  .feature .name { font-weight: 600; }
-  .feature .ctx, .feature .source { font-size: 14px; color: var(--cream); opacity: .85; }
-  .feature .source { text-transform: uppercase; letter-spacing: .08em; font-size: 11.5px; }
-
-  .carousel { margin-top: clamp(36px, 5vw, 56px); }
-  .scroll { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px var(--gutter) 14px; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
+  .scroll { --per: 3; --gap: 20px; display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - (var(--per) - 1) * var(--gap)) / var(--per)); gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory; margin-top: 44px; padding-block: 4px 8px; scrollbar-width: none; }
   .scroll::-webkit-scrollbar { display: none; }
-  .scroll:focus-visible { outline: 2px solid var(--cream); outline-offset: -2px; }
-  .card { scroll-snap-align: start; flex: 0 0 340px; background: var(--white); color: var(--ink); border-radius: var(--radius); padding: 30px 28px; display: flex; flex-direction: column; margin: 0; border: 1px solid transparent; }
+  .scroll:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
+  .card { scroll-snap-align: start; background: var(--white); color: var(--ink); border-radius: var(--radius); padding: 30px 28px; display: flex; flex-direction: column; margin: 0; min-width: 0; }
   .card blockquote { font-family: var(--font-display); font-style: italic; font-size: 19px; line-height: 1.5; margin: 16px 0 0; flex-grow: 1; }
   .divider { width: 100%; height: 1px; background: var(--stone-line); margin: 22px 0 16px; }
-  .card .name { font-weight: 600; display: block; margin-bottom: 2px; font-size: 15px; }
-  .card .ctx { color: var(--ink-muted); font-size: 13.5px; }
-  .card .source { display: block; margin-top: 12px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-muted); }
+  .name { font-weight: 600; display: block; margin-bottom: 2px; font-size: 15px; }
+  .ctx { color: var(--ink-muted); font-size: 13.5px; }
+  .source { display: block; margin-top: 12px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-muted); }
 
-  .controls-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 20px; }
-  .progress { flex: 1; max-width: 220px; height: 2px; background: rgba(242, 236, 221, 0.25); }
-  .progress span { display: block; height: 100%; background: var(--cream); transition: width .3s ease; }
-  .controls { display: flex; gap: 10px; }
+  /* arrows and dots together, centred under the cards */
+  .controls { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 28px; }
+  .controls[hidden] { display: none; }
+  .dots { display: flex; gap: 4px; align-items: center; }
+  .dots :global(button) { width: 28px; height: 44px; padding: 0; border: 0; background: transparent; position: relative; }
+  .dots :global(button)::after { content: ''; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: rgba(242, 236, 221, 0.4); transition: background .3s ease, width .3s var(--ease), margin .3s var(--ease), border-radius .3s ease; }
+  .dots :global(button.on)::after { background: var(--cream); width: 22px; margin-left: -11px; border-radius: 4px; }
+  .dots :global(button:focus-visible) { outline: 2px solid var(--cream); outline-offset: -4px; border-radius: 6px; }
   .arrow { width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid rgba(242, 236, 221, 0.6); background: transparent; color: var(--cream); display: flex; align-items: center; justify-content: center; padding: 0; transition: background .2s ease, opacity .2s ease; }
   .arrow:hover:not(:disabled) { background: rgba(242, 236, 221, 0.14); }
   .arrow:disabled { opacity: .35; cursor: default; }
   .arrow svg { width: 18px; height: 18px; }
-  @media (max-width: 560px) { .card { flex-basis: 82vw; } }
-  @media (prefers-reduced-motion: reduce) { .progress span { transition: none; } }
+  @media (max-width: 980px) { .scroll { --per: 2; } }
+  @media (max-width: 640px) { .scroll { --per: 1; } }
+  @media (prefers-reduced-motion: reduce) { .dots :global(button)::after { transition: none; } }
 </style>

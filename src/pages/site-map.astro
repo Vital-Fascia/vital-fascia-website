@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalPage from '../components/LegalPage.astro';
+import { getContent } from '../lib/content';
+const legal = await getContent('legal');
+const site = await getContent('site');
+const groups = [
+  { heading: 'Pages', links: [{ label: 'Home', href: '/' }, ...site.navLinks.map((l: any) => ({ label: l.label, href: l.href }))] },
+  { heading: 'Legal', links: [
+    { label: legal.privacy.title, href: '/privacy-policy' },
+    { label: legal.terms.title, href: '/terms-of-service' },
+    { label: legal.refund.title, href: '/refund-policy' },
+    { label: legal.sitemap.title, href: '/site-map' },
+  ] },
+];
+---
+<BaseLayout page="legal" title={legal.sitemap.title} description={legal.sitemap.intro}>
+  <LegalPage title={legal.sitemap.title} intro={legal.sitemap.intro}>
+    {groups.map((g) => (
+      <div class="grp">
+        <h2>{g.heading}</h2>
+        <ul>{g.links.map((l: any) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+      </div>
+    ))}
+  </LegalPage>
+</BaseLayout>
+
+<style>
+  .grp { margin-top: 36px; }
+  .grp h2 { font-size: 24px; }
+  ul { margin-top: 10px; display: flex; flex-direction: column; }
+  li a { display: inline-block; padding: 8px 0; font-size: 17px; color: var(--olive); text-decoration: underline; text-underline-offset: 3px; }
+</style>

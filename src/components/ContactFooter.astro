@@ -3,11 +3,27 @@ import SocialLinks from './SocialLinks.astro';
 import { getContent } from '../lib/content';
 const site = await getContent('site');
 const c = await getContent('contact');
+const legal = await getContent('legal');
 const year = new Date().getFullYear();
+const legalLinks = [
+  { label: legal.privacy.title, href: '/privacy-policy' },
+  { label: legal.terms.title, href: '/terms-of-service' },
+  { label: legal.refund.title, href: '/refund-policy' },
+  { label: legal.sitemap.title, href: '/site-map' },
+];
 ---
 <footer id="contact" class="contact-section dark">
   <div class="wrap">
     <div class="contact-grid">
+      <div class="contact-col">
+        <h3>{c.getInTouchHeading}</h3>
+        <p><a href={`mailto:${c.email}`}>{c.email}</a></p>
+        <p class="gap-s"><a href={c.instagramUrl} target="_blank" rel="noopener">{c.instagramHandle}</a></p>
+        <SocialLinks class="footer-socials" size={36} />
+        <p class="gap-l buttons">
+          <a class="btn btn-ghost-dark btn-sm" href={c.bookingUrl}>{c.bookingLabel}</a>
+        </p>
+      </div>
       <div class="contact-col">
         <h3>{c.visitHeading}</h3>
         <p>{c.addressLines.map((line: string, i: number) => <>{i > 0 && <br />}{line}</>)}</p>
@@ -19,35 +35,27 @@ const year = new Date().getFullYear();
             </tbody>
           </table>
         )}
+        {c.mapEmbedUrl && (
+          <div class="map">
+            <iframe src={c.mapEmbedUrl} title={`Map showing ${site.businessName}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        )}
         {c.mapLinkUrl && <p class="gap-s"><a class="underline" href={c.mapLinkUrl} target="_blank" rel="noopener">Get directions</a></p>}
       </div>
-      <div class="contact-col">
-        <h3>{c.getInTouchHeading}</h3>
-        <p><a href={`mailto:${c.email}`}>{c.email}</a></p>
-        <p class="gap-s"><a href={c.instagramUrl} target="_blank" rel="noopener">{c.instagramHandle}</a></p>
-        <SocialLinks class="footer-socials" size={36} />
-        <p class="gap-l buttons">
-          <a class="btn btn-ghost-dark btn-sm" href={c.bookingUrl}>{c.bookingLabel}</a>
-          <a class="btn btn-ghost-dark btn-sm" href="/contact">{c.contactFormLabel}</a>
-        </p>
-        <p class="news"><a class="underline" href="/#resource">{site.newsletterName}</a><span>{site.newsletterText}</span></p>
-      </div>
-      {c.mapEmbedUrl && (
-        <div class="map">
-          <iframe src={c.mapEmbedUrl} title={`Map showing ${site.businessName}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-        </div>
-      )}
     </div>
     <div class="footer-base">
       <span>© {year} {site.businessName}. {site.footerNote}</span>
-      <span><a href="#top">Back to top</a></span>
+      <nav class="legal" aria-label="Legal">
+        {legalLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+        <a href="#top">Back to top</a>
+      </nav>
     </div>
   </div>
 </footer>
 
 <style>
   .contact-section { background: var(--charcoal-2); color: var(--cream); border-top: 1px solid rgba(242, 236, 221, 0.2); padding-block: clamp(40px, 5vw, 64px) 28px; }
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr 1.1fr; gap: clamp(28px, 4vw, 56px); align-items: start; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 72px); align-items: start; }
   .contact-col h3 { font-family: var(--font-body); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--cream-muted); font-weight: 600; margin-bottom: 14px; }
   .contact-col p, .contact-col a:not(.btn) { font-size: 15.5px; line-height: 1.7; color: var(--cream); }
   .contact-col a:not(.btn):hover { color: var(--cream-muted); }
@@ -59,12 +67,11 @@ const year = new Date().getFullYear();
   .hours th, .hours td { text-align: left; padding: 5px 0; font-weight: 400; }
   .hours th { padding-right: 24px; color: var(--cream-muted); }
   .contact-col :global(.footer-socials) { margin: 14px 0 0 -6px; }
-  .news { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(242, 236, 221, 0.14); display: flex; flex-direction: column; gap: 2px; }
-  .news span { font-size: 13.5px; color: var(--cream-muted); }
-  .map { aspect-ratio: 16/10; border: 1px solid rgba(242, 236, 221, 0.18); }
+  .map { margin-top: 20px; aspect-ratio: 16/10; border: 1px solid rgba(242, 236, 221, 0.18); }
   .map iframe { width: 100%; height: 100%; border: 0; display: block; filter: grayscale(.35) contrast(.95); }
-  .footer-base { border-top: 1px solid rgba(242, 236, 221, 0.14); margin-top: 40px; padding-top: 22px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: rgba(242, 236, 221, 0.75); }
-  .footer-base a { color: rgba(242, 236, 221, 0.9); }
-  @media (max-width: 980px) { .contact-grid { grid-template-columns: 1fr 1fr; } .map { grid-column: 1 / -1; } }
-  @media (max-width: 640px) { .contact-grid { grid-template-columns: 1fr; } }
+  .footer-base { border-top: 1px solid rgba(242, 236, 221, 0.14); margin-top: 40px; padding-top: 22px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; font-size: 13px; color: rgba(242, 236, 221, 0.75); }
+  .legal { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+  .footer-base a { color: rgba(242, 236, 221, 0.9); padding: 6px 0; }
+  .footer-base a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 760px) { .contact-grid { grid-template-columns: 1fr; } }
 </style>
