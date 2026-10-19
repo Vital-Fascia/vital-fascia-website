@@ -21,14 +21,14 @@ const site = await getContent('site');
 
 <style>
   /* heading + a plain caret beside it; clicking either one opens or closes the section */
-  .c-head { display: flex; align-items: center; justify-content: flex-start; gap: 12px 20px; }
+  .c-head { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; }
   .c-title { min-width: 0; }
   :global(.js) .c-title { cursor: pointer; }
-  .c-toggle { display: none; align-items: center; justify-content: center; flex: none; width: 48px; height: 48px; padding: 0; border: 0; background: transparent; color: inherit; opacity: .8; transition: opacity .2s ease; }
+  .c-toggle { display: none; align-items: center; justify-content: flex-end; flex: none; width: 48px; height: 48px; padding: 0 4px 0 0; border: 0; background: transparent; color: inherit; opacity: .8; transition: opacity .2s ease; }
   .c-toggle:hover, :global(.js) .c-head:hover .c-toggle { opacity: 1; }
   :global(.js) .c-toggle { display: inline-flex; }
-  .c-icon { width: 14px; height: 14px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-3px) rotate(45deg); transition: transform .4s var(--ease); }
-  .open .c-icon { transform: translateY(3px) rotate(225deg); }
+  .c-icon { width: 10.5px; height: 10.5px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .4s var(--ease); }
+  .open .c-icon { transform: translateY(2px) rotate(225deg); }
   :global(.js) .c-body { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows .55s var(--ease), visibility 0s .55s; }
   :global(.js) .open .c-body { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows .55s var(--ease), visibility 0s; }
   :global(.js) .c-inner { overflow: hidden; min-height: 0; }
