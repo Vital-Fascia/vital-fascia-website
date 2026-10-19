@@ -1,7 +1,6 @@
 visitHeading: Visit
 addressLines:
-# TODO: street address for the Sydney CBD location is not confirmed.
-  - '[Street address - TBC]'
+  - Mezzanine, 309 George St
   - Sydney NSW 2000
 # TODO: opening hours are placeholders - confirm with client.
 hours:
@@ -9,8 +8,8 @@ hours:
   - { days: Saturday, time: "[8:00am - 1:00pm]" }
   - { days: Sunday, time: Closed }
 # TODO: paste the Google Maps "Embed a map" link (the src="..." part) here.
-mapEmbedUrl: "https://www.google.com/maps?q=Sydney+CBD+NSW+2000&output=embed"
-mapLinkUrl: "https://www.google.com/maps/search/?api=1&query=Sydney+CBD+NSW+2000"
+mapEmbedUrl: "https://www.google.com/maps?q=Mezzanine%2C+309+George+St%2C+Sydney+NSW+2000&output=embed"
+mapLinkUrl: "https://www.google.com/maps/search/?api=1&query=Mezzanine%2C+309+George+St%2C+Sydney+NSW+2000"
 getInTouchHeading: Get in touch
 email: thefasciaguy92@gmail.com
 instagramHandle: "@thefasciaguy"
