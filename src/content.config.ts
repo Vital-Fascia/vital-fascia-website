@@ -59,6 +59,8 @@ export const collections = {
       whatsappUrl: z.string().optional(),
       bookingUrl: z.string(),
       bookingLabel: z.string(),
+      requestCallLabel: z.string(),
+      hoursHeading: z.string(),
     }),
   }),
 

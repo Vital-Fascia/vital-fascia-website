@@ -5,7 +5,7 @@ items:
   - status: active
     badge: Available now
     title: Initial Session
-    details: 75 minutes · in-clinic, Double Bay
+    details: 75 minutes · in-clinic, Sydney CBD
     # TODO: prices are placeholders - confirm with client.
     price: "[$XXX]"
     priceNote: " per session"
@@ -16,7 +16,7 @@ items:
       - Follow-up sessions from [$XXX] · 60 minutes
     expect:
       - { label: Duration, value: "[75 minutes]" }
-      - { label: Where, value: "Double Bay clinic" }
+      - { label: Where, value: "Sydney CBD clinic" }
       - { label: What to wear, value: "[Comfortable, loose clothing]" }
     rebate: "[Health fund rebates - HICAPS available. TODO: confirm with client]"
     buttonLabel: Book a Session
@@ -24,7 +24,7 @@ items:
   - status: soon
     badge: Coming soon
     title: 8-Week 1:1 Program
-    details: In person · Double Bay
+    details: In person · Sydney CBD
     description: A structured, in-person program for people who want lasting change, not just relief. Currently in development.
     includes:
       - "[What it will include - item 1]"

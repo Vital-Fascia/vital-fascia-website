@@ -465,6 +465,8 @@ collections:
           - { name: whatsappUrl, label: WhatsApp link, widget: string, required: false, hint: "e.g. https://wa.me/61449637920 (country code, no + or spaces). Leave empty to hide the icon." }
           - { name: bookingUrl, label: Online booking link (Cliniko), widget: string, hint: "Every 'Book' button on the site goes here." }
           - { name: bookingLabel, label: Booking button text (footer), widget: string }
+          - { name: requestCallLabel, label: Request-a-call button text (footer), widget: string }
+          - { name: hoursHeading, label: "'Opening hours' heading (footer)", widget: string }
           - { name: visitHeading, label: "'Visit' heading", widget: string }
           - { name: getInTouchHeading, label: "'Get in touch' heading", widget: string }
 

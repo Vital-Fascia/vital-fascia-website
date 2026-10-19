@@ -13,7 +13,7 @@ forWhoHeading: Who it's for
 forWhoText: "[Who this program is for - TODO]"
 detailsHeading: The details
 details:
-  - { label: Format, value: "1:1, in person, Double Bay" }
+  - { label: Format, value: "1:1, in person, Sydney CBD" }
   - { label: Length, value: 8 weeks }
   - { label: Investment, value: "[$XXX]" }
   - { label: Start date, value: "[TBC]" }

@@ -12,7 +12,13 @@ const setOpen = (root: HTMLElement, open: boolean) => {
 };
 
 roots.forEach((root) => {
-  root.querySelector('.c-toggle')?.addEventListener('click', () => setOpen(root, !root.classList.contains('open')));
+  const toggle = () => setOpen(root, !root.classList.contains('open'));
+  root.querySelector('.c-toggle')?.addEventListener('click', toggle);
+  // the heading itself is clickable too (the caret button is the keyboard/screen-reader route)
+  root.querySelector('.c-title')?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a, button')) return;
+    toggle();
+  });
 });
 
 const openForHash = () => {

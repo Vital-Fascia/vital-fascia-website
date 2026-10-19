@@ -20,21 +20,25 @@ const legalLinks = [
         <p><a href={`mailto:${c.email}`}>{c.email}</a></p>
         <p class="gap-s"><a href={c.instagramUrl} target="_blank" rel="noopener">{c.instagramHandle}</a></p>
         <SocialLinks class="footer-socials" size={36} />
+        {c.hours.length > 0 && (
+          <div class="hours-wrap">
+            <h4>{c.hoursHeading}</h4>
+            <table class="hours">
+              <caption class="sr-only">{c.hoursHeading}</caption>
+              <tbody>
+                {c.hours.map((h: any) => <tr><th scope="row">{h.days}</th><td>{h.time}</td></tr>)}
+              </tbody>
+            </table>
+          </div>
+        )}
         <p class="gap-l buttons">
           <a class="btn btn-ghost-dark btn-sm" href={c.bookingUrl}>{c.bookingLabel}</a>
+          <a class="btn btn-ghost-dark btn-sm" href="/#discovery-call">{c.requestCallLabel}</a>
         </p>
       </div>
       <div class="contact-col">
         <h3>{c.visitHeading}</h3>
         <p>{c.addressLines.map((line: string, i: number) => <>{i > 0 && <br />}{line}</>)}</p>
-        {c.hours.length > 0 && (
-          <table class="hours">
-            <caption class="sr-only">Opening hours</caption>
-            <tbody>
-              {c.hours.map((h: any) => <tr><th scope="row">{h.days}</th><td>{h.time}</td></tr>)}
-            </tbody>
-          </table>
-        )}
         {c.mapEmbedUrl && (
           <div class="map">
             <iframe src={c.mapEmbedUrl} title={`Map showing ${site.businessName}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
@@ -62,12 +66,14 @@ const legalLinks = [
   .underline { text-decoration: underline; text-underline-offset: 3px; }
   .gap-s { margin-top: 8px; }
   .gap-l { margin-top: 20px; }
-  .buttons { display: flex; flex-wrap: wrap; gap: 12px; }
-  .hours { margin-top: 14px; border-collapse: collapse; font-size: 14.5px; }
+  .buttons { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .hours-wrap { margin-top: 22px; }
+  .hours-wrap h4 { font-family: var(--font-body); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--cream-muted); font-weight: 600; margin-bottom: 6px; }
+  .hours { margin-top: 0; border-collapse: collapse; font-size: 14.5px; }
   .hours th, .hours td { text-align: left; padding: 5px 0; font-weight: 400; }
   .hours th { padding-right: 24px; color: var(--cream-muted); }
   .contact-col :global(.footer-socials) { margin: 14px 0 0 -6px; }
-  .map { margin-top: 20px; aspect-ratio: 16/10; border: 1px solid rgba(242, 236, 221, 0.18); }
+  .map { margin-top: 20px; aspect-ratio: 16/10; border: 6px solid var(--olive); border-radius: var(--radius); overflow: hidden; }
   .map iframe { width: 100%; height: 100%; border: 0; display: block; filter: grayscale(.35) contrast(.95); }
   .footer-base { border-top: 1px solid rgba(242, 236, 221, 0.14); margin-top: 40px; padding-top: 22px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; font-size: 13px; color: rgba(242, 236, 221, 0.75); }
   .legal { display: flex; flex-wrap: wrap; gap: 4px 20px; }

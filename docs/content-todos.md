@@ -12,7 +12,7 @@ The home page copy was taken from the design prototype, which contains wording t
 | Home page > Free discovery call | Copy, "2 hours" call-back promise, form endpoint | Confirm with client; form submission still to be connected |
 | Home page > The process | Steps 5-7 | Placeholder titles and text |
 | Other pages > Legal pages | Privacy, Terms, Refund Policy | Template text only; replace before launch |
-| Location | Brief said Sydney CBD, site says Double Bay | Left as Double Bay, confirm |
+| Location | Business location is now Sydney CBD everywhere | Street address and map pin are placeholders; add the real address |
 | Home page > Client testimonials | Six testimonials (Sarah, Tom, Priya, Marcus, Liv, Ben) | Unconfirmed, from the design. Replace with real reviews (with permission) or hide |
 | Home page > About | "Roughly nine in ten clients report a noticeable improvement..." | Unconfirmed claim. Verify or delete |
 | Home page > About | Alex May's story / bio | Written for the prototype. Client to approve |

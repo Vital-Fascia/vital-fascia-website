@@ -103,3 +103,10 @@ img { max-width: 100%; height: auto; }
   .card-lift, .card-lift:hover { transform: none; transition: none; }
   .btn-arrow:hover::after { transform: none; }
 }
+
+/* Collapsible sections: when folded to just the heading, drop most of the band padding so it
+   doesn't look like a big empty gap. Animates with the fold. */
+.js .band:has(> .wrap > .collapse) { transition: padding-block .55s var(--ease); }
+.js .band:has(> .wrap > .collapse:not(.open)) { padding-block: clamp(22px, 3vw, 34px); }
+.js .collapse:not(.open) .eyebrow { margin-bottom: 6px; }
+@media (prefers-reduced-motion: reduce) { .js .band:has(> .wrap > .collapse) { transition: none; } }
