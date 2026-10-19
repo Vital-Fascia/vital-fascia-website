@@ -10,7 +10,7 @@ const site = await getContent('site');
   <div class="c-head">
     <div class="c-title"><slot name="head" /></div>
     <button type="button" class="c-toggle" aria-expanded={open ? 'true' : 'false'} aria-controls={`${id}-body`}>
-      <span class="c-label">{open ? site.hideLabel : site.showLabel}</span>
+      <span class="sr-only c-label">{open ? site.hideLabel : site.showLabel}</span>
       <span class="c-icon" aria-hidden="true"></span>
     </button>
   </div>
@@ -20,17 +20,18 @@ const site = await getContent('site');
 </div>
 
 <style>
-  .c-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+  /* heading + a plain caret beside it; clicking either one opens or closes the section */
+  .c-head { display: flex; align-items: center; justify-content: flex-start; gap: 12px 20px; }
   .c-title { min-width: 0; }
-  .c-toggle { display: none; align-items: center; gap: 10px; flex: none; min-height: 44px; padding: 0 18px; border: 1.5px solid currentColor; border-radius: 30px; background: transparent; color: inherit; font-size: 14px; font-weight: 600; letter-spacing: .02em; transition: background .2s ease, color .2s ease, opacity .2s ease; margin-bottom: 4px; opacity: .85; }
-  .c-toggle:hover { opacity: 1; }
+  :global(.js) .c-title { cursor: pointer; }
+  .c-toggle { display: none; align-items: center; justify-content: center; flex: none; width: 48px; height: 48px; padding: 0; border: 0; background: transparent; color: inherit; opacity: .8; transition: opacity .2s ease; }
+  .c-toggle:hover, :global(.js) .c-head:hover .c-toggle { opacity: 1; }
   :global(.js) .c-toggle { display: inline-flex; }
-  .c-icon { width: 9px; height: 9px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .4s var(--ease); }
-  .open .c-icon { transform: translateY(2px) rotate(225deg); }
+  .c-icon { width: 14px; height: 14px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-3px) rotate(45deg); transition: transform .4s var(--ease); }
+  .open .c-icon { transform: translateY(3px) rotate(225deg); }
   :global(.js) .c-body { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows .55s var(--ease), visibility 0s .55s; }
   :global(.js) .open .c-body { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows .55s var(--ease), visibility 0s; }
   :global(.js) .c-inner { overflow: hidden; min-height: 0; }
-  @media (max-width: 560px) { .c-head { flex-direction: column; align-items: flex-start; gap: 14px; } .c-toggle { margin-bottom: 0; } }
   @media (prefers-reduced-motion: reduce) {
     :global(.js) .c-body, :global(.js) .open .c-body { transition: none; }
     .c-icon { transition: none; }

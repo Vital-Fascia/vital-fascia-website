@@ -1,5 +1,5 @@
 businessName: Vital Fascia
-tagline: Soft-tissue therapy in Double Bay
+tagline: Soft-tissue therapy in Sydney CBD
 navLinks:
   - { label: About, href: "/#about" }
   - { label: My Approach, href: "/#approach" }
@@ -8,7 +8,7 @@ navLinks:
   - { label: Contact, href: "/contact" }
 bookButtonLabel: Book Now
 bookButtonShortLabel: Book
-menuNote: Double Bay · @thefasciaguy
+menuNote: Sydney CBD · @thefasciaguy
 footerNote: All rights reserved.
 showLabel: Show
 hideLabel: Hide
