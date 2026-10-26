@@ -33,5 +33,7 @@ const d = await getContent('about');
   @media (max-width: 980px) {
     .grid { grid-template-columns: 1fr; }
     .side :global(.about-photo) { aspect-ratio: 4/3; }
+    /* portrait is 3:4: keep the face in frame when cropped to landscape */
+    .side :global(.about-photo img) { object-position: center 14%; }
   }
 </style>

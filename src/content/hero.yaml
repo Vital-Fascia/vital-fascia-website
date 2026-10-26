@@ -5,5 +5,6 @@ headingEnd: " you try to fix it."
 intro: Alex works with driven, active people who are tired of chasing pain from spot to spot. Fascia-led, whole-body treatment that explains what's actually going on, and what to do about it yourself.
 primaryButton: { label: Book a Session, href: "#" }
 secondaryButton: { label: Free discovery call, href: "#discovery-call" }
-photoAlt: ""
+photo: ../assets/uploads/hero-neck-treatment.jpg
+photoAlt: "Alex, a soft-tissue therapist, gently treating the neck of a client lying on a treatment table in a bright clinic room"
 photoPlaceholder: "[Editorial photo - hands-on treatment, natural light]"

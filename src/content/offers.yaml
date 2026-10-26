@@ -30,7 +30,8 @@ items:
       - "[What it will include - item 1]"
       - "[What it will include - item 2]"
       - "[What it will include - item 3]"
-    photoAlt: ""
+    photo: ../assets/uploads/program-8-week-preview.jpg
+    photoAlt: "Three scenes from the program: seated shoulder treatment, supine arm and shoulder release, and a standing movement drill in a gym"
     photoPlaceholder: "[Photo - program preview]"
     buttonLabel: Register interest
     buttonHref: /8-week-program#waitlist
