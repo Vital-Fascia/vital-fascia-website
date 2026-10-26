@@ -2,5 +2,6 @@ visible: true
 heading: Ready to actually understand your body?
 text: Book a session and start treating the pattern, not just the pain.
 buttonLabel: Book a Session
+photo: ../assets/uploads/final-cta-background.jpg
 photoAlt: ""
 photoPlaceholder: "[Full-bleed photo - calm clinic or movement scene]"

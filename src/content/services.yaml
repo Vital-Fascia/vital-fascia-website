@@ -28,35 +28,41 @@ treatments:
     icon: massage
     description: Broad, whole-body groundwork that settles the system and shows where the tension is held.
     detail: "[Placeholder detail] A grounded, hands-on session that reduces general tightness, improves circulation and gives us a clear read on how you hold yourself before anything more specific is needed."
-    photoAlt: ""
+    photo: ../assets/uploads/service-remedial-massage.jpg
+    photoAlt: "Alex's hands working across a client's shoulder and upper chest as they lie on a towel-covered table"
     photoPlaceholder: "[Photo - hands-on remedial massage]"
   - name: Myofascial release
     icon: web
     description: Slow, sustained work on the connective web, easing restriction across whole chains of tissue.
     detail: "[Placeholder detail] Gentle, patient pressure held long enough for fascia to soften and glide again. Often the key to patterns that keep returning in the same place."
-    photoAlt: ""
+    photo: ../assets/uploads/service-myofascial-release.jpg
+    photoAlt: "Close-up of Alex's hand and fingers working into the soft tissue of a client's lower back"
     photoPlaceholder: "[Photo - myofascial release, forearm or hand]"
   - name: Trigger point therapy
     icon: target
     description: Targeted release of the tight knots that refer pain somewhere else in the body.
     detail: "[Placeholder detail] Focused pressure on specific tender points that refer pain elsewhere, such as a shoulder knot that shows up as a headache. Precise and always within your comfort."
-    photoAlt: ""
+    photo: ../assets/uploads/service-trigger-point-therapy.jpg
+    photoAlt: "Alex's thumb pressing into a tender point beside the shoulder blade of a client lying face down"
     photoPlaceholder: "[Photo - trigger point work]"
   - name: Myofascial cupping
     icon: cup
     description: Gentle decompression that lifts and mobilises stubborn, thickened tissue.
     detail: "[Placeholder detail] Soft suction cups lift the tissue rather than compress it, helping stuck areas move again. Used selectively, and often combined with movement."
-    photoAlt: ""
+    photo: ../assets/uploads/service-myofascial-cupping.jpg
+    photoAlt: "Glass cups placed on a client's upper back while Alex steadies the tissue"
     photoPlaceholder: "[Photo - cupping on the back]"
   - name: Dry needling
     icon: needle
     description: Precise, fine-needle relief for deep tension that hands alone can't reach.
     detail: "[Placeholder detail] Very fine needles placed into tight, reactive muscle to reset it quickly. Only with your consent, and only when it's the right tool for your pattern."
-    photoAlt: ""
+    photo: ../assets/uploads/service-dry-needling.jpg
+    photoAlt: "Alex placing a fine acupuncture-style needle into a client's shoulder"
     photoPlaceholder: "[Photo - dry needling]"
   - name: Corrective exercise
     icon: exercise
     description: Simple movement that retrains the pattern, so the results stay with you.
     detail: "[Placeholder detail] A short, personalised set of drills to practise between sessions. Small, repeatable and built around what your body actually needs, not a generic routine."
-    photoAlt: ""
+    photo: ../assets/uploads/service-corrective-exercise.jpg
+    photoAlt: "Alex guiding a client's posture during a standing movement drill with a bar in the clinic gym"
     photoPlaceholder: "[Photo - corrective exercise demo]"
