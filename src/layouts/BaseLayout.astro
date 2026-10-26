@@ -18,7 +18,7 @@ const meta = page === 'legal' ? { title: `${title} | ${site.businessName}`, desc
 const canonical = new URL(Astro.url.pathname, Astro.site);
 let ogImage: string | undefined;
 if (seo.socialImage) {
-  const img = await getImage({ src: seo.socialImage, width: 1200, height: 630, format: 'jpg' });
+  const img = await getImage({ src: seo.socialImage, width: 1000, height: 1000, fit: 'cover', position: 'top', format: 'jpg' });
   ogImage = new URL(img.src, Astro.site).href;
 }
 ---
@@ -42,8 +42,10 @@ if (seo.socialImage) {
     <meta property="og:url" content={canonical.href} />
     <meta property="og:locale" content="en_AU" />
     {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta property="og:image:width" content="1000" />}
+    {ogImage && <meta property="og:image:height" content="1000" />}
     {ogImage && seo.socialImageAlt && <meta property="og:image:alt" content={seo.socialImageAlt} />}
-    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:card" content={'summary'} />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>

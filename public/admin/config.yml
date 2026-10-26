@@ -515,5 +515,5 @@ collections:
             fields:
               - { name: title, label: Page title, widget: string }
               - { name: description, label: Page description, widget: text }
-          - { name: socialImage, label: Sharing image, widget: image, required: false, choose_url: false, hint: "Shown when the site is shared on Facebook, messages, etc. Best size: 1200 x 630 pixels." }
+          - { name: socialImage, label: Sharing image, widget: image, required: false, choose_url: false, hint: "Shown when the site is shared on Facebook, messages, etc. Shown as a square thumbnail, cropped from the top. Best size: 1000 x 1000 pixels or larger, with the face in the upper half." }
           - { name: socialImageAlt, label: Sharing image description, widget: string, required: false }

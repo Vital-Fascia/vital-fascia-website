@@ -7,4 +7,5 @@ program:
 contact:
   title: Contact | Vital Fascia
   description: Get in touch with Vital Fascia in Sydney CBD, or send a message to ask a question or start care.
-socialImageAlt: ""
+socialImage: ../assets/uploads/about-alex-portrait.jpg
+socialImageAlt: "Portrait of Alex from Vital Fascia, smiling, in a white t-shirt"
