@@ -1,0 +1,258 @@
+---
+// TEMPORARY MOCKUP for ManKind Project Queensland. Not part of the Vital Fascia site.
+// Excluded from git via .git/info/exclude. Remove src/pages/mkp and src/mkp when the demo is over.
+import { Image } from 'astro:assets';
+import group from '../../mkp/stanbroke-group.jpg';
+import logo from '../../mkp/logo.png';
+import logoWhite from '../../mkp/logo-white.png';
+import acnc from '../../mkp/acnc.png';
+
+const donateUrl = 'https://square.link/u/dqqhbApM'; // taken from mkpqld.org.au
+const facebookUrl = '#'; // TODO: client to supply the Facebook post link
+const phone = '1300 657 753';
+const email = 'admin@mkpqld.org.au'; // TODO: confirm whether a dedicated donations address exists
+const nav = [
+  ['Men’s Circles', 'https://mkpqld.org.au/'],
+  ['Training', 'https://mkpqld.org.au/'],
+  ['Stories', 'https://mkpqld.org.au/'],
+  ['Why?', 'https://mkpqld.org.au/'],
+  ['About', 'https://mkpqld.org.au/'],
+  ['Helplines', 'https://mkpqld.org.au/'],
+];
+const uses = [
+  {
+    title: 'A Scholarship Fund',
+    body: 'Helping men who need financial support attend the New Warrior Training Adventure. Men who benefit will be invited to give back when they are able.',
+  },
+  {
+    title: 'Reaching more men',
+    body: 'For example, by starting new Men’s Circles and strengthening our marketing and social media.',
+  },
+];
+---
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thank you, Stanbroke | ManKind Project Queensland</title>
+    <meta name="description" content="ManKind Project Queensland thanks Stanbroke for a major donation of $45,029. See how the gift may be used and how you can give." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#123e73" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="banner">Design mockup for discussion. Not the live MKPQ website.</div>
+
+    <div class="topbar">
+      <div class="wrap topbar-in">
+        <a href={`tel:${phone.replace(/\s/g, '')}`}>{phone}</a>
+        <a href={`mailto:${email}`}>{email}</a>
+        <a class="topbar-donate" href={donateUrl}>Donate</a>
+      </div>
+    </div>
+
+    <header class="head">
+      <div class="wrap head-in">
+        <a href="https://mkpqld.org.au/" class="logo">
+          <Image src={logo} alt="The ManKind Project Queensland" width={220} />
+        </a>
+        <nav aria-label="Main">
+          <ul>
+            {nav.map(([label, href]) => <li><a href={href}>{label}</a></li>)}
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="wrap hero-in">
+          <div class="hero-copy">
+            <p class="eyebrow">A major donation</p>
+            <h1>Thank you, Stanbroke</h1>
+            <p class="lead">
+              ManKind Project Queensland is grateful to Stanbroke for a major donation, given by the company as a whole.
+              It was a welcome surprise, and Stanbroke chose MKPQ from among other organisations it could have supported.
+            </p>
+            <p class="amount"><span>$45,029</span> donated by Stanbroke</p>
+            <div class="actions">
+              <a class="btn" href="#give">Give to MKPQ</a>
+              <a class="btn btn-ghost" href={facebookUrl}>See the Facebook post</a>
+            </div>
+          </div>
+          <figure class="hero-photo">
+            <Image
+              src={group}
+              alt="Eight Stanbroke team members in work uniforms standing together outside the Stanbroke entrance, in front of a large bronze bull sculpture. One holds a framed certificate."
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 960px) 600px, 100vw"
+              loading="eager"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section class="band who">
+        <div class="wrap narrow">
+          <p class="eyebrow">Who we are</p>
+          <h2>A volunteer-led charity for men’s mental health</h2>
+          <p>
+            MKPQ is a volunteer-led charity working to prevent and reduce mental illness in men, particularly depression and anxiety,
+            through I-Groups, the New Warrior Training Adventure and ongoing support.
+          </p>
+        </div>
+      </section>
+
+      <section class="band uses">
+        <div class="wrap">
+          <p class="eyebrow">How the gift may be used</p>
+          <h2>Where the donation could go</h2>
+          <p class="intro">
+            Our Leadership Council is considering how to use the donation in line with our Rules of Association. Proposals include:
+          </p>
+          <ul class="cards">
+            {uses.map((u, i) => (
+              <li class="card">
+                <span class="num" aria-hidden="true">{i + 1}</span>
+                <h3>{u.title}</h3>
+                <p>{u.body}</p>
+              </li>
+            ))}
+          </ul>
+          <p class="note">
+            These proposals are subject to Leadership Council approval. We will publish an update on how the funds are used and what they achieve.
+          </p>
+        </div>
+      </section>
+
+      <section class="give" id="give">
+        <div class="wrap narrow">
+          <p class="eyebrow eyebrow-light">Give to MKPQ</p>
+          <h2>Every gift helps us reach more men</h2>
+          <p>
+            Inspired by Stanbroke? Individuals and organisations are welcome to give. If your workplace is considering a gift,
+            or a matching donation, we would love to hear from you.
+          </p>
+          <div class="actions center">
+            <a class="btn" href={donateUrl}>Donate now</a>
+          </div>
+          <p class="questions">
+            Questions? Call <a href={`tel:${phone.replace(/\s/g, '')}`}>{phone}</a> or email <a href={`mailto:${email}`}>{email}</a>.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <div class="wrap foot-in">
+        <Image src={logoWhite} alt="The ManKind Project Queensland" width={240} />
+        <address>
+          PO Box 880, Buderim Qld 4556<br />
+          <a href="tel:0493893258">0493 893 258</a><br />
+          <a href={`mailto:${email}`}>{email}</a><br />
+          ABN 84 194 242 792
+        </address>
+        <Image src={acnc} alt="Australian Charities and Not-for-profits Commission registered charity" width={96} />
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --blue: #2b5a9e;
+    --blue-dark: #123e73;
+    --amber: #fcbd48;
+    --amber-deep: #f2a81a;
+    --grey: #5b5959;
+    --ink: #211818;
+    --mist: #f3f6fb;
+    --line: #dbe3ef;
+    --white: #fff;
+    --display: 'Poppins', system-ui, sans-serif;
+    --body: 'Work Sans', system-ui, sans-serif;
+    --gutter: clamp(20px, 5vw, 56px);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: var(--body); color: var(--grey); background: var(--white); line-height: 1.65; font-size: 1.0625rem; }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: var(--blue); }
+  a:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
+  h1, h2, h3 { font-family: var(--display); color: var(--blue); line-height: 1.15; margin: 0 0 .5em; }
+  h1 { font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 800; text-transform: uppercase; letter-spacing: -.01em; }
+  h2 { font-size: clamp(1.6rem, 3.4vw, 2.4rem); font-weight: 700; }
+  h3 { font-size: 1.3rem; font-weight: 600; }
+  p { margin: 0 0 1em; }
+  .wrap { width: min(1180px, 100% - var(--gutter) * 2); margin-inline: auto; }
+  .narrow { max-width: 760px; }
+
+  .banner { background: var(--ink); color: #f6e7c1; font-size: .8rem; text-align: center; padding: 6px var(--gutter); }
+  .topbar { background: var(--blue-dark); color: var(--white); font-size: .875rem; }
+  .topbar a { color: var(--white); text-decoration: none; }
+  .topbar a:hover { text-decoration: underline; }
+  .topbar-in { display: flex; gap: 1.5rem; justify-content: flex-end; align-items: center; padding-block: 8px; flex-wrap: wrap; }
+  .topbar-donate { background: var(--amber); color: var(--ink) !important; font-weight: 700; text-transform: uppercase; padding: 3px 14px; letter-spacing: .04em; }
+
+  .head { background: var(--white); border-bottom: 1px solid var(--line); }
+  .head-in { display: flex; align-items: center; justify-content: space-between; gap: 1rem 2rem; padding-block: 18px; flex-wrap: wrap; }
+  .head ul { list-style: none; margin: 0; padding: 0; display: flex; gap: .25rem 1.5rem; flex-wrap: wrap; }
+  .head nav a { font-family: var(--display); font-weight: 600; font-size: .9rem; text-transform: uppercase; letter-spacing: .03em; color: var(--grey); text-decoration: none; padding: 6px 0; border-bottom: 3px solid transparent; }
+  .head nav a:hover { color: var(--blue); border-color: var(--amber); }
+
+  .eyebrow { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: .14em; font-size: .8rem; color: var(--blue); margin-bottom: .9rem; display: flex; align-items: center; gap: .7rem; }
+  .eyebrow::before { content: ''; width: 34px; height: 4px; background: var(--amber); }
+  .eyebrow-light { color: var(--amber); }
+
+  .btn { display: inline-block; font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: 1rem; background: var(--amber); color: var(--ink); padding: 15px 30px; text-decoration: none; border: 2px solid var(--amber); transition: background .2s, color .2s; }
+  .btn:hover { background: var(--amber-deep); border-color: var(--amber-deep); }
+  .btn-ghost { background: transparent; color: var(--blue); border-color: var(--blue); }
+  .btn-ghost:hover { background: var(--blue); border-color: var(--blue); color: var(--white); }
+  .actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 1.5rem; }
+  .actions.center { justify-content: center; }
+
+  .hero { background: linear-gradient(180deg, var(--mist), var(--white)); padding-block: clamp(40px, 7vw, 96px); }
+  .hero-in { display: grid; gap: 40px; align-items: center; }
+  .lead { font-size: 1.2rem; color: var(--ink); }
+  .amount { font-family: var(--display); font-weight: 500; color: var(--grey); margin: 1.2rem 0 0; display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
+  .amount span { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 800; color: var(--blue); border-bottom: 5px solid var(--amber); line-height: 1.1; }
+  .hero-photo { margin: 0; }
+  .hero-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-bottom: 8px solid var(--amber); box-shadow: 0 24px 50px -22px rgba(18, 62, 115, .45); }
+
+  .band { padding-block: clamp(48px, 7vw, 96px); }
+  .who { text-align: center; }
+  .who .narrow { margin-inline: auto; }
+  .who .eyebrow { justify-content: center; }
+  .who p { font-size: 1.15rem; }
+  .uses { background: var(--mist); }
+  .intro { max-width: 720px; }
+  .cards { list-style: none; margin: 2rem 0; padding: 0; display: grid; gap: 24px; }
+  .card { background: var(--white); border: 1px solid var(--line); border-top: 5px solid var(--amber); padding: 32px; position: relative; }
+  .card p { margin: 0; }
+  .num { font-family: var(--display); font-weight: 800; font-size: 2.6rem; line-height: 1; color: var(--amber); display: block; margin-bottom: .6rem; }
+  .note { font-size: .95rem; font-style: italic; border-left: 4px solid var(--blue); padding-left: 16px; max-width: 720px; margin: 0; }
+
+  .give { background: var(--blue-dark); color: #dbe6f5; text-align: center; padding-block: clamp(56px, 8vw, 110px); }
+  .give .narrow { margin-inline: auto; }
+  .give h2 { color: var(--white); }
+  .give .eyebrow { justify-content: center; }
+  .give a:not(.btn) { color: var(--amber); }
+  .questions { margin: 2rem 0 0; font-size: .95rem; }
+
+  .foot { background: var(--ink); color: #c9c4c4; padding-block: 48px; }
+  .foot-in { display: grid; gap: 28px; justify-items: center; text-align: center; }
+  .foot address { font-style: normal; font-size: .95rem; line-height: 1.9; }
+  .foot a { color: #fff; text-decoration: none; }
+  .foot a:hover { text-decoration: underline; }
+
+  @media (min-width: 960px) {
+    .hero-in { grid-template-columns: 1fr 1.1fr; gap: 64px; }
+    .cards { grid-template-columns: 1fr 1fr; }
+    .foot-in { grid-template-columns: auto 1fr auto; text-align: left; justify-items: start; align-items: center; gap: 56px; }
+    .foot address { justify-self: center; text-align: center; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
