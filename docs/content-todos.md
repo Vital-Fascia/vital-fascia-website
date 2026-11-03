@@ -13,7 +13,7 @@ The home page copy was taken from the design prototype, which contains wording t
 | Home page > The process | Steps 5-7 | Placeholder titles and text |
 | Other pages > Legal pages | Privacy, Terms, Refund Policy | Template text only; replace before launch |
 | Location | Business location is now Sydney CBD everywhere | Address is Mezzanine, 309 George St, Sydney NSW 2000 (confirm map pin) |
-| Home page > Client testimonials | Six testimonials (Sarah, Tom, Priya, Marcus, Liv, Ben) | Unconfirmed, from the design. Replace with real reviews (with permission) or hide |
+| Home page > Client testimonials | 22 real Google reviews from docs/Reviews.md (top 10 first) | Full names as on Google. Reviews naming the old clinics (Muscle Medicine / Movement Laboratory) and two incomplete ones were left out |
 | Home page > About | "Roughly nine in ten clients report a noticeable improvement..." | Unconfirmed claim. Verify or delete |
 | Home page > About | Alex May's story / bio | Written for the prototype. Client to approve |
 | Home page > Pricing & offers | Prices shown as `[$XXX]` | Placeholder |

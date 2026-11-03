@@ -1,6 +1,10 @@
 ---
 import { getContent } from '../lib/content';
 const d = await getContent('testimonials');
+
+// Long reviews show a short preview with a clickable "…" that expands that card.
+const LIMIT = 230;
+const preview = (q: string) => q.slice(0, q.lastIndexOf(' ', LIMIT)).replace(/[\s,.;:!-]+$/, '');
 ---
 {d.visible && d.items.length > 0 && (
   <section id="testimonials" class="testimonials band dark" data-carousel>
@@ -12,7 +16,11 @@ const d = await getContent('testimonials');
         {d.items.map((t: any) => (
           <figure class="card">
             <div class="stars" role="img" aria-label={`${t.rating} out of 5 stars`}>{'★'.repeat(t.rating)}</div>
-            <blockquote>“{t.quote}”</blockquote>
+            {t.quote.length > LIMIT + 40 ? (
+              <blockquote>“<span data-short>{preview(t.quote)}<button type="button" class="more" data-more aria-expanded="false" aria-label="Read the full review">…</button></span><span data-full hidden>{t.quote}</span>”</blockquote>
+            ) : (
+              <blockquote>“{t.quote}”</blockquote>
+            )}
             <div class="divider"></div>
             <figcaption>
               <span class="name">{t.name}</span>
@@ -84,6 +92,14 @@ const d = await getContent('testimonials');
       );
       sync();
     };
+    track.querySelectorAll<HTMLButtonElement>('[data-more]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const bq = btn.closest('blockquote')!;
+        bq.querySelector<HTMLElement>('[data-short]')!.hidden = true;
+        bq.querySelector<HTMLElement>('[data-full]')!.hidden = false;
+        btn.setAttribute('aria-expanded', 'true');
+      });
+    });
     prev.addEventListener('click', () => go(current() - 1));
     next.addEventListener('click', () => go(current() + 1));
     track.addEventListener('scroll', sync, { passive: true });
@@ -103,6 +119,9 @@ const d = await getContent('testimonials');
   .scroll:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
   .card { scroll-snap-align: start; background: var(--white); color: var(--ink); border-radius: var(--radius); padding: 30px 28px; display: flex; flex-direction: column; margin: 0; min-width: 0; }
   .card blockquote { font-family: var(--font-display); font-style: italic; font-size: 19px; line-height: 1.5; margin: 16px 0 0; flex-grow: 1; }
+  .more { font: inherit; color: var(--olive); background: none; border: 0; padding: 0 4px; margin-left: 2px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .more:hover { color: var(--ink); }
+  .more:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; border-radius: 3px; }
   .divider { width: 100%; height: 1px; background: var(--stone-line); margin: 22px 0 16px; }
   .name { font-weight: 600; display: block; margin-bottom: 2px; font-size: 15px; }
   .ctx { color: var(--ink-muted); font-size: 13.5px; }
