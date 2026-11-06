@@ -78,9 +78,11 @@ Nothing is stored on the website. **Your inbox is the record of requests.**
 
 Go to **Email templates**. There is one email for each form (call request, contact message, waitlist). You can edit the subject, greeting, steps and sign-off. Put `{name}` in the greeting and it becomes the visitor's first name. Changes go live a minute or two after you save. The emails sent *to you* are fixed.
 
-### Preview the emails (the admin preview page)
+### Preview the emails
 
-The editor shows the text of an email but not how it looks. To see the finished emails, open the private preview page at **`your-website-address/admin/email-previews`** (there is also an **Edit the wording** button on that page, and the same page links back to the editor).
+**While you edit:** in **Email templates**, open an email and look at the preview panel next to the wording (if you can't see it, use the preview/eye button at the top of the editor). It draws the three finished emails as you type, using a sample person called "Jordan", and has an **Open the full preview page** button.
+
+**The full preview page (the admin preview page):** to see every email, including the ones sent *to you*, open the private page at **`your-website-address/admin/email-previews`**. Bookmark it. It also has an **Edit the wording** button, and a link back to the editor.
 
 - It has a dark bar across the top that says **ADMIN AREA**, so you always know you're in the private part of the site. Use **← Back to the website editor** to return.
 - Click any email in the list on the left to see it, and use **Computer / Phone** to see how it looks on each.
