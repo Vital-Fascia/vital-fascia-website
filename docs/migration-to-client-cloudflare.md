@@ -56,10 +56,19 @@ The `/admin` page logs in with GitHub through a small Worker. Right now that Wor
    - Homepage URL: `https://www.vitalfascia.com.au`
    - Authorization callback URL: `https://<new-auth-worker-address>/callback` (you get the address in step 3; come back and edit this field after deploying)
    - After creating it, copy the **Client ID** and generate a **Client secret**.
-2. **Deploy the auth Worker in Alex's Cloudflare account.** Follow the install steps at <https://github.com/sveltia/sveltia-cms-auth> (it's a ready-made Worker: deploy it with the "Deploy to Cloudflare" button or `wrangler deploy` while logged in to Alex's account: `npx wrangler login`, then check the account with `npx wrangler whoami`).
+2. **Deploy the auth Worker in Alex's Cloudflare account, from your own computer (recommended).** The "Deploy to Cloudflare" button builds in the cloud and currently fails with `ERR_PNPM_LOCKFILE_CONFIG_MISMATCH` (the upstream project's lockfile doesn't match the pnpm version Cloudflare's builder uses). The Worker has no runtime dependencies (it's one file, `src/index.js`), so deploying from your machine avoids the problem entirely:
+   ```bash
+   git clone https://github.com/sveltia/sveltia-cms-auth.git
+   cd sveltia-cms-auth
+   npx wrangler@latest login      # log in, pick Alex's account if asked
+   npx wrangler@latest whoami     # confirm it says Alex's account
+   npx wrangler@latest deploy
+   ```
+   It prints the Worker address (`https://sveltia-cms-auth.<alex-subdomain>.workers.dev`). Don't run `pnpm install`; you don't need it. If `whoami` lists more than one account, add `CLOUDFLARE_ACCOUNT_ID=<Alex's account id>` before the command (the id is in the dashboard URL).
+   - *If you did use the button/Git build and it already failed:* delete that half-created Worker project in Alex's account (Workers & Pages > it > Settings > Delete), then use the commands above. Alternative fix if you want the Git build: in its **Settings > Build**, set the build command to `pnpm install --no-frozen-lockfile` and add the build variable `SKIP_DEPENDENCY_INSTALL=1`, then retry.
 3. In the Worker's **Settings > Variables and Secrets** add:
    - `GITHUB_CLIENT_ID` (the Client ID)
-   - `GITHUB_CLIENT_SECRET` (secret)
+   - `GITHUB_CLIENT_SECRET` (secret; or from the terminal: `npx wrangler@latest secret put GITHUB_CLIENT_SECRET` inside the cloned folder)
    - `ALLOWED_DOMAINS` = `www.vitalfascia.com.au` (add `vital-fascia-website.<alex-subdomain>.workers.dev` too while testing)
 4. Back in the GitHub OAuth app, set the callback URL to the Worker's real address + `/callback`.
 5. Update the repo, in `public/admin/config.yml`:
