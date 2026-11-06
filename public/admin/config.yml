@@ -322,7 +322,7 @@ collections:
   # -------------------------------------------- SIGNATURE PROGRAM
   - name: signature_program
     media_folder: ../assets/uploads
-    label: 2. SIGNATURE PROGRAM (8-WEEK LANDING PAGE)
+    label: 2. SIGNATURE PROGRAM
     description: The 8-Week 1:1 Program page and its waitlist form.
     files:
       - name: programPage
