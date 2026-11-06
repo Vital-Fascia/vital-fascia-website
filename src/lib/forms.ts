@@ -1,10 +1,10 @@
 /**
  * Form submission endpoints.
- * TODO: we haven't chosen a form service yet. Paste each endpoint URL here
- * (e.g. Formspree, Web3Forms, Cloudflare Worker). Empty = form is not connected.
+ * Handled by the Cloudflare Worker in worker/index.ts (see docs/how-the-forms-work.md).
+ * Empty = form is not connected. The contact and waitlist forms are not connected yet.
  */
 export const formEndpoints = {
   contact: '',
-  discoveryCall: '',
+  discoveryCall: '/api/discovery-call',
   programWaitlist: '',
 };

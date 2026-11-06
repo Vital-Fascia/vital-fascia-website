@@ -14,8 +14,9 @@ const setOpen = (root: HTMLElement, open: boolean) => {
 roots.forEach((root) => {
   const toggle = () => setOpen(root, !root.classList.contains('open'));
   root.querySelector('.c-toggle')?.addEventListener('click', toggle);
-  // the heading itself is clickable too (the caret button is the keyboard/screen-reader route)
-  root.querySelector('.c-title')?.addEventListener('click', (e) => {
+  // the whole header row is clickable (the caret button is the keyboard/screen-reader route)
+  root.querySelector('.c-head')?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('.c-toggle')) return;
     if ((e.target as HTMLElement).closest('a, button')) return;
     toggle();
   });

@@ -450,6 +450,24 @@ collections:
           - { name: loadingText, label: Message while the calendar loads, widget: string }
           - { name: fallbackText, label: Direct-link text, widget: string }
 
+      - name: emails
+        label: Confirmation email (sent after a call request)
+        file: src/content/emails.yaml
+        fields:
+          - { name: subject, label: Email subject line, widget: string }
+          - { name: preheader, label: Preview text (grey text shown beside the subject in the inbox), widget: string }
+          - { name: greeting, label: Greeting, widget: string, hint: "{name} is replaced with the client's name." }
+          - { name: intro, label: Opening paragraph, widget: text }
+          - { name: stepsHeading, label: Heading above the steps, widget: string }
+          - name: steps
+            label: What happens next (steps)
+            label_singular: step
+            widget: list
+            field: { name: text, label: Step, widget: string }
+          - { name: outro, label: Closing paragraph, widget: text }
+          - { name: signOff, label: Sign-off, widget: string }
+          - { name: signature, label: Signature, widget: string }
+
       - name: contactPage
         label: Contact page (message form)
         file: src/content/contact-page.yaml
