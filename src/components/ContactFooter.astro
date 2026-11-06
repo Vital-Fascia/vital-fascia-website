@@ -76,7 +76,10 @@ const legalLinks = [
   .underline { text-decoration: underline; text-underline-offset: 3px; }
   .gap-s { margin-top: 8px; }
   .gap-l { margin-top: 20px; }
-  .buttons { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+  /* the left column is only as wide as its widest line (the email address), and both buttons fill that width */
+  .contact-col:first-child { width: fit-content; max-width: 100%; }
+  .buttons { display: flex; flex-direction: column; align-items: stretch; gap: 12px; }
+  .buttons .btn { justify-content: center; text-align: center; }
   .locations { border-top: 1px solid rgba(242, 236, 221, 0.2); }
   .locations :global(.collapse) { border-bottom: 1px solid rgba(242, 236, 221, 0.2); }
   .loc-head { padding-block: 14px; }

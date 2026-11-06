@@ -25,7 +25,7 @@ collections:
   # ---------------------------------------------------------------- HOME PAGE
   - name: home_page
     media_folder: ../assets/uploads
-    label: Home page
+    label: 1. HOME PAGE
     label_singular: Home page section
     description: Each section of the home page, from top to bottom. Pick a section to edit its wording and photos.
     files:
@@ -319,13 +319,14 @@ collections:
           - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false }
           - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
 
-  # -------------------------------------------------------------- OTHER PAGES
-  - name: other_pages
+  # -------------------------------------------- SIGNATURE PROGRAM
+  - name: signature_program
     media_folder: ../assets/uploads
-    label: Other pages
+    label: 2. SIGNATURE PROGRAM (8-WEEK LANDING PAGE)
+    description: The 8-Week 1:1 Program page and its waitlist form.
     files:
       - name: programPage
-        label: 8-Week Program page
+        label: 8-Week Program landing page
         file: src/content/program-page.yaml
         fields:
           - { name: badge, label: Badge, widget: string, hint: "e.g. Coming soon" }
@@ -365,6 +366,36 @@ collections:
           - { name: finePrint, label: Small print under the button, widget: string }
           - { name: successMessage, label: Message shown after signing up, widget: string }
 
+  # -------------------------------------------- BOOKING PAGE
+  - name: booking_page
+    media_folder: ../assets/uploads
+    label: 3. BOOKING PAGE
+    description: The page where visitors choose a location before booking. Addresses, hours and booking links are under Business details.
+    files:
+      - name: bookingPage
+        label: Booking page (choose a location)
+        file: src/content/booking-page.yaml
+        fields:
+          - { name: eyebrow, label: Small line above the heading, widget: string }
+          - { name: heading, label: Heading, widget: string }
+          - { name: intro, label: Introduction, widget: text }
+          - { name: selectLabel, label: Location button text, widget: string }
+          - { name: selectedLabel, label: Text shown on the chosen location, widget: string }
+          - { name: changeLabel, label: Change-location link text, widget: string }
+          - { name: mapLabel, label: Map toggle text, widget: string }
+          - { name: directionsLabel, label: Get-directions link text, widget: string }
+          - { name: bookingHeadingPrefix, label: Heading above the calendar, widget: string, hint: "The location name is added after this, e.g. 'Booking at Double Bay'." }
+          - { name: bookingHeadingEmpty, label: Heading above the calendar (before a location is chosen), widget: string }
+          - { name: emptyText, label: Message before a location is chosen, widget: string }
+          - { name: loadingText, label: Message while the calendar loads, widget: string }
+          - { name: fallbackText, label: Direct-link text, widget: string }
+
+  # -------------------------------------------- LEGAL PAGES
+  - name: legal_pages
+    media_folder: ../assets/uploads
+    label: 4. LEGAL PAGES
+    description: Privacy, cancellation, terms, refund policy and site map pages.
+    files:
       - name: legal
         label: Legal pages (privacy, cancellation, terms, refunds, site map)
         file: src/content/legal.yaml
@@ -432,24 +463,12 @@ collections:
               - { name: title, label: Page title, widget: string }
               - { name: intro, label: Introduction, widget: text }
 
-      - name: bookingPage
-        label: Booking page (choose a location)
-        file: src/content/booking-page.yaml
-        fields:
-          - { name: eyebrow, label: Small line above the heading, widget: string }
-          - { name: heading, label: Heading, widget: string }
-          - { name: intro, label: Introduction, widget: text }
-          - { name: selectLabel, label: Location button text, widget: string }
-          - { name: selectedLabel, label: Text shown on the chosen location, widget: string }
-          - { name: changeLabel, label: Change-location link text, widget: string }
-          - { name: mapLabel, label: Map toggle text, widget: string }
-          - { name: directionsLabel, label: Get-directions link text, widget: string }
-          - { name: bookingHeadingPrefix, label: Heading above the calendar, widget: string, hint: "The location name is added after this, e.g. 'Booking at Double Bay'." }
-          - { name: bookingHeadingEmpty, label: Heading above the calendar (before a location is chosen), widget: string }
-          - { name: emptyText, label: Message before a location is chosen, widget: string }
-          - { name: loadingText, label: Message while the calendar loads, widget: string }
-          - { name: fallbackText, label: Direct-link text, widget: string }
-
+  # -------------------------------------------- EMAIL TEMPLATES
+  - name: email_templates
+    media_folder: ../assets/uploads
+    label: 5. EMAIL TEMPLATES
+    description: The automatic confirmation emails people receive after filling in a form.
+    files:
       - name: emails
         label: Confirmation emails (sent after a form is filled in)
         file: src/content/emails.yaml
@@ -509,6 +528,12 @@ collections:
               - { name: signOff, label: Sign-off, widget: string }
               - { name: signature, label: Signature, widget: string }
 
+  # -------------------------------------------- FORMS
+  - name: forms
+    media_folder: ../assets/uploads
+    label: 6. FORMS
+    description: The wording of the website forms. (The call-request form is under Home page > Free discovery call, and the waitlist form is under Signature program.)
+    files:
       - name: contactPage
         label: Contact page (message form)
         file: src/content/contact-page.yaml
@@ -524,10 +549,12 @@ collections:
           - { name: buttonLabel, label: Button text, widget: string }
           - { name: successMessage, label: Message shown after sending, widget: string }
 
+
   # ----------------------------------------------------------------- SETTINGS
   - name: settings
     media_folder: ../assets/uploads
-    label: Business details & settings
+    label: 7. BUSINESS DETAILS & SITE SETTINGS
+    description: Contact details, locations and opening hours, the menu and footer, and how the site looks in Google and when a link is shared.
     files:
       - name: contact
         label: Contact details & opening hours
@@ -596,7 +623,7 @@ collections:
           - { name: hideLabel, label: Button text to close a section, widget: string, hint: "e.g. Hide" }
 
       - name: seo
-        label: Google search & social sharing (SEO)
+        label: Google search & link-sharing preview
         file: src/content/seo.yaml
         fields:
           - name: home
@@ -623,5 +650,5 @@ collections:
             fields:
               - { name: title, label: Page title, widget: string }
               - { name: description, label: Page description, widget: text }
-          - { name: socialImage, label: Sharing image, widget: image, required: false, choose_url: false, hint: "Shown when the site is shared on Facebook, messages, etc. Shown as a square thumbnail, cropped from the top. Best size: 1000 x 1000 pixels or larger, with the face in the upper half." }
-          - { name: socialImageAlt, label: Sharing image description, widget: string, required: false }
+          - { name: socialImage, label: Link-sharing preview image, widget: image, required: false, choose_url: false, hint: "The picture shown when the website link is shared on WhatsApp, Facebook, iMessage, LinkedIn etc. Best size: 1200 x 630 pixels (wide, landscape). Keep the important part in the middle. The title and description shown with it come from the Home page entry above. Platforms remember old previews, so a change can take a while to appear." }
+          - { name: socialImageAlt, label: Link-sharing preview image description (for screen readers), widget: string, required: false }
