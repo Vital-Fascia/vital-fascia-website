@@ -1,17 +1,20 @@
 ---
+import { marked } from 'marked';
 interface Props { title: string; intro: string; sections?: { heading: string; body: string }[] }
 const { title, intro, sections = [] } = Astro.props;
+// Page text is written in the CMS with simple formatting (bold, lists, links, tables).
+const md = (t: string) => marked.parse(t, { async: false, breaks: true }) as string;
 ---
 <section class="legal band">
   <div class="wrap narrow">
     <h1>{title}</h1>
     <span class="rule"></span>
-    <p class="lede intro">{intro}</p>
+    <div class="lede intro" set:html={md(intro)} />
     <slot />
     {sections.map((s) => (
       <div class="sec">
         <h2>{s.heading}</h2>
-        <p>{s.body}</p>
+        <div class="body" set:html={md(s.body)} />
       </div>
     ))}
   </div>
@@ -24,5 +27,14 @@ const { title, intro, sections = [] } = Astro.props;
   .intro { margin-top: 18px; }
   .sec { margin-top: 40px; }
   .sec h2 { font-size: 24px; }
-  .sec p { margin-top: 10px; font-size: 17px; line-height: 1.7; color: var(--ink-muted); }
+  .intro :global(p) + :global(p) { margin-top: 14px; }
+  .body :global(p), .body :global(li) { margin-top: 10px; font-size: 17px; line-height: 1.7; color: var(--ink-muted); }
+  .body { margin-top: 10px; }
+  .body :global(p + p), .body :global(ul), .body :global(table) { margin-top: 14px; }
+  .body :global(ul) { padding-left: 22px; list-style: disc; display: flex; flex-direction: column; gap: 8px; }
+  .body :global(strong) { color: var(--ink); font-weight: 600; }
+  .body :global(a) { color: var(--olive); text-decoration: underline; text-underline-offset: 3px; }
+  .body :global(table) { width: 100%; border-collapse: collapse; font-size: 16px; }
+  .body :global(th), .body :global(td) { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--stone-line); }
+  .body :global(th) { color: var(--ink); font-weight: 600; background: var(--bone); }
 </style>

@@ -6,6 +6,7 @@ import { getContent } from '../lib/content';
 export function getStaticPaths() {
   return [
     { params: { legal: 'privacy-policy' }, props: { key: 'privacy' } },
+    { params: { legal: 'cancellation-policy' }, props: { key: 'cancellation' } },
     { params: { legal: 'terms-of-service' }, props: { key: 'terms' } },
     { params: { legal: 'refund-policy' }, props: { key: 'refund' } },
   ];

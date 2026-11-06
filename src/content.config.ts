@@ -306,6 +306,7 @@ export const collections = {
       privacy: legalPage,
       terms: legalPage,
       refund: legalPage,
+      cancellation: legalPage,
       sitemap: z.object({ title: z.string(), intro: z.string() }),
     }),
   }),

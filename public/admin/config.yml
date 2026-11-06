@@ -365,7 +365,7 @@ collections:
           - { name: successMessage, label: Message shown after signing up, widget: string }
 
       - name: legal
-        label: Legal pages (privacy, terms, refunds, site map)
+        label: Legal pages (privacy, cancellation, terms, refunds, site map)
         file: src/content/legal.yaml
         fields:
           - name: privacy
@@ -373,7 +373,7 @@ collections:
             widget: object
             fields:
               - { name: title, label: Page title, widget: string }
-              - { name: intro, label: Introduction, widget: text }
+              - { name: intro, label: Introduction, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
               - name: sections
                 label: Sections
                 label_singular: section
@@ -381,13 +381,13 @@ collections:
                 summary: "{{fields.heading}}"
                 fields:
                   - { name: heading, label: Heading, widget: string }
-                  - { name: body, label: Text, widget: text }
+                  - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [], hint: "Use the bullet-list button for lists. Tables can be typed as markdown." }
           - name: terms
             label: Terms of Service
             widget: object
             fields:
               - { name: title, label: Page title, widget: string }
-              - { name: intro, label: Introduction, widget: text }
+              - { name: intro, label: Introduction, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
               - name: sections
                 label: Sections
                 label_singular: section
@@ -395,13 +395,13 @@ collections:
                 summary: "{{fields.heading}}"
                 fields:
                   - { name: heading, label: Heading, widget: string }
-                  - { name: body, label: Text, widget: text }
+                  - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [], hint: "Use the bullet-list button for lists. Tables can be typed as markdown." }
           - name: refund
             label: Refund Policy
             widget: object
             fields:
               - { name: title, label: Page title, widget: string }
-              - { name: intro, label: Introduction, widget: text }
+              - { name: intro, label: Introduction, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
               - name: sections
                 label: Sections
                 label_singular: section
@@ -409,7 +409,21 @@ collections:
                 summary: "{{fields.heading}}"
                 fields:
                   - { name: heading, label: Heading, widget: string }
-                  - { name: body, label: Text, widget: text }
+                  - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [], hint: "Use the bullet-list button for lists. Tables can be typed as markdown." }
+          - name: cancellation
+            label: Cancellation Policy
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: intro, label: Introduction, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
+              - name: sections
+                label: Sections
+                label_singular: section
+                widget: list
+                summary: "{{fields.heading}}"
+                fields:
+                  - { name: heading, label: Heading, widget: string }
+                  - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [], hint: "Use the bullet-list button for lists. Tables can be typed as markdown." }
           - name: sitemap
             label: Site map page
             widget: object
