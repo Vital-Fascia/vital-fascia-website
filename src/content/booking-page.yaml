@@ -1,0 +1,13 @@
+eyebrow: Book a session
+heading: Choose your preferred location
+intro: Alex works from two clinics. Pick the one that suits you and the booking calendar will appear below.
+selectLabel: Book at this location
+selectedLabel: Selected
+changeLabel: Change location
+mapLabel: Map and directions
+directionsLabel: Get directions
+bookingHeadingPrefix: Booking at
+emptyText: Choose a location above and the booking calendar will appear here.
+loadingText: Loading the booking calendar…
+fallbackText: Trouble loading the calendar? Book directly on Cliniko
+bookingHeadingEmpty: Your booking

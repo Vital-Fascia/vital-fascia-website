@@ -34,7 +34,13 @@ Most home page sections have a **Show this section on the website** switch. Turn
 
 ## Update your contact details, hours and booking link
 
-Go to **Business details & settings > Contact details & opening hours**. Every "Book" button on the site uses the **Online booking link** here.
+Go to **Business details & settings > Contact details & opening hours**. Under **Clinic locations** you will find Sydney CBD and Double Bay. Each has its own address, **opening hours**, map and Cliniko booking links. The opening hours are entered **once, here**: the website footer and the booking page both use them, so change them in one place only.
+
+Every "Book" button on the site opens the booking page (/book), where visitors choose a location before the Cliniko booking form appears. The wording on that page is under **Booking page (choose a location)**.
+
+## Open or close the "Before your first visit" questions
+
+On the website the questions are hidden until a visitor clicks the heading. Edit them under **Home page > Pricing & offers**. Leave a blank line between paragraphs in an answer.
 
 ## Change what Google shows
 
