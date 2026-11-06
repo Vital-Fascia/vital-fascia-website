@@ -30,6 +30,7 @@ const serveAdminIndex = {
 export default defineConfig({
   site,
   output: 'static',
-  integrations: [sitemap()],
+  // /mkp is a temporary mockup page, keep it out of the search-engine sitemap
+  integrations: [sitemap({ filter: (page) => !page.includes('/mkp') })],
   vite: { plugins: [serveAdminIndex] },
 });

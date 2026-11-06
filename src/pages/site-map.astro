@@ -4,8 +4,9 @@ import LegalPage from '../components/LegalPage.astro';
 import { getContent } from '../lib/content';
 const legal = await getContent('legal');
 const site = await getContent('site');
+const contact = await getContent('contact');
 const groups = [
-  { heading: 'Pages', links: [{ label: 'Home', href: '/' }, ...site.navLinks.map((l: any) => ({ label: l.label, href: l.href }))] },
+  { heading: 'Pages', links: [{ label: 'Home', href: '/' }, ...site.navLinks.map((l: any) => ({ label: l.label, href: l.href })), { label: contact.bookingLabel, href: '/book' }] },
   { heading: 'Legal', links: [
     { label: legal.privacy.title, href: '/privacy-policy' },
     { label: legal.cancellation.title, href: '/cancellation-policy' },
