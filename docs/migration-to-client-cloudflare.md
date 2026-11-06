@@ -1,5 +1,7 @@
 # Moving the site to Alex's Cloudflare account (James's checklist)
 
+> **Status (6 Nov 2026):** Part 1 can be done now. **Part 3 is done** (auth Worker deployed to Alex's account at `https://sveltia-cms-auth.alex-c56.workers.dev`; GitHub OAuth app updated; variables set). **Part 2 (Resend) is on hold until Alex is available, and will be done together with Part 4 (domain)**, because Resend's DNS records need the domain to be on Cloudflare first. Still to do for Part 3: switch `base_url` in `public/admin/config.yml` and test login.
+
 Written for James, who is already a Super Administrator in Alex's Cloudflare account. Allow about 1.5 hours of work plus DNS waiting time. Do it in the order below, and do the domain (Part 4) last so the live site is never down.
 
 ## What is being moved
@@ -13,7 +15,7 @@ Written for James, who is already a Super Administrator in Alex's Cloudflare acc
 
 The code needs no changes for the move except one line (the CMS login URL, Part 3). The GitHub repository is already in the `Vital-Fascia` organisation, so it does not move.
 
-Before starting, have ready: access to the registrar/domain control panel for `vitalfascia.com.au` (probably Squarespace Domains; ask Alex), and Alex's email login (for Resend verification emails).
+Before starting, have ready: access to the registrar/domain control panel for `vitalfascia.com.au` (the domain is registered with **VentraIP**; James has admin access), and Alex's email login (for Resend verification emails).
 
 ---
 
@@ -79,16 +81,22 @@ The `/admin` page logs in with GitHub through a small Worker. Right now that Wor
 6. Test: open `/admin`, **Sign in with GitHub**, edit something trivial and save, check a new commit appears on `main` and the site redeploys. Alex's GitHub account must be a collaborator (write access) on the repo, or a member of the organisation.
 7. Once it works, delete the old auth Worker and the old GitHub OAuth app in James's accounts.
 
+### Tips learned doing Part 3
+
+- **"Update your Wrangler configuration with these changes to keep deployments in sync"**: this notice appears because variables were edited in the dashboard but `wrangler.toml` doesn't list them. Harmless on its own, but the next `wrangler deploy` would **wipe dashboard-set plain variables** (secrets are kept). Fix by adding `keep_vars = true` to `wrangler.toml` (or by listing the non-secret variables under `[vars]`) and deploying once.
+- **Red "latest build failed" pill:** left over from the failed Git build. The Worker now deploys from the command line, so disconnect the Git link: Workers & Pages > `sveltia-cms-auth` > Settings > Builds > **Disconnect**. The old failed entry may stay in the history list but stops being "latest" once nothing builds.
+- **Secrets from a `.env` file:** `npx wrangler secret bulk .env` uploads every line of a `.env` file as secrets in one go (run inside the project, with the right account logged in). Plain, non-secret values belong in `wrangler.toml` under `[vars]`. Easier than clicking through the dashboard, and good for the Resend key later (`RESEND_API_KEY=...`). Never commit the `.env` file.
+
 ## Part 4: Bring the domain over
 
 `vitalfascia.com.au` currently serves the old Squarespace site, and email for alex@vitalfascia.com.au probably runs on this domain too. **Be careful with email records, getting them wrong stops Alex's email.**
 
-**Cloudflare cannot register or transfer `.com.au` domains**, so the plan is to **keep the registrar** and only change its **nameservers** to Cloudflare (Cloudflare then runs DNS, and the registrar stays where it is). No money changes hands and there is no domain "transfer".
+**Cloudflare cannot register or transfer `.com.au` domains**, so the plan is to **keep VentraIP as the registrar** and only change its **nameservers** to Cloudflare (Cloudflare then runs DNS, and the registrar stays where it is). No money changes hands and there is no domain "transfer".
 
-1. **Record what exists today, before touching anything.** At the current DNS provider (Squarespace Domains > the domain > DNS Settings, or wherever the nameservers point; check at <https://who.is> or `dig NS vitalfascia.com.au`), screenshot or copy every record. Pay special attention to **MX** (email), **TXT** (SPF, verification, DKIM, `google-site-verification`, etc.), and any CNAMEs for email or other services.
+1. **Record what exists today, before touching anything.** The domain is registered with **VentraIP**. In the VentraIP client area open the domain and look at its **DNS** (zone) records, but first confirm where DNS is actually served from (`dig NS vitalfascia.com.au` or <https://who.is>): it may be VentraIP's nameservers, or Squarespace's if the site's DNS was pointed there. Screenshot or copy every record from wherever DNS is really served. VentraIP may also host Alex's **email** (e.g. Microsoft 365, Google Workspace, or VentraIP hosting mailboxes), so identify the email provider now. Pay special attention to **MX** (email), **TXT** (SPF, verification, DKIM, `google-site-verification`, etc.), and any CNAMEs for email or other services.
 2. In **Alex's Cloudflare account > Add a domain > `vitalfascia.com.au`**, choose the **Free** plan. Cloudflare scans and imports existing records.
 3. **Check the imported records against your list** from step 1. Add anything missing. Keep all MX and email-related TXT records, set to **DNS only** (grey cloud). Delete the old A/CNAME records that point at Squarespace for `@` and `www` (the new site replaces them in step 5). Then add Resend's records (Part 2 step 3).
-4. Cloudflare shows two **nameservers** (like `xxx.ns.cloudflare.com`). At the **registrar**, replace the current nameservers with those two. If the registrar is Squarespace Domains: Domains > the domain > DNS Settings > **Use custom nameservers** (the wording can vary). `.com.au` changes normally apply within minutes to a few hours, and up to 24 hours. The Cloudflare dashboard shows **Active** when it's done and emails you.
+4. Cloudflare shows two **nameservers** (like `xxx.ns.cloudflare.com`). At the **registrar**, replace the current nameservers with those two. At VentraIP: client area > Domains > the domain > **Nameservers** (choose custom nameservers and enter Cloudflare's two). The menu wording may differ slightly. `.com.au` changes normally apply within minutes to a few hours, and up to 24 hours. The Cloudflare dashboard shows **Active** when it's done and emails you.
    - If the registrar asks for a **domain authorisation / auDA key**, that's for a registrar transfer, not needed here.
    - You need the **registrant/admin login** for this step. Ask Alex.
 5. **Attach the domain to the new site:** Alex's Cloudflare > Workers & Pages > vital-fascia-website > **Settings > Domains & Routes > Add > Custom domain**: add `www.vitalfascia.com.au`. Then also add `vitalfascia.com.au` (the bare domain) and set it to redirect to `www` (**Rules > Redirect Rules > Create rule**: if hostname equals `vitalfascia.com.au` then dynamic redirect to `concat("https://www.vitalfascia.com.au", http.request.uri.path)`, status 301). Cloudflare creates the DNS records and issues the HTTPS certificate automatically (a few minutes).
@@ -105,7 +113,7 @@ If something breaks, rollback is to put the **old nameservers back at the regist
 
 ## Part 5: Tidy up
 
-1. Keep the Squarespace subscription until you're sure everything works for a week or so, then cancel it (cancelling a Squarespace plan can affect the domain if it was bought through them, so **check where the domain is registered first and keep it renewing**).
+1. Keep the Squarespace subscription until you're sure everything works for a week or so, then cancel it (the domain is with VentraIP, not Squarespace, so cancelling Squarespace shouldn't affect it. Keep the VentraIP registration renewing, ideally with auto-renew on and Alex's billing details).
 2. In James's Cloudflare account, delete the old `vital-fascia-website` and `sveltia-cms-auth` Workers (this stops duplicate builds).
 3. Confirm Alex's own Cloudflare login has two-factor authentication on, and that Alex is the account owner. Remove yourself later if desired (or leave Super Admin access for support).
 4. Google: if Alex has a Google Business Profile or Search Console, update the website URL if it changed, and add the new site in Search Console (<https://search.google.com/search-console>) with the sitemap `https://www.vitalfascia.com.au/sitemap-index.xml`.
