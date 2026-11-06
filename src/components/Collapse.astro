@@ -20,10 +20,10 @@ const site = await getContent('site');
 </div>
 
 <style>
-  /* heading + a plain caret beside it; clicking either one opens or closes the section */
+  /* header row + a plain caret beside it; clicking anywhere on the row opens or closes the section */
   .c-head { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; }
   .c-title { min-width: 0; }
-  :global(.js) .c-title { cursor: pointer; }
+  :global(.js) .c-head { cursor: pointer; }
   .c-toggle { display: none; align-items: center; justify-content: flex-end; flex: none; width: 48px; height: 48px; padding: 0 4px 0 0; border: 0; background: transparent; color: inherit; opacity: .8; transition: opacity .2s ease; }
   .c-toggle:hover, :global(.js) .c-head:hover .c-toggle { opacity: 1; }
   :global(.js) .c-toggle { display: inline-flex; }

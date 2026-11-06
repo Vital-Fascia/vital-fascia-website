@@ -321,6 +321,21 @@ export const collections = {
     }),
   }),
 
+  emails: defineCollection({
+    loader: glob({ pattern: 'emails.yaml', base: './src/content' }),
+    schema: z.object({
+      subject: z.string(),
+      preheader: z.string(),
+      greeting: z.string(),
+      intro: z.string(),
+      stepsHeading: z.string(),
+      steps: z.array(z.string()),
+      outro: z.string(),
+      signOff: z.string(),
+      signature: z.string(),
+    }),
+  }),
+
   bookingPage: defineCollection({
     loader: glob({ pattern: 'booking-page.yaml', base: './src/content' }),
     schema: z.object({

@@ -1,11 +1,20 @@
 {
-  // Cloudflare static assets config. Used when Cloudflare builds from GitHub.
-  // No resources are created by this file.
+  // Cloudflare config. Used when Cloudflare builds from GitHub.
+  // A small Worker (worker/index.ts) handles the form emails; everything else is static.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "vital-fascia-website",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "404-page"
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "vars": {
+    "MAIL_FROM": "Vital Fascia <bookings@vitalfascia.com.au>",
+    "NOTIFY_TO": "alex@vitalfascia.com.au"
   }
+  // Secret (never put in this file): RESEND_API_KEY. Add it in the Cloudflare dashboard:
+  // Workers & Pages > vital-fascia-website > Settings > Variables and Secrets.
 }

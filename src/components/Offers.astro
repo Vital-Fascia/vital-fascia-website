@@ -61,9 +61,11 @@ const contact = await getContent('contact');
   .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 44px; align-items: stretch; }
   .grid.single { grid-template-columns: minmax(0, 640px); }
   .faq { margin-top: clamp(56px, 7vw, 88px); }
-  .faq h3 { font-size: clamp(24px, 3vw, 30px); margin: 0; padding-block: 8px; }
-  .faq :global(.c-inner) { padding-top: 16px; }
-  .items { border-top: 1px solid var(--stone); }
+  .faq h3 { font-size: clamp(24px, 3vw, 30px); margin: 0; padding-block: 14px; }
+  .faq :global(.c-head) { border-top: 2px solid var(--olive); border-bottom: 1px solid var(--stone); }
+  .faq :global(.c-head:hover) { background: rgba(74, 82, 64, 0.05); }
+  .faq :global(.c-toggle) { opacity: 1; }
+  .items { border-top: 0; }
   .item { border-bottom: 1px solid var(--stone); }
   .item h4 { margin: 0; font-family: inherit; font-weight: inherit; letter-spacing: 0; }
   .item button { display: flex; justify-content: space-between; align-items: center; gap: 20px; width: 100%; min-height: 60px; padding: 14px 0; background: transparent; border: 0; text-align: left; font-size: 17px; font-weight: 500; color: var(--ink); }
