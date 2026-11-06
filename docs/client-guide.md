@@ -30,6 +30,14 @@ This guide is for **Alex** (the owner). **Part A** is everyday editing and needs
 3. Click **Save** at the top right.
 4. Wait about 1-2 minutes. Your live website updates automatically.
 
+## Preview what you're changing
+
+Every page and section in the editor has a **preview panel** next to the wording.
+- **As you type:** the top part redraws your text, lists and photos in the website's colours as you edit. The real website's layout is a little different, so treat it as a check of the *content*.
+- **Show this on the website:** click this to open the page as it is currently published, jumped to the section you're editing. After you save, it updates in about a minute.
+- **Hide or show the whole panel:** use the **Editor Options** button at the top of the editor (next to Save) and switch **Show Preview** on or off.
+- The **Email templates** preview is special: it draws the finished emails live (see *Preview the emails* below).
+
 ## Change or add a photo
 
 1. Open the section with the photo (for example *Top banner* or *About*).
