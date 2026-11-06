@@ -1,6 +1,6 @@
 # Moving the site to Alex's Cloudflare account (James's checklist)
 
-> **Status (6 Nov 2026):** Part 1 can be done now. **Part 3 is done** (auth Worker deployed to Alex's account at `https://sveltia-cms-auth.alex-c56.workers.dev`; GitHub OAuth app updated; variables set). **Part 2 (Resend) is on hold until Alex is available, and will be done together with Part 4 (domain)**, because Resend's DNS records need the domain to be on Cloudflare first. Still to do for Part 3: switch `base_url` in `public/admin/config.yml` and test login.
+> **Status (6 Nov 2026):** The site runs from Alex's account at `https://vital-fascia-website.alex-c56.workers.dev` and auto-deploys from GitHub `main` (Part 1 done). The CMS login Worker is on Alex's account at `https://sveltia-cms-auth.alex-c56.workers.dev`, `public/admin/config.yml` points at it, and its `ALLOWED_DOMAINS` must be `www.vitalfascia.com.au,vital-fascia-website.alex-c56.workers.dev` (Part 3 done). **Part 2 (Resend) is on hold until Alex is available and will be done together with Part 4 (domain)**, because the Resend DNS records need the domain on Cloudflare first. Until then the form emails fail with an error message. Link-sharing previews (the thumbnail) only work once the real domain points at the site, or temporarily if the build variable `SITE_URL` is set to the workers.dev address.
 
 Written for James, who is already a Super Administrator in Alex's Cloudflare account. Allow about 1.5 hours of work plus DNS waiting time. Do it in the order below, and do the domain (Part 4) last so the live site is never down.
 
@@ -84,6 +84,7 @@ The `/admin` page logs in with GitHub through a small Worker. Right now that Wor
 ### Tips learned doing Part 3
 
 - **"Update your Wrangler configuration with these changes to keep deployments in sync"**: this notice appears because variables were edited in the dashboard but `wrangler.toml` doesn't list them. Harmless on its own, but the next `wrangler deploy` would **wipe dashboard-set plain variables** (secrets are kept). Fix by adding `keep_vars = true` to `wrangler.toml` (or by listing the non-secret variables under `[vars]`) and deploying once.
+- **Retrying that failed `sveltia-cms-auth` Git build never works** (the upstream lockfile problem is permanent). Disconnect it instead. A red build on one Worker doesn't affect the other.
 - **Red "latest build failed" pill:** left over from the failed Git build. The Worker now deploys from the command line, so disconnect the Git link: Workers & Pages > `sveltia-cms-auth` > Settings > Builds > **Disconnect**. The old failed entry may stay in the history list but stops being "latest" once nothing builds.
 - **Secrets from a `.env` file:** `npx wrangler secret bulk .env` uploads every line of a `.env` file as secrets in one go (run inside the project, with the right account logged in). Plain, non-secret values belong in `wrangler.toml` under `[vars]`. Easier than clicking through the dashboard, and good for the Resend key later (`RESEND_API_KEY=...`). Never commit the `.env` file.
 
