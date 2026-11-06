@@ -1,5 +1,5 @@
 home:
-  title: Vital Fascia | Soft-Tissue Therapy in Sydney CBD
+  title: Vital Fascia | Soft-Tissue Therapy in Sydney CBD & Double Bay
   description: Remedial massage, myofascial release and corrective care in Sydney CBD. A fascia-led, whole-body approach to pain, posture and better movement.
 program:
   title: 8-Week 1:1 Program | Vital Fascia
@@ -7,5 +7,8 @@ program:
 contact:
   title: Contact | Vital Fascia
   description: Get in touch with Vital Fascia in Sydney CBD, or send a message to ask a question or start care.
+book:
+  title: Book a Session | Vital Fascia
+  description: Book soft-tissue therapy with Alex at Double Bay or Sydney CBD. Choose your location and book online.
 socialImage: ../assets/uploads/about-alex-portrait.jpg
 socialImageAlt: "Portrait of Alex from Vital Fascia, smiling, in a white t-shirt"

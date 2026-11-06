@@ -1,5 +1,6 @@
 ---
 import SocialLinks from './SocialLinks.astro';
+import Collapse from './Collapse.astro';
 import { getContent } from '../lib/content';
 const site = await getContent('site');
 const c = await getContent('contact');
@@ -21,17 +22,6 @@ const legalLinks = [
         <p><a href={`mailto:${c.email}`}>{c.email}</a></p>
         <p class="gap-s"><a href={c.instagramUrl} target="_blank" rel="noopener">{c.instagramHandle}</a></p>
         <SocialLinks class="footer-socials" size={36} />
-        {c.hours.length > 0 && (
-          <div class="hours-wrap">
-            <h4>{c.hoursHeading}</h4>
-            <table class="hours">
-              <caption class="sr-only">{c.hoursHeading}</caption>
-              <tbody>
-                {c.hours.map((h: any) => <tr><th scope="row">{h.days}</th><td>{h.time}</td></tr>)}
-              </tbody>
-            </table>
-          </div>
-        )}
         <p class="gap-l buttons">
           <a class="btn btn-ghost-dark btn-sm" href={c.bookingUrl}>{c.bookingLabel}</a>
           <a class="btn btn-ghost-dark btn-sm" href="/#discovery-call">{c.requestCallLabel}</a>
@@ -39,13 +29,30 @@ const legalLinks = [
       </div>
       <div class="contact-col">
         <h3>{c.visitHeading}</h3>
-        <p>{c.addressLines.map((line: string, i: number) => <>{i > 0 && <br />}{line}</>)}</p>
-        {c.mapEmbedUrl && (
-          <div class="map">
-            <iframe src={c.mapEmbedUrl} title={`Map showing ${site.businessName}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-          </div>
-        )}
-        {c.mapLinkUrl && <p class="gap-s"><a class="underline" href={c.mapLinkUrl} target="_blank" rel="noopener">Get directions</a></p>}
+        <div class="locations">
+          {c.locations.map((loc: any) => (
+            <Collapse id={`loc-${loc.id}`}>
+              <h4 slot="head" class="loc-name">{loc.name}</h4>
+              <div class="loc-body">
+                <p class="addr">{loc.addressLines.map((line: string, i: number) => <>{i > 0 && <br />}{line}</>)}</p>
+                {loc.hours.length > 0 && (
+                  <table class="hours">
+                    <caption class="sr-only">{c.hoursHeading} - {loc.name}</caption>
+                    <tbody>
+                      {loc.hours.map((h: any) => <tr><th scope="row">{h.days}</th><td>{h.time}</td></tr>)}
+                    </tbody>
+                  </table>
+                )}
+                {loc.mapEmbedUrl && (
+                  <div class="map">
+                    <iframe src={loc.mapEmbedUrl} title={`Map showing ${site.businessName}, ${loc.name}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                  </div>
+                )}
+                {loc.mapLinkUrl && <p class="gap-s"><a class="underline" href={loc.mapLinkUrl} target="_blank" rel="noopener">Get directions</a></p>}
+              </div>
+            </Collapse>
+          ))}
+        </div>
       </div>
     </div>
     <div class="footer-base">
@@ -68,9 +75,12 @@ const legalLinks = [
   .gap-s { margin-top: 8px; }
   .gap-l { margin-top: 20px; }
   .buttons { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-  .hours-wrap { margin-top: 22px; }
-  .hours-wrap h4 { font-family: var(--font-body); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--cream-muted); font-weight: 600; margin-bottom: 6px; }
-  .hours { margin-top: 0; border-collapse: collapse; font-size: 14.5px; }
+  .locations { border-top: 1px solid rgba(242, 236, 221, 0.2); }
+  .locations :global(.collapse) { border-bottom: 1px solid rgba(242, 236, 221, 0.2); }
+  .loc-name { font-family: var(--font-display); font-size: 21px; font-weight: 400; color: var(--cream); margin: 0; padding-block: 10px; }
+  .loc-body { padding: 4px 0 22px; }
+  .addr { margin: 0; }
+  .hours { margin-top: 12px; border-collapse: collapse; font-size: 14.5px; }
   .hours th, .hours td { text-align: left; padding: 5px 0; font-weight: 400; }
   .hours th { padding-right: 24px; color: var(--cream-muted); }
   .contact-col :global(.footer-socials) { margin: 14px 0 0 -6px; }

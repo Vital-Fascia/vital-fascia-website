@@ -27,6 +27,7 @@ const href = offer.buttonHref === '#' ? bookingUrl : offer.buttonHref;
     )}
     {offer.rebate && <p class="rebate">{offer.rebate}</p>}
     <a class:list={['btn', soon ? 'btn-ghost' : 'btn-primary btn-arrow']} href={href}>{offer.buttonLabel}</a>
+    {offer.buttonNote && <p class="note">{offer.buttonNote}</p>}
   </div>
 </article>
 
@@ -52,6 +53,7 @@ const href = offer.buttonHref === '#' ? bookingUrl : offer.buttonHref;
   .expect dd { margin: 0; font-weight: 500; text-align: right; }
   .rebate { margin-top: 16px; font-size: 13.5px; color: var(--olive-dark); padding: 10px 14px; background: var(--bone); border-left: 2px solid var(--olive); }
   .btn { margin-top: auto; align-self: flex-start; }
+  .note { margin-top: 12px; font-size: 13px; color: var(--ink-muted); }
   .includes + .btn, .rebate + .btn, .desc + .btn { margin-top: 28px; }
   .expect + .btn { margin-top: 28px; }
   @media (max-width: 700px) { .body { padding: 30px 24px; } .btn { align-self: stretch; } }

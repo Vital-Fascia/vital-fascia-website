@@ -1,25 +1,38 @@
 visitHeading: Visit
-addressLines:
-  - Mezzanine, 309 George St
-  - Sydney NSW 2000
-# TODO: opening hours are placeholders - confirm with client.
-hours:
-  - { days: Monday - Friday, time: "[7:00am - 6:00pm]" }
-  - { days: Saturday, time: "[8:00am - 1:00pm]" }
-  - { days: Sunday, time: Closed }
-# TODO: paste the Google Maps "Embed a map" link (the src="..." part) here.
-mapEmbedUrl: "https://www.google.com/maps?q=Mezzanine%2C+309+George+St%2C+Sydney+NSW+2000&output=embed"
-mapLinkUrl: "https://www.google.com/maps/search/?api=1&query=Mezzanine%2C+309+George+St%2C+Sydney+NSW+2000"
+# Opening hours live ONLY here. The footer and the booking page both read them from these rows.
+locations:
+  - id: sydney-cbd
+    name: Sydney CBD
+    addressLines:
+      - Mezzanine, 309 George St
+      - Sydney NSW 2000
+    hours:
+      - { days: Friday, time: 7am - 2pm }
+    mapEmbedUrl: "https://www.google.com/maps?q=Mezzanine%2C+309+George+St%2C+Sydney+NSW+2000&output=embed"
+    mapLinkUrl: "https://www.google.com/maps/search/?api=1&query=Mezzanine%2C+309+George+St%2C+Sydney+NSW+2000"
+    bookingUrl: "https://vital-fascia.au5.cliniko.com/bookings#service"
+    embedUrl: "https://vital-fascia.au5.cliniko.com/bookings?embedded=true"
+  - id: double-bay
+    name: Double Bay
+    addressLines:
+      - Suite 6/21-25 Knox St
+      - Double Bay NSW 2028
+    hours:
+      - { days: "Tuesday, Wednesday, Thursday", time: 7am - 5pm }
+    mapEmbedUrl: "https://www.google.com/maps?q=Suite+6%2F21-25+Knox+St%2C+Double+Bay+NSW+2028&output=embed"
+    mapLinkUrl: "https://www.google.com/maps/search/?api=1&query=Suite+6%2F21-25+Knox+St%2C+Double+Bay+NSW+2028"
+    bookingUrl: "https://the-muscle-group.au1.cliniko.com/bookings?business_id=63731&practitioner_id=171156"
+    embedUrl: "https://the-muscle-group.au1.cliniko.com/bookings?business_id=63731&practitioner_id=171156&embedded=true"
 getInTouchHeading: Get in touch
-email: thefasciaguy92@gmail.com
+email: alex@vitalfascia.com.au
 instagramHandle: "@thefasciaguy"
 instagramUrl: https://instagram.com/thefasciaguy
 facebookUrl: https://www.facebook.com/profile.php?id=61575781771306
-# TODO: add the real Cliniko booking link (leave "#" until then).
 # TODO: TikTok link is a placeholder - replace with the real account (leave blank to hide an icon).
 tiktokUrl: https://www.tiktok.com/@thefasciaguy
 whatsappUrl: https://wa.me/61449637920
-bookingUrl: "#"
+# Every "Book" button goes to the booking page, where people choose a location.
+bookingUrl: /book
 bookingLabel: Book a Session
 requestCallLabel: Request a call
 hoursHeading: Opening hours

@@ -5,40 +5,60 @@ items:
   - status: active
     badge: Available now
     title: Initial Session
-    details: 75 minutes · in-clinic, Sydney CBD
-    # TODO: prices are placeholders - confirm with client.
-    price: "[$XXX]"
-    priceNote: " per session"
+    details: 60 minutes · Sydney CBD & Double Bay
+    price: $175
+    priceNote: " per 60 minute session"
     includes:
       - Whole-body movement & posture assessment
       - Hands-on treatment matched to your pattern
       - A simple, personalised take-home movement plan
-      - Follow-up sessions from [$XXX] · 60 minutes
+      - Follow-up sessions are also $175 · 60 minutes
     expect:
-      - { label: Duration, value: "[75 minutes]" }
-      - { label: Where, value: "Sydney CBD clinic" }
-      - { label: What to wear, value: "[Comfortable, loose clothing]" }
-    rebate: "[Health fund rebates - HICAPS available. TODO: confirm with client]"
+      - { label: Duration, value: 60 minutes }
+      - { label: Where, value: "Sydney CBD & Double Bay" }
+    rebate: Health Fund Rebates available via TyroHealth online
     buttonLabel: Book a Session
     buttonHref: "#"
   - status: soon
-    badge: Coming soon
+    badge: COMING SOON
     title: 8-Week 1:1 Program
     details: In person · Sydney CBD
-    description: A structured, in-person program for people who want lasting change, not just relief. Currently in development.
+    description: For people who are done chasing temporary relief. Over eight weeks, we combine hands-on fascia work, corrective movement and nervous system awareness to address the patterns behind your tension, not just the symptoms.
     includes:
-      - "[What it will include - item 1]"
-      - "[What it will include - item 2]"
-      - "[What it will include - item 3]"
+      - A full initial assessment of posture, movement and breathing
+      - Weekly 1:1 soft tissue sessions tailored to your body
+      - A personalised movement plan you can keep using long after week eight
     photo: ../assets/uploads/program-8-week-preview.jpg
     photoAlt: "Three scenes from the program: seated shoulder treatment, supine arm and shoulder release, and a standing movement drill in a gym"
     photoPlaceholder: "[Photo - program preview]"
     buttonLabel: Register interest
     buttonHref: /8-week-program#waitlist
-faqHeading: Before your first visit
-# TODO: placeholder answers - confirm every policy with the client.
+    buttonNote: Limited spots. Be first to hear when enrolments open.
+faqHeading: Before your first visit (FAQ)
 faqs:
-  - { question: What happens in my first session?, answer: "[Placeholder] We talk through your history, assess how you move, then treat. You leave with a simple plan for between sessions." }
-  - { question: What should I wear?, answer: "[Placeholder] Comfortable, loose clothing you can move in. Shorts and a t-shirt are ideal." }
-  - { question: Can I claim on my health fund?, answer: "[Placeholder] Rebates depend on your provider and cover. HICAPS availability to be confirmed." }
-  - { question: What is the cancellation policy?, answer: "[Placeholder] Please give at least 24 hours' notice to change or cancel a booking. Policy to be confirmed." }
+  - question: What happens in my first session?
+    answer: |-
+      Your first session starts with a conversation. We’ll talk about what’s bringing you in, your history, and how your body feels day to day.
+
+      From there, we’ll look at how you move, stand and breathe. This helps us understand the patterns behind your tension, not just where you feel it.
+
+      Treatment is then tailored to you, combining hands-on myofascial and soft tissue work. You’ll leave with a clearer picture of what’s going on and one or two simple practices to support your progress between sessions.
+  - question: What should I wear?
+    answer: |-
+      Wear something comfortable that you can move in, such as activewear or loose clothing. Shorts are helpful for any work around the hips and legs.
+
+      Some of your session may involve movement assessment, so clothing that lets you bend, reach and rotate freely is ideal. During hands-on treatment, you’ll only ever undress to the level you’re comfortable with, and you’ll be draped with towels throughout.
+  - question: Can I claim on my health fund?
+    answer: |-
+      Yes. Sessions are claimable with most private health funds under extras cover.
+
+      How much you get back depends on your fund and level of cover, so we recommend checking with your provider beforehand. Please bring your health fund card to your appointment.
+  - question: What is the cancellation policy?
+    answer: |-
+      We understand that life happens. If you need to change or cancel your booking, please give at least 12 hours’ notice so we can offer the time to someone else.
+
+      Cancellations with more than 4 but less than 12 hours’ notice incur a $90 fee. Cancellations with 0–4 hours’ notice, or no-shows, incur the full session fee.
+  - question: How long are sessions?
+    answer: Standard sessions are 60 minutes, which includes time for assessment, treatment and a short discussion of next steps.
+  - question: Should I arrive early?
+    answer: Arriving 5–10 minutes early gives you time to settle in. Please complete your intake form before your appointment so we can make the most of your session time.

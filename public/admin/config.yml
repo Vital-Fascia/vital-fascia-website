@@ -208,7 +208,7 @@ collections:
               - { name: title, label: Title, widget: string }
               - { name: details, label: Length and location, widget: string, required: false }
               - { name: description, label: Description (used by coming-soon cards), widget: text, required: false }
-              - { name: price, label: Price, widget: string, required: false, hint: "Include the dollar sign, e.g. $150. [$XXX] is a placeholder." }
+              - { name: price, label: Price, widget: string, required: false, hint: "Include the dollar sign, e.g. $175." }
               - { name: priceNote, label: Text after the price, widget: string, required: false, hint: "e.g. ' per session'. Keep the leading space." }
               - name: includes
                 label: What's included (or what it will include)
@@ -230,8 +230,9 @@ collections:
               - { name: photoAlt, label: Photo description (for screen readers), widget: string, required: false }
               - { name: photoPlaceholder, label: Placeholder text (shown only until a photo is added), widget: string, required: false }
               - { name: buttonLabel, label: Button text, widget: string }
-              - { name: buttonHref, label: Button goes to, widget: string, hint: "Use # to use the booking link from Contact details." }
-          - { name: faqHeading, label: Questions heading, widget: string }
+              - { name: buttonHref, label: Button goes to, widget: string, hint: "Use # to open the booking page." }
+              - { name: buttonNote, label: Small text under the button (optional), widget: string, required: false }
+          - { name: faqHeading, label: Questions heading (click to open/close the questions on the website), widget: string }
           - name: faqs
             label: Frequently asked questions
             label_singular: question
@@ -239,7 +240,7 @@ collections:
             summary: "{{fields.question}}"
             fields:
               - { name: question, label: Question, widget: string }
-              - { name: answer, label: Answer, widget: text }
+              - { name: answer, label: Answer, widget: text, hint: "Leave a blank line between paragraphs." }
 
       - name: testimonials
         label: "8. Client testimonials"
@@ -431,6 +432,24 @@ collections:
               - { name: title, label: Page title, widget: string }
               - { name: intro, label: Introduction, widget: text }
 
+      - name: bookingPage
+        label: Booking page (choose a location)
+        file: src/content/booking-page.yaml
+        fields:
+          - { name: eyebrow, label: Small line above the heading, widget: string }
+          - { name: heading, label: Heading, widget: string }
+          - { name: intro, label: Introduction, widget: text }
+          - { name: selectLabel, label: Location button text, widget: string }
+          - { name: selectedLabel, label: Text shown on the chosen location, widget: string }
+          - { name: changeLabel, label: Change-location link text, widget: string }
+          - { name: mapLabel, label: Map toggle text, widget: string }
+          - { name: directionsLabel, label: Get-directions link text, widget: string }
+          - { name: bookingHeadingPrefix, label: Heading above the calendar, widget: string, hint: "The location name is added after this, e.g. 'Booking at Double Bay'." }
+          - { name: bookingHeadingEmpty, label: Heading above the calendar (before a location is chosen), widget: string }
+          - { name: emptyText, label: Message before a location is chosen, widget: string }
+          - { name: loadingText, label: Message while the calendar loads, widget: string }
+          - { name: fallbackText, label: Direct-link text, widget: string }
+
       - name: contactPage
         label: Contact page (message form)
         file: src/content/contact-page.yaml
@@ -455,32 +474,42 @@ collections:
         label: Contact details & opening hours
         file: src/content/contact.yaml
         fields:
-          - name: addressLines
-            label: Address (one line per entry)
-            label_singular: line
+          - name: locations
+            label: Clinic locations (address, opening hours, map, booking)
+            label_singular: location
             widget: list
-            field: { name: line, label: Address line, widget: string }
-          - name: hours
-            label: Opening hours
-            label_singular: row
-            widget: list
-            summary: "{{fields.days}}: {{fields.time}}"
-            hint: "Shown as a small table in the website footer."
+            summary: "{{fields.name}}"
+            hint: "Opening hours are entered here ONCE. The website footer and the booking page both use them."
             fields:
-              - { name: days, label: Days, widget: string, hint: "e.g. Monday - Friday" }
-              - { name: time, label: Hours, widget: string, hint: "e.g. 7:00am - 6:00pm, or Closed" }
-          - { name: mapEmbedUrl, label: Google Maps embed link, widget: string, required: false, hint: "In Google Maps: Share > Embed a map > copy the address inside src=\"...\". Leave empty to hide the map." }
-          - { name: mapLinkUrl, label: Google Maps directions link, widget: string, required: false, hint: "A normal Google Maps link for the 'Get directions' text." }
+              - { name: id, label: Web address tag, widget: string, hint: "Short lowercase tag used in links, e.g. double-bay. Don't change this unless you have to." }
+              - { name: name, label: Location name, widget: string, hint: "e.g. Double Bay" }
+              - name: addressLines
+                label: Address (one line per entry)
+                label_singular: line
+                widget: list
+                field: { name: line, label: Address line, widget: string }
+              - name: hours
+                label: Opening hours
+                label_singular: row
+                widget: list
+                summary: "{{fields.days}}: {{fields.time}}"
+                fields:
+                  - { name: days, label: Days, widget: string, hint: "e.g. Tuesday, Wednesday, Thursday" }
+                  - { name: time, label: Hours, widget: string, hint: "e.g. 7am - 5pm, or Closed" }
+              - { name: mapEmbedUrl, label: Google Maps embed link, widget: string, required: false, hint: "In Google Maps: Share > Embed a map > copy the address inside src=\"...\". Leave empty to hide the map." }
+              - { name: mapLinkUrl, label: Google Maps directions link, widget: string, required: false, hint: "A normal Google Maps link for the 'Get directions' text." }
+              - { name: bookingUrl, label: Cliniko booking link, widget: string, hint: "The normal Cliniko booking page link for this location (used if the booking form can't load)." }
+              - { name: embedUrl, label: Cliniko booking form (embed) link, widget: string, hint: "The Cliniko link ending in embedded=true. This is the booking form shown on the Book page." }
           - { name: email, label: Email address, widget: string }
           - { name: instagramHandle, label: Instagram name, widget: string, hint: "e.g. @thefasciaguy" }
           - { name: instagramUrl, label: Instagram link, widget: string }
           - { name: facebookUrl, label: Facebook link, widget: string, required: false, hint: "Not shown on the website at the moment." }
           - { name: tiktokUrl, label: TikTok link, widget: string, required: false, hint: "Leave empty to hide the icon." }
           - { name: whatsappUrl, label: WhatsApp link, widget: string, required: false, hint: "e.g. https://wa.me/61449637920 (country code, no + or spaces). Leave empty to hide the icon." }
-          - { name: bookingUrl, label: Online booking link (Cliniko), widget: string, hint: "Every 'Book' button on the site goes here." }
+          - { name: bookingUrl, label: Book button destination, widget: string, hint: "Leave as /book. Every 'Book' button on the site opens the booking page where people choose a location." }
           - { name: bookingLabel, label: Booking button text (footer), widget: string }
           - { name: requestCallLabel, label: Request-a-call button text (footer), widget: string }
-          - { name: hoursHeading, label: "'Opening hours' heading (footer)", widget: string }
+          - { name: hoursHeading, label: "'Opening hours' heading", widget: string }
           - { name: visitHeading, label: "'Visit' heading", widget: string }
           - { name: getInTouchHeading, label: "'Get in touch' heading", widget: string }
 
@@ -525,6 +554,12 @@ collections:
               - { name: description, label: Page description, widget: text }
           - name: contact
             label: Contact page
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: description, label: Page description, widget: text }
+          - name: book
+            label: Booking page
             widget: object
             fields:
               - { name: title, label: Page title, widget: string }
