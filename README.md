@@ -37,7 +37,8 @@ Design tokens (colours, fonts, spacing) are in `src/styles/tokens.css`.
 - Config: `public/admin/config.yml`. Page: `public/admin/index.html` (loads Sveltia CMS from unpkg, version pinned).
 - **Locally (no login):** run `npm run dev`, open <http://localhost:4321/admin/> in Chrome or Edge, click **Work with Local Repository** and choose this project folder. Edits write straight to `src/content/` and `src/assets/uploads/`; review and commit them with git as normal.
 - **In production:** editors click **Sign in with GitHub**. This needs the [sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) Cloudflare Worker (not deployed yet). Once deployed, set its URL as `backend.base_url` in `public/admin/config.yml`. Each save becomes a commit on `main`, which triggers a deploy.
-- Client instructions: `docs/client-guide.md`.
+- Client instructions, tech stack, style guide and hand-over notes: `docs/client-guide.md`.
+- Private email preview page for the owner: `/admin/email-previews` (source `src/pages/admin/email-previews.astro`, shares its templates with the Worker in `worker/emails.ts`).
 
 ## Deployment (Cloudflare, from GitHub)
 
@@ -54,7 +55,7 @@ Every push to `main` (including CMS saves) rebuilds and deploys. `public/_redire
 
 See `docs/content-todos.md` for content that still needs the client, and:
 
-- Form emails (call request, contact, waitlist) run through `worker/index.ts` + Resend; setup in `docs/how-the-forms-work.md` and `docs/migration-to-client-cloudflare.md`.
+- Form emails (call request, contact, waitlist) run through `worker/index.ts` + Resend; setup in `docs/client-guide.md` and `docs/migration-to-client-cloudflare.md`.
 - `backend.base_url` in `public/admin/config.yml` (auth Worker).
 - Real photos (hero, about, social sharing image) and a proper logo/favicon.
 - Design for the 8-week program page.

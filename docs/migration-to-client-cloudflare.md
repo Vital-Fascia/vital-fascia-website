@@ -118,7 +118,7 @@ If something breaks, rollback is to put the **old nameservers back at the regist
 2. In James's Cloudflare account, delete the old `vital-fascia-website` and `sveltia-cms-auth` Workers (this stops duplicate builds).
 3. Confirm Alex's own Cloudflare login has two-factor authentication on, and that Alex is the account owner. Remove yourself later if desired (or leave Super Admin access for support).
 4. Google: if Alex has a Google Business Profile or Search Console, update the website URL if it changed, and add the new site in Search Console (<https://search.google.com/search-console>) with the sitemap `https://www.vitalfascia.com.au/sitemap-index.xml`.
-5. Update `docs/content-todos.md` and tell Alex how forms and the CMS work (`docs/how-the-forms-work.md`, `docs/client-guide.md`).
+5. Update `docs/content-todos.md` and tell Alex how forms and the CMS work (`docs/client-guide.md`, `docs/client-guide.md`).
 
 ## Quick reference
 

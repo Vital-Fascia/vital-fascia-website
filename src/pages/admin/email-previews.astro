@@ -1,0 +1,166 @@
+---
+// Admin-only page (not linked from the public site): shows Alex exactly what each automatic email looks like.
+// The emails are built with the same code the Worker uses to send them (worker/emails.ts).
+import '../../styles/global.css';
+import { getContent } from '../../lib/content';
+import { FORMS, clientEmail, ownerEmail } from '../../../worker/emails';
+
+const emails = await getContent('emails');
+const site = await getContent('site');
+const contact = await getContent('contact');
+
+const sample = { name: 'Jordan Smith', first: 'Jordan', phone: '0412 345 678', email: 'jordan@example.com', message: 'Hi Alex, I have been getting a sore lower back after running. Can you help?' };
+const when = 'Friday, 6 November 2026 at 3:19 pm';
+
+const forms = [
+  { id: 'call-request', label: 'Request a call', path: '/api/discovery-call', copy: 'callRequest' },
+  { id: 'contact-message', label: 'Contact page message', path: '/api/contact', copy: 'contactMessage' },
+  { id: 'waitlist', label: '8-Week Program waitlist', path: '/api/waitlist', copy: 'waitlist' },
+] as const;
+
+const previews = forms.flatMap((f) => {
+  const form = FORMS[f.path];
+  const data: Record<string, string> = { name: sample.first, phone: sample.phone, email: sample.email, message: sample.message };
+  const client = clientEmail(emails[f.copy], site.businessName, sample.first);
+  const owner = ownerEmail(form, site.businessName, { ...data, name: sample.name }, when);
+  return [
+    { id: `${f.id}-client`, group: 'client', form: f.label, title: `Confirmation to the ${f.id === 'waitlist' ? 'person' : 'client'}`, subject: emails[f.copy].subject, to: sample.email, html: client.html },
+    { id: `${f.id}-owner`, group: 'owner', form: f.label, title: 'Notification to you', subject: form.ownerSubject(sample.name), to: contact.email, html: owner.html },
+  ];
+});
+const groups = [
+  { key: 'client', heading: 'Emails your clients receive', note: 'You can edit the wording of these in the editor.' },
+  { key: 'owner', heading: 'Emails sent to you', note: 'A plain summary of what the person typed in. Not editable.' },
+];
+---
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Email previews | Admin | {site.businessName}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+  </head>
+  <body>
+    <header class="admin-bar" role="banner">
+      <div class="bar-in">
+        <span class="badge"><span class="dot" aria-hidden="true"></span>Admin area</span>
+        <span class="where">Email previews</span>
+        <nav class="bar-links" aria-label="Admin">
+          <a href="/admin/">← Back to the website editor</a>
+          <a href="/" target="_blank" rel="noopener">View website</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="layout">
+      <nav class="side" aria-label="Emails">
+        <p class="note">Click an email to see how it looks. After you save changes in the editor, the previews update in a minute or two.</p>
+        {groups.map((g) => (
+          <section>
+            <h2>{g.heading}</h2>
+            <p class="gnote">{g.note}</p>
+            <ul>
+              {previews.filter((p) => p.group === g.key).map((p) => (
+                <li><a href={`#${p.id}`} data-tab={p.id}><strong>{p.form}</strong><span>{p.title}</span></a></li>
+              ))}
+            </ul>
+          </section>
+        ))}
+        <p class="edit"><a class="btn btn-ghost btn-sm" href="/admin/#/collections/email_templates">Edit the wording</a></p>
+      </nav>
+
+      <main class="main" id="main">
+        <h1>Email previews</h1>
+        <p class="sample">Shown with sample details for "{sample.name}". Real emails use what the person actually entered.</p>
+        {previews.map((p) => (
+          <article class="pv" id={p.id} data-pv>
+            <dl class="meta">
+              <div><dt>Subject</dt><dd>{p.subject}</dd></div>
+              <div><dt>To</dt><dd>{p.to}</dd></div>
+            </dl>
+            <div class="toggle" role="group" aria-label="Preview size">
+              <button type="button" data-size="desktop" aria-pressed="true">Computer</button>
+              <button type="button" data-size="phone" aria-pressed="false">Phone</button>
+            </div>
+            <div class="stage"><iframe title={`${p.form}: ${p.title}`} srcdoc={p.html} loading="lazy"></iframe></div>
+          </article>
+        ))}
+      </main>
+    </div>
+  </body>
+</html>
+
+<script>
+  const items = [...document.querySelectorAll<HTMLElement>('[data-pv]')];
+  const tabs = [...document.querySelectorAll<HTMLAnchorElement>('[data-tab]')];
+  const show = (id: string) => {
+    const pick = items.find((x) => x.id === id) ?? items[0];
+    items.forEach((x) => (x.hidden = x !== pick));
+    tabs.forEach((t) => t.setAttribute('aria-current', String(t.dataset.tab === pick.id)));
+    const f = pick.querySelector('iframe')!;
+    const fit = () => { try { f.style.height = `${f.contentDocument!.documentElement.scrollHeight + 4}px`; } catch {} };
+    f.addEventListener('load', fit, { once: true });
+    fit();
+  };
+  tabs.forEach((t) => t.addEventListener('click', (e) => { e.preventDefault(); history.replaceState(null, '', `#${t.dataset.tab}`); show(t.dataset.tab!); }));
+  items.forEach((it) => it.querySelectorAll<HTMLButtonElement>('[data-size]').forEach((b) => b.addEventListener('click', () => {
+    it.querySelectorAll('[data-size]').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+    it.querySelector<HTMLElement>('.stage')!.dataset.size = b.dataset.size;
+    const f = it.querySelector('iframe')!;
+    setTimeout(() => { try { f.style.height = `${f.contentDocument!.documentElement.scrollHeight + 4}px`; } catch {} }, 50);
+  })));
+  show(location.hash.slice(1));
+</script>
+
+<style>
+  body { background: var(--bone); color: var(--ink); font-family: var(--font-body); }
+  .admin-bar { position: sticky; top: 0; z-index: 50; background: var(--charcoal-2); color: var(--cream); border-bottom: 3px solid var(--gold); }
+  .bar-in { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding: 10px var(--gutter); max-width: 1400px; margin: 0 auto; font-size: 14px; }
+  .badge { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: var(--charcoal-2); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; padding: 5px 10px; border-radius: 2px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--charcoal-2); }
+  .where { font-weight: 600; }
+  .bar-links { margin-left: auto; display: flex; flex-wrap: wrap; gap: 4px 20px; }
+  .bar-links a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; padding: 6px 0; }
+  .bar-links a:hover { color: var(--gold); }
+
+  .layout { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); max-width: 1400px; margin: 0 auto; padding: 32px var(--gutter) 64px; align-items: start; }
+  .side { position: sticky; top: 90px; }
+  .note { font-size: 14.5px; color: var(--ink-muted); line-height: 1.55; margin-bottom: 22px; }
+  .side h2 { font-size: 20px; margin-top: 18px; }
+  .gnote { font-size: 13px; color: var(--ink-muted); margin: 4px 0 10px; }
+  .side ul { display: flex; flex-direction: column; gap: 6px; }
+  .side li a { display: flex; flex-direction: column; gap: 2px; padding: 11px 14px; background: var(--white); border: 1px solid var(--stone-line); border-left: 3px solid transparent; border-radius: var(--radius); }
+  .side li a strong { font-size: 15px; font-weight: 600; }
+  .side li a span { font-size: 13px; color: var(--ink-muted); }
+  .side li a:hover { border-color: var(--olive); }
+  .side li a[aria-current='true'] { border-left-color: var(--olive); background: var(--sand); }
+  .edit { margin-top: 24px; }
+
+  .main h1 { font-size: clamp(28px, 3.4vw, 38px); }
+  .sample { color: var(--ink-muted); font-size: 14.5px; margin: 6px 0 22px; }
+  .pv[hidden] { display: none; }
+  .meta { display: grid; gap: 0; margin: 0 0 16px; background: var(--white); border: 1px solid var(--stone-line); border-radius: var(--radius); }
+  .meta div { display: flex; gap: 16px; padding: 11px 16px; border-bottom: 1px solid var(--stone-line); font-size: 15px; }
+  .meta div:last-child { border-bottom: 0; }
+  .meta dt { width: 70px; flex: none; color: var(--ink-muted); }
+  .meta dd { margin: 0; font-weight: 500; min-width: 0; overflow-wrap: anywhere; }
+  .toggle { display: inline-flex; margin-bottom: 14px; border: 1.5px solid var(--olive); border-radius: var(--radius-btn); overflow: hidden; }
+  .toggle button { background: transparent; border: 0; padding: 9px 18px; font: inherit; font-size: 14px; color: var(--olive); cursor: pointer; min-height: 40px; }
+  .toggle button[aria-pressed='true'] { background: var(--olive); color: var(--cream); }
+  .stage { background: var(--sand); border: 1px solid var(--stone-line); padding: 18px; display: flex; justify-content: center; }
+  .stage iframe { width: 100%; max-width: 680px; min-height: 560px; border: 0; background: var(--bone); transition: max-width .3s var(--ease); }
+  .stage[data-size='phone'] iframe { max-width: 375px; }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; padding-top: 22px; }
+    .side { position: static; }
+    .side ul { flex-direction: row; flex-wrap: wrap; }
+    .side li { flex: 1 1 200px; }
+    .stage { padding: 10px; }
+    .toggle { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .stage iframe { transition: none; } }
+</style>

@@ -467,7 +467,7 @@ collections:
   - name: email_templates
     media_folder: ../assets/uploads
     label: 5. EMAIL TEMPLATES
-    description: The automatic confirmation emails people receive after filling in a form.
+    description: The automatic confirmation emails people receive after filling in a form. To see how the finished emails look, open your-website-address/admin/email-previews (it also has an Edit button that brings you back here).
     files:
       - name: emails
         label: Confirmation emails (sent after a form is filled in)
