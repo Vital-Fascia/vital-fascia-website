@@ -1,19 +1,21 @@
-# How the "Request a call" form works (for Alex)
+# How the website forms send email (for Alex)
 
-## What happens when someone fills it in
+This covers all three forms: **Request a call** (home page), **Contact** page and the **8-Week Program waitlist**. They all work the same way.
 
-1. A visitor enters their name, phone and email in **Request a call** and presses the button.
+## What happens when someone fills one in
+
+1. A visitor fills in a form and presses the button.
 2. The website sends those details to a small program that runs on Cloudflare (the "Worker").
 3. The Worker sends **two emails** straight away:
-   - **To you** (alex@vitalfascia.com.au): "New call request: *Name*" with their name, phone (tap to call) and email. Hit **Reply** to write back to them directly.
-   - **To the visitor**: a confirmation in the website's colours saying you'll call them, with the "what happens next" steps.
+   - **To you** (alex@vitalfascia.com.au): a summary of what they entered (e.g. "New call request: *Name*", "New website message: *Name*" or "New waitlist sign-up: *Name*"), with phone tap-to-call where given. Hit **Reply** to write back to them directly.
+   - **To the visitor**: a confirmation in the website's colours with a short "what happens next" list.
 4. The visitor sees a thank-you message on the page.
 
 Nothing is stored on the website. Your inbox is the record of requests.
 
 ## Changing the wording of the confirmation email
 
-In the CMS go to **Confirmation email (sent after a call request)**. You can edit the subject, greeting, steps and sign-off. Use `{name}` in the greeting and it becomes the visitor's first name. Changes go live after the site redeploys (a minute or two after you save). The email to you is fixed.
+In the CMS go to **Confirmation emails (sent after a form is filled in)**. There is one email for each form (call request, contact message, waitlist). You can edit the subject, greeting, steps and sign-off. Use `{name}` in the greeting and it becomes the visitor's first name. Changes go live after the site redeploys (a minute or two after you save). The email to you is fixed.
 
 ## Where the pieces live
 
@@ -48,10 +50,6 @@ Do steps 2 and 4 once the site lives in the business's own Cloudflare account. T
 - **Spam submissions:** the form has a hidden trap field that blocks most bots. If it becomes a problem, ask for Cloudflare Turnstile (free CAPTCHA alternative) to be added.
 - **Change who gets the notification:** edit `NOTIFY_TO` in `wrangler.jsonc`.
 
-## Other forms
-
-The Contact page form and the 8-week waitlist form are **not connected yet**. They can use the same system when you're ready.
-
 ## For developers
 
-Test locally: `npm run build`, put `MAIL_DRY_RUN=true` in `.dev.vars`, run `npx wrangler dev`, then POST to `/api/discovery-call`. Emails are printed to the console instead of sent. The email wording is built into `/email-content.json` at build time, which the Worker reads.
+Test locally: `npm run build`, put `MAIL_DRY_RUN=true` in `.dev.vars`, run `npx wrangler dev`, then POST to `/api/discovery-call`, `/api/contact` or `/api/waitlist`. Emails are printed to the console instead of sent. The email wording is built into `/email-content.json` at build time, which the Worker reads.

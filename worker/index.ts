@@ -1,10 +1,11 @@
 /**
- * Cloudflare Worker in front of the static site. It only handles POST /api/discovery-call;
- * everything else is served straight from the static assets (see wrangler.jsonc).
+ * Cloudflare Worker in front of the static site. It only handles POST /api/discovery-call,
+ * /api/contact and /api/waitlist; everything else is served straight from the static assets
+ * (see wrangler.jsonc).
  *
  * On a valid request it sends two emails through Resend (https://resend.com):
- *   1. a notification to Alex with the client's details
- *   2. a branded confirmation to the client
+ *   1. a notification to Alex with the person's details
+ *   2. a branded confirmation to the person (wording is editable in the CMS)
  * Setup and ownership notes: docs/how-the-forms-work.md
  */
 
@@ -16,7 +17,7 @@ interface Env {
   MAIL_DRY_RUN?: string; // "true" = log emails instead of sending (local testing only)
 }
 
-interface EmailCopy {
+interface ConfirmationCopy {
   subject: string;
   preheader: string;
   greeting: string;
@@ -26,9 +27,67 @@ interface EmailCopy {
   outro: string;
   signOff: string;
   signature: string;
+}
+interface EmailContent {
+  callRequest: ConfirmationCopy;
+  contactMessage: ConfirmationCopy;
+  waitlist: ConfirmationCopy;
   businessName: string;
   ownerEmail: string;
 }
+
+type Field = { key: string; label: string; formName: string; required: boolean; max: number; kind: 'text' | 'phone' | 'email' | 'message' };
+interface FormType {
+  copy: keyof Omit<EmailContent, 'businessName' | 'ownerEmail'>;
+  nameField: string;
+  fields: Field[];
+  ownerHeading: string; // small heading in Alex's email
+  ownerTitle: (name: string) => string;
+  ownerSubject: (name: string) => string;
+  ownerNote: string;
+}
+
+const FORMS: Record<string, FormType> = {
+  '/api/discovery-call': {
+    copy: 'callRequest',
+    nameField: 'name',
+    fields: [
+      { key: 'name', label: 'Name', formName: 'name', required: true, max: 100, kind: 'text' },
+      { key: 'phone', label: 'Phone', formName: 'phone', required: true, max: 40, kind: 'phone' },
+      { key: 'email', label: 'Email', formName: 'email', required: true, max: 200, kind: 'email' },
+    ],
+    ownerHeading: 'New call request',
+    ownerTitle: (n) => `${n} would like a call`,
+    ownerSubject: (n) => `New call request: ${n}`,
+    ownerNote: "They've been sent a confirmation email. You can reply to this email to reach them directly.",
+  },
+  '/api/contact': {
+    copy: 'contactMessage',
+    nameField: 'name',
+    fields: [
+      { key: 'name', label: 'Name', formName: 'name', required: true, max: 100, kind: 'text' },
+      { key: 'email', label: 'Email', formName: 'email', required: true, max: 200, kind: 'email' },
+      { key: 'phone', label: 'Phone', formName: 'phone', required: false, max: 40, kind: 'phone' },
+      { key: 'message', label: 'Message', formName: 'message', required: true, max: 4000, kind: 'message' },
+    ],
+    ownerHeading: 'New message',
+    ownerTitle: (n) => `${n} sent you a message`,
+    ownerSubject: (n) => `New website message: ${n}`,
+    ownerNote: "They've been sent a confirmation email. You can reply to this email to answer them directly.",
+  },
+  '/api/waitlist': {
+    copy: 'waitlist',
+    nameField: 'first_name',
+    fields: [
+      { key: 'name', label: 'First name', formName: 'first_name', required: true, max: 100, kind: 'text' },
+      { key: 'email', label: 'Email', formName: 'email', required: true, max: 200, kind: 'email' },
+    ],
+    ownerHeading: '8-Week Program waitlist',
+    ownerTitle: (n) => `${n} joined the waitlist`,
+    ownerSubject: (n) => `New waitlist sign-up: ${n}`,
+    ownerNote: "They've been sent a confirmation email. You can reply to this email to reach them directly.",
+  },
+};
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
@@ -53,7 +112,7 @@ function shell(preheader: string, businessName: string, inner: string) {
 </table></td></tr></table></body></html>`;
 }
 
-function clientEmail(c: EmailCopy, name: string) {
+function clientEmail(c: ConfirmationCopy, businessName: string, name: string) {
   const steps = c.steps
     .map(
       (s, i) => `<tr><td valign="top" style="padding:0 14px 12px 0;width:28px;"><div style="width:28px;height:28px;border-radius:14px;background:${C.olive};color:${C.cream};text-align:center;line-height:28px;font-family:${SANS};font-size:13px;font-weight:600;">${i + 1}</div></td><td valign="middle" style="padding:0 0 12px;font-family:${SANS};font-size:16px;color:${C.ink};">${esc(s)}</td></tr>`,
@@ -61,7 +120,7 @@ function clientEmail(c: EmailCopy, name: string) {
     .join('');
   const html = shell(
     c.preheader,
-    c.businessName,
+    businessName,
     `<p style="margin:0 0 16px;font-family:${SERIF};font-size:24px;color:${C.ink};">${esc(c.greeting.replace('{name}', name))}</p>
 <p style="margin:0 0 26px;">${esc(c.intro)}</p>
 <div style="border-top:1px solid ${C.line};padding-top:22px;">
@@ -74,18 +133,26 @@ function clientEmail(c: EmailCopy, name: string) {
   return { html, text };
 }
 
-function ownerEmail(c: EmailCopy, d: { name: string; phone: string; email: string }, when: string) {
-  const row = (k: string, v: string) => `<tr><td style="padding:10px 0;border-bottom:1px solid ${C.line};width:110px;color:${C.muted};font-size:14px;">${k}</td><td style="padding:10px 0;border-bottom:1px solid ${C.line};font-size:16px;font-weight:600;">${v}</td></tr>`;
+function ownerEmail(f: FormType, businessName: string, d: Record<string, string>, when: string) {
+  const row = (k: string, v: string) => `<tr><td valign="top" style="padding:10px 0;border-bottom:1px solid ${C.line};width:110px;color:${C.muted};font-size:14px;">${k}</td><td style="padding:10px 0;border-bottom:1px solid ${C.line};font-size:16px;">${v}</td></tr>`;
+  const value = (fld: Field) => {
+    const v = d[fld.key];
+    if (fld.kind === 'phone') return `<a href="tel:${esc(v.replace(/[^+\d]/g, ''))}" style="color:${C.olive};">${esc(v)}</a>`;
+    if (fld.kind === 'email') return `<a href="mailto:${esc(v)}" style="color:${C.olive};">${esc(v)}</a>`;
+    if (fld.kind === 'message') return esc(v).replace(/\n/g, '<br>');
+    return `<strong>${esc(v)}</strong>`;
+  };
+  const filled = f.fields.filter((fld) => d[fld.key]);
   const html = shell(
-    `${d.name} would like a call`,
-    c.businessName,
-    `<p style="margin:0 0 6px;font-family:${SANS};font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:${C.olive};">New call request</p>
-<p style="margin:0 0 22px;font-family:${SERIF};font-size:24px;">${esc(d.name)} would like a call</p>
+    f.ownerTitle(d.name),
+    businessName,
+    `<p style="margin:0 0 6px;font-family:${SANS};font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:${C.olive};">${esc(f.ownerHeading)}</p>
+<p style="margin:0 0 22px;font-family:${SERIF};font-size:24px;">${esc(f.ownerTitle(d.name))}</p>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-family:${SANS};">
-${row('Name', esc(d.name))}${row('Phone', `<a href="tel:${esc(d.phone.replace(/[^+\d]/g, ''))}" style="color:${C.olive};">${esc(d.phone)}</a>`)}${row('Email', `<a href="mailto:${esc(d.email)}" style="color:${C.olive};">${esc(d.email)}</a>`)}${row('Received', esc(when))}</table>
-<p style="margin:22px 0 0;color:${C.muted};font-size:14px;">They've been sent a confirmation email. You can reply to this email to reach them directly.</p>`,
+${filled.map((fld) => row(fld.label, value(fld))).join('')}${row('Received', esc(when))}</table>
+<p style="margin:22px 0 0;color:${C.muted};font-size:14px;">${esc(f.ownerNote)}</p>`,
   );
-  const text = `New call request\n\nName: ${d.name}\nPhone: ${d.phone}\nEmail: ${d.email}\nReceived: ${when}\n\nThey've been sent a confirmation. Reply to this email to reach them.`;
+  const text = `${f.ownerHeading}\n\n${filled.map((fld) => `${fld.label}: ${d[fld.key]}`).join('\n')}\nReceived: ${when}\n\n${f.ownerNote}`;
   return { html, text };
 }
 
@@ -103,7 +170,7 @@ async function send(env: Env, msg: { to: string; subject: string; html: string; 
   if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`);
 }
 
-async function discoveryCall(request: Request, env: Env): Promise<Response> {
+async function handleForm(f: FormType, request: Request, env: Env): Promise<Response> {
   // only accept posts from this site
   const origin = request.headers.get('Origin');
   if (origin && new URL(origin).host !== new URL(request.url).host) return json({ error: 'forbidden' }, 403);
@@ -111,23 +178,29 @@ async function discoveryCall(request: Request, env: Env): Promise<Response> {
   const form = await request.formData();
   if (String(form.get('website') ?? '') !== '') return json({ ok: true }); // honeypot: bots fill this in; pretend success
 
-  const name = String(form.get('name') ?? '').trim().slice(0, 100);
-  const phone = String(form.get('phone') ?? '').trim().slice(0, 40);
-  const email = String(form.get('email') ?? '').trim().slice(0, 200);
-  if (!name || !/^[+\d][\d\s()+-]{5,}$/.test(phone) || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)) {
-    return json({ error: 'invalid' }, 400);
+  const d: Record<string, string> = {};
+  for (const fld of f.fields) {
+    const v = String(form.get(fld.formName) ?? '').trim().slice(0, fld.max);
+    if (!v && !fld.required) continue;
+    const ok =
+      fld.kind === 'email' ? /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(v)
+      : fld.kind === 'phone' ? /^[+\d][\d\s()+-]{5,}$/.test(v)
+      : v.length > 0;
+    if (!ok) return json({ error: 'invalid' }, 400);
+    d[fld.key] = v;
   }
 
-  const copyRes = await env.ASSETS.fetch(new Request(new URL('/email-content.json', request.url)));
-  const copy = (await copyRes.json()) as EmailCopy;
+  const contentRes = await env.ASSETS.fetch(new Request(new URL('/email-content.json', request.url)));
+  const content = (await contentRes.json()) as EmailContent;
   const when = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney', dateStyle: 'full', timeStyle: 'short' });
 
   try {
-    const owner = ownerEmail(copy, { name, phone, email }, when);
-    await send(env, { to: env.NOTIFY_TO, subject: `New call request: ${name}`, html: owner.html, text: owner.text, replyTo: email });
-    // the client's confirmation is secondary: if it fails, Alex still has the lead
-    const client = clientEmail(copy, name.split(' ')[0]);
-    await send(env, { to: email, subject: copy.subject, html: client.html, text: client.text, replyTo: env.NOTIFY_TO }).catch((e) => console.error('confirmation failed', e));
+    const owner = ownerEmail(f, content.businessName, d, when);
+    await send(env, { to: env.NOTIFY_TO, subject: f.ownerSubject(d.name), html: owner.html, text: owner.text, replyTo: d.email });
+    // the confirmation is secondary: if it fails, Alex still has the details
+    const copy = content[f.copy];
+    const client = clientEmail(copy, content.businessName, d.name.split(' ')[0]);
+    await send(env, { to: d.email, subject: copy.subject, html: client.html, text: client.text, replyTo: env.NOTIFY_TO }).catch((e) => console.error('confirmation failed', e));
   } catch (e) {
     console.error('notification failed', e);
     return json({ error: 'send-failed' }, 502);
@@ -138,9 +211,10 @@ async function discoveryCall(request: Request, env: Env): Promise<Response> {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const { pathname } = new URL(request.url);
-    if (pathname === '/api/discovery-call') {
+    const form = FORMS[pathname];
+    if (form) {
       if (request.method !== 'POST') return json({ error: 'method' }, 405);
-      return discoveryCall(request, env);
+      return handleForm(form, request, env);
     }
     return env.ASSETS.fetch(request);
   },

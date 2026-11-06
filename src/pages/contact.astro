@@ -26,6 +26,7 @@ const c = await getContent('contact');
             <textarea id="c-message" name="message" aria-describedby="c-hint" required></textarea>
             <span class="hint" id="c-hint">{d.messageHint}</span>
           </div>
+          <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
           <button type="submit" class="btn btn-primary">{d.buttonLabel}</button>
         </div>
         <p class="form-status" role="status" aria-live="polite"></p>
@@ -42,6 +43,7 @@ const c = await getContent('contact');
   .direct { margin-top: 28px; font-size: 17px; }
   .direct a { text-decoration: underline; text-underline-offset: 3px; }
   .fields { display: flex; flex-direction: column; gap: 20px; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   form .btn { align-self: flex-start; }
   @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
 </style>
