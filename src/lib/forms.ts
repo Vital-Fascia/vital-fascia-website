@@ -1,10 +1,10 @@
 /**
  * Form submission endpoints.
  * Handled by the Cloudflare Worker in worker/index.ts (see docs/how-the-forms-work.md).
- * Empty = form is not connected. The contact and waitlist forms are not connected yet.
+ * Empty = form is not connected.
  */
 export const formEndpoints = {
-  contact: '',
+  contact: '/api/contact',
   discoveryCall: '/api/discovery-call',
-  programWaitlist: '',
+  programWaitlist: '/api/waitlist',
 };

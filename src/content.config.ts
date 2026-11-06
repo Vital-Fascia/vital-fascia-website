@@ -23,6 +23,19 @@ const legalPage = z.object({
   sections: z.array(z.object({ heading: z.string(), body: z.string() })),
 });
 
+/** Wording of an automatic confirmation email (see src/content/emails.yaml). */
+const confirmationEmail = z.object({
+  subject: z.string(),
+  preheader: z.string(),
+  greeting: z.string(),
+  intro: z.string(),
+  stepsHeading: z.string(),
+  steps: z.array(z.string()),
+  outro: z.string(),
+  signOff: z.string(),
+  signature: z.string(),
+});
+
 /** Section on/off switch + shared heading fields. */
 const section = { visible: z.boolean().default(true) };
 
@@ -324,15 +337,9 @@ export const collections = {
   emails: defineCollection({
     loader: glob({ pattern: 'emails.yaml', base: './src/content' }),
     schema: z.object({
-      subject: z.string(),
-      preheader: z.string(),
-      greeting: z.string(),
-      intro: z.string(),
-      stepsHeading: z.string(),
-      steps: z.array(z.string()),
-      outro: z.string(),
-      signOff: z.string(),
-      signature: z.string(),
+      callRequest: confirmationEmail,
+      contactMessage: confirmationEmail,
+      waitlist: confirmationEmail,
     }),
   }),
 

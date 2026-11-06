@@ -41,7 +41,7 @@ Design tokens (colours, fonts, spacing) are in `src/styles/tokens.css`.
 
 ## Deployment (Cloudflare, from GitHub)
 
-Nothing is deployed from this repo by hand. Connect the repo in the Cloudflare dashboard (Workers & Pages > Create > connect to Git) with:
+Nothing is deployed from this repo by hand. Connect the repo in the Cloudflare dashboard (Workers & Pages > Create > connect to Git). The project is a Worker with static assets (`wrangler.jsonc`), with:
 
 - Production branch: `main`
 - Build command: `npm run build`
@@ -54,8 +54,7 @@ Every push to `main` (including CMS saves) rebuilds and deploys. `public/_redire
 
 See `docs/content-todos.md` for content that still needs the client, and:
 
-- Contact form, free-resource and waitlist form endpoints: `src/lib/forms.ts` (no form service chosen yet).
-- Cliniko booking URL: `bookingUrl` in `src/content/contact.yaml` (currently `#`).
+- Form emails (call request, contact, waitlist) run through `worker/index.ts` + Resend; setup in `docs/how-the-forms-work.md` and `docs/migration-to-client-cloudflare.md`.
 - `backend.base_url` in `public/admin/config.yml` (auth Worker).
 - Real photos (hero, about, social sharing image) and a proper logo/favicon.
 - Design for the 8-week program page.
