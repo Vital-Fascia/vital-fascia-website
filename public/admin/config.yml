@@ -394,74 +394,74 @@ collections:
   - name: legal_pages
     media_folder: ../assets/uploads
     label: 4. LEGAL PAGES
-    description: Privacy, cancellation, terms, refund policy and site map pages.
+    description: "Each page has its own entry: privacy, cancellation, terms, refund policy and the site map page."
     files:
-      - name: legal
-        label: Legal pages (privacy, cancellation, terms, refunds, site map)
-        file: src/content/legal.yaml
+      - name: privacy
+        label: "1. Privacy Policy"
+        file: src/content/privacy-policy.yaml
         fields:
-          - name: privacy
-            label: Privacy Policy
-            widget: object
+          - { name: title, label: Page title, widget: string }
+          - { name: intro, label: Introduction, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
+          - name: sections
+            label: Sections
+            label_singular: section
+            widget: list
+            summary: "{{fields.heading}}"
             fields:
-              - { name: title, label: Page title, widget: string }
-              - { name: intro, label: Introduction, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
-              - name: sections
-                label: Sections
-                label_singular: section
-                widget: list
-                summary: "{{fields.heading}}"
-                fields:
-                  - { name: heading, label: Heading, widget: string }
-                  - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [], hint: "Use the bullet-list button for lists. Tables can be typed as markdown." }
-          - name: terms
-            label: Terms of Service
-            widget: object
+              - { name: heading, label: Heading, widget: string }
+              - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [], hint: "Use the bullet-list button for lists. Tables can be typed as markdown." }
+
+      - name: cancellation
+        label: "2. Cancellation Policy"
+        file: src/content/cancellation-policy.yaml
+        fields:
+          - { name: title, label: Page title, widget: string }
+          - { name: intro, label: Introduction, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
+          - name: sections
+            label: Sections
+            label_singular: section
+            widget: list
+            summary: "{{fields.heading}}"
             fields:
-              - { name: title, label: Page title, widget: string }
-              - { name: intro, label: Introduction, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
-              - name: sections
-                label: Sections
-                label_singular: section
-                widget: list
-                summary: "{{fields.heading}}"
-                fields:
-                  - { name: heading, label: Heading, widget: string }
-                  - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [], hint: "Use the bullet-list button for lists. Tables can be typed as markdown." }
-          - name: refund
-            label: Refund Policy
-            widget: object
+              - { name: heading, label: Heading, widget: string }
+              - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [], hint: "Use the bullet-list button for lists. Tables can be typed as markdown." }
+
+      - name: terms
+        label: "3. Terms of Service"
+        file: src/content/terms-of-service.yaml
+        fields:
+          - { name: title, label: Page title, widget: string }
+          - { name: intro, label: Introduction, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
+          - name: sections
+            label: Sections
+            label_singular: section
+            widget: list
+            summary: "{{fields.heading}}"
             fields:
-              - { name: title, label: Page title, widget: string }
-              - { name: intro, label: Introduction, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
-              - name: sections
-                label: Sections
-                label_singular: section
-                widget: list
-                summary: "{{fields.heading}}"
-                fields:
-                  - { name: heading, label: Heading, widget: string }
-                  - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [], hint: "Use the bullet-list button for lists. Tables can be typed as markdown." }
-          - name: cancellation
-            label: Cancellation Policy
-            widget: object
+              - { name: heading, label: Heading, widget: string }
+              - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [], hint: "Use the bullet-list button for lists. Tables can be typed as markdown." }
+
+      - name: refund
+        label: "4. Refund Policy"
+        file: src/content/refund-policy.yaml
+        fields:
+          - { name: title, label: Page title, widget: string }
+          - { name: intro, label: Introduction, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
+          - name: sections
+            label: Sections
+            label_singular: section
+            widget: list
+            summary: "{{fields.heading}}"
             fields:
-              - { name: title, label: Page title, widget: string }
-              - { name: intro, label: Introduction, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
-              - name: sections
-                label: Sections
-                label_singular: section
-                widget: list
-                summary: "{{fields.heading}}"
-                fields:
-                  - { name: heading, label: Heading, widget: string }
-                  - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [], hint: "Use the bullet-list button for lists. Tables can be typed as markdown." }
-          - name: sitemap
-            label: Site map page
-            widget: object
-            fields:
-              - { name: title, label: Page title, widget: string }
-              - { name: intro, label: Introduction, widget: text }
+              - { name: heading, label: Heading, widget: string }
+              - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [], hint: "Use the bullet-list button for lists. Tables can be typed as markdown." }
+
+      - name: sitemapPage
+        label: "5. Site map page"
+        file: src/content/site-map.yaml
+        fields:
+          - { name: title, label: Page title, widget: string }
+          - { name: intro, label: Introduction, widget: text }
 
   # -------------------------------------------- EMAIL TEMPLATES
   - name: email_templates
@@ -469,64 +469,59 @@ collections:
     label: 5. EMAIL TEMPLATES
     description: The automatic confirmation emails people receive after filling in a form. To see how the finished emails look, open your-website-address/admin/email-previews (it also has an Edit button that brings you back here).
     files:
-      - name: emails
-        label: Confirmation emails (sent after a form is filled in)
-        file: src/content/emails.yaml
+      - name: emailCallRequest
+        label: "1. After 'Request a call' (home page)"
+        file: src/content/email-call-request.yaml
         fields:
-          - name: callRequest
-            label: "1. After 'Request a call' (home page)"
-            widget: object
-            collapsed: true
-            fields:
-              - { name: subject, label: Email subject line, widget: string }
-              - { name: preheader, label: Preview text (grey text shown beside the subject in the inbox), widget: string }
-              - { name: greeting, label: Greeting, widget: string, hint: "{name} is replaced with the person's name." }
-              - { name: intro, label: Opening paragraph, widget: text }
-              - { name: stepsHeading, label: Heading above the steps, widget: string }
-              - name: steps
-                label: What happens next (steps)
-                label_singular: step
-                widget: list
-                field: { name: text, label: Step, widget: string }
-              - { name: outro, label: Closing paragraph, widget: text }
-              - { name: signOff, label: Sign-off, widget: string }
-              - { name: signature, label: Signature, widget: string }
-          - name: contactMessage
-            label: "2. After a message from the Contact page"
-            widget: object
-            collapsed: true
-            fields:
-              - { name: subject, label: Email subject line, widget: string }
-              - { name: preheader, label: Preview text (grey text shown beside the subject in the inbox), widget: string }
-              - { name: greeting, label: Greeting, widget: string, hint: "{name} is replaced with the person's name." }
-              - { name: intro, label: Opening paragraph, widget: text }
-              - { name: stepsHeading, label: Heading above the steps, widget: string }
-              - name: steps
-                label: What happens next (steps)
-                label_singular: step
-                widget: list
-                field: { name: text, label: Step, widget: string }
-              - { name: outro, label: Closing paragraph, widget: text }
-              - { name: signOff, label: Sign-off, widget: string }
-              - { name: signature, label: Signature, widget: string }
-          - name: waitlist
-            label: "3. After joining the 8-Week Program waitlist"
-            widget: object
-            collapsed: true
-            fields:
-              - { name: subject, label: Email subject line, widget: string }
-              - { name: preheader, label: Preview text (grey text shown beside the subject in the inbox), widget: string }
-              - { name: greeting, label: Greeting, widget: string, hint: "{name} is replaced with the person's name." }
-              - { name: intro, label: Opening paragraph, widget: text }
-              - { name: stepsHeading, label: Heading above the steps, widget: string }
-              - name: steps
-                label: What happens next (steps)
-                label_singular: step
-                widget: list
-                field: { name: text, label: Step, widget: string }
-              - { name: outro, label: Closing paragraph, widget: text }
-              - { name: signOff, label: Sign-off, widget: string }
-              - { name: signature, label: Signature, widget: string }
+          - { name: subject, label: Email subject line, widget: string }
+          - { name: preheader, label: Preview text (grey text shown beside the subject in the inbox), widget: string }
+          - { name: greeting, label: Greeting, widget: string, hint: "{name} is replaced with the person's name." }
+          - { name: intro, label: Opening paragraph, widget: text }
+          - { name: stepsHeading, label: Heading above the steps, widget: string }
+          - name: steps
+            label: What happens next (steps)
+            label_singular: step
+            widget: list
+            field: { name: text, label: Step, widget: string }
+          - { name: outro, label: Closing paragraph, widget: text }
+          - { name: signOff, label: Sign-off, widget: string }
+          - { name: signature, label: Signature, widget: string }
+
+      - name: emailContactMessage
+        label: "2. After a message from the Contact page"
+        file: src/content/email-contact-message.yaml
+        fields:
+          - { name: subject, label: Email subject line, widget: string }
+          - { name: preheader, label: Preview text (grey text shown beside the subject in the inbox), widget: string }
+          - { name: greeting, label: Greeting, widget: string, hint: "{name} is replaced with the person's name." }
+          - { name: intro, label: Opening paragraph, widget: text }
+          - { name: stepsHeading, label: Heading above the steps, widget: string }
+          - name: steps
+            label: What happens next (steps)
+            label_singular: step
+            widget: list
+            field: { name: text, label: Step, widget: string }
+          - { name: outro, label: Closing paragraph, widget: text }
+          - { name: signOff, label: Sign-off, widget: string }
+          - { name: signature, label: Signature, widget: string }
+
+      - name: emailWaitlist
+        label: "3. After joining the 8-Week Program waitlist"
+        file: src/content/email-waitlist.yaml
+        fields:
+          - { name: subject, label: Email subject line, widget: string }
+          - { name: preheader, label: Preview text (grey text shown beside the subject in the inbox), widget: string }
+          - { name: greeting, label: Greeting, widget: string, hint: "{name} is replaced with the person's name." }
+          - { name: intro, label: Opening paragraph, widget: text }
+          - { name: stepsHeading, label: Heading above the steps, widget: string }
+          - name: steps
+            label: What happens next (steps)
+            label_singular: step
+            widget: list
+            field: { name: text, label: Step, widget: string }
+          - { name: outro, label: Closing paragraph, widget: text }
+          - { name: signOff, label: Sign-off, widget: string }
+          - { name: signature, label: Signature, widget: string }
 
   # -------------------------------------------- FORMS
   - name: forms

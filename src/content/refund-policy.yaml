@@ -1,0 +1,8 @@
+# TODO: placeholder template. Replace with a real, professionally prepared policy before launch.
+title: Refund Policy
+intro: "[Placeholder] When refunds, credits and cancellations apply."
+sections:
+  - { heading: Cancellations, body: "[Placeholder text. This section will describe the notice required to cancel or reschedule without charge.]" }
+  - { heading: Refunds, body: "[Placeholder text. This section will explain when a refund or credit may be offered.]" }
+  - { heading: Programs and packages, body: "[Placeholder text. This section will cover any program or package refund terms.]" }
+  - { heading: How to request a refund, body: "[Placeholder text. This section will explain how to contact us about a refund.]" }

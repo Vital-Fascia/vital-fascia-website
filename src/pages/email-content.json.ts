@@ -3,11 +3,13 @@
 import { getContent } from '../lib/content';
 
 export async function GET() {
-  const emails = await getContent('emails');
+  const callRequest = await getContent('emailCallRequest');
+  const contactMessage = await getContent('emailContactMessage');
+  const waitlist = await getContent('emailWaitlist');
   const site = await getContent('site');
   const contact = await getContent('contact');
   return new Response(
-    JSON.stringify({ ...emails, businessName: site.businessName, ownerEmail: contact.email }),
+    JSON.stringify({ callRequest, contactMessage, waitlist, businessName: site.businessName, ownerEmail: contact.email }),
     { headers: { 'Content-Type': 'application/json' } },
   );
 }

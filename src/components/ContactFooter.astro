@@ -2,17 +2,11 @@
 import SocialLinks from './SocialLinks.astro';
 import Collapse from './Collapse.astro';
 import { getContent } from '../lib/content';
+import { getLegalLinks } from '../lib/legal-links';
 const site = await getContent('site');
 const c = await getContent('contact');
-const legal = await getContent('legal');
 const year = new Date().getFullYear();
-const legalLinks = [
-  { label: legal.privacy.title, href: '/privacy-policy' },
-  { label: legal.cancellation.title, href: '/cancellation-policy' },
-  { label: legal.terms.title, href: '/terms-of-service' },
-  { label: legal.refund.title, href: '/refund-policy' },
-  { label: legal.sitemap.title, href: '/site-map' },
-];
+const legalLinks = await getLegalLinks();
 ---
 <footer id="contact" class="contact-section dark">
   <div class="wrap">

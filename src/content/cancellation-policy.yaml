@@ -1,0 +1,31 @@
+# Real copy from Alex (Nov 2026). Page text supports simple formatting (bold, bullet lists, links, tables).
+title: Cancellation Policy
+intro: |
+  **We understand that life doesn’t always go to plan.**
+
+  Each appointment is time set aside for you, and when a session is cancelled at short notice, it often can’t be offered to someone else who needs care. This policy helps us keep appointments available for everyone, and keeps our fees fair for all clients.
+sections:
+  - heading: How it works
+    body: |
+      **12+ hours’ notice:** No charge. We’ll happily help you find a new time that suits.
+
+      **Between 4 and 12 hours’ notice:** A partial fee applies ($90). We’ll still do our best to offer your appointment to someone on our waitlist.
+
+      **4 hours’ notice or less, or no-show:** The full appointment fee applies, as we’re very unlikely to fill the time at this point.
+  - heading: Cancellation fees
+    body: |
+      | Notice given | Fee |
+      | --- | --- |
+      | 12 hours or more | No charge |
+      | More than 4, less than 12 hours | $90 |
+      | 0–4 hours / No-show | Full appointment fee |
+  - heading: Good to know
+    body: |
+      - **How to cancel or reschedule:** Use the link in your confirmation email or reminder, or contact us directly at 0449 637 920.
+      - **Payment:** Any cancellation fee will be invoiced and must be settled before your next appointment.
+      - **Health fund rebates:** Cancellation fees can’t be claimed through private health insurance.
+      - **Late arrivals:** If you arrive late, we’ll do what we can, but your session may need to finish at the scheduled time so the next client isn’t affected. The full fee still applies.
+      - **Feeling unwell?** Please don’t push through. If you have a contagious illness, let us know as early as possible and we’ll work with you.
+      - **Genuine emergencies:** We know some things are out of anyone’s control. Unexpected situations are considered case by case, at our discretion.
+
+      **Thanks for helping us look after you, and every other client who relies on us.**

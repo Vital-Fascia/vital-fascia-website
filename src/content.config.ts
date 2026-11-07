@@ -23,7 +23,7 @@ const legalPage = z.object({
   sections: z.array(z.object({ heading: z.string(), body: z.string() })),
 });
 
-/** Wording of an automatic confirmation email (see src/content/emails.yaml). */
+/** Wording of an automatic confirmation email (see src/content/email-*.yaml). */
 const confirmationEmail = z.object({
   subject: z.string(),
   preheader: z.string(),
@@ -323,25 +323,18 @@ export const collections = {
       }),
   }),
 
-  legal: defineCollection({
-    loader: glob({ pattern: 'legal.yaml', base: './src/content' }),
-    schema: z.object({
-      privacy: legalPage,
-      terms: legalPage,
-      refund: legalPage,
-      cancellation: legalPage,
-      sitemap: z.object({ title: z.string(), intro: z.string() }),
-    }),
+  privacy: defineCollection({ loader: glob({ pattern: 'privacy-policy.yaml', base: './src/content' }), schema: legalPage }),
+  cancellation: defineCollection({ loader: glob({ pattern: 'cancellation-policy.yaml', base: './src/content' }), schema: legalPage }),
+  terms: defineCollection({ loader: glob({ pattern: 'terms-of-service.yaml', base: './src/content' }), schema: legalPage }),
+  refund: defineCollection({ loader: glob({ pattern: 'refund-policy.yaml', base: './src/content' }), schema: legalPage }),
+  sitemapPage: defineCollection({
+    loader: glob({ pattern: 'site-map.yaml', base: './src/content' }),
+    schema: z.object({ title: z.string(), intro: z.string() }),
   }),
 
-  emails: defineCollection({
-    loader: glob({ pattern: 'emails.yaml', base: './src/content' }),
-    schema: z.object({
-      callRequest: confirmationEmail,
-      contactMessage: confirmationEmail,
-      waitlist: confirmationEmail,
-    }),
-  }),
+  emailCallRequest: defineCollection({ loader: glob({ pattern: 'email-call-request.yaml', base: './src/content' }), schema: confirmationEmail }),
+  emailContactMessage: defineCollection({ loader: glob({ pattern: 'email-contact-message.yaml', base: './src/content' }), schema: confirmationEmail }),
+  emailWaitlist: defineCollection({ loader: glob({ pattern: 'email-waitlist.yaml', base: './src/content' }), schema: confirmationEmail }),
 
   bookingPage: defineCollection({
     loader: glob({ pattern: 'booking-page.yaml', base: './src/content' }),

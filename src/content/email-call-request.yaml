@@ -1,0 +1,13 @@
+# Confirmation email sent after "Request a call" (home page). {name} in the greeting is replaced with the client's first name.
+subject: "We've received your call request"
+preheader: Alex will call you shortly.
+greeting: Hi {name},
+intro: Thanks for getting in touch. Your request for a free discovery call has come through, and Alex will ring you on the number you gave us.
+stepsHeading: What happens next
+steps:
+  - "Alex calls you, on average within 2 hours during clinic hours"
+  - "You have a relaxed, no-pressure chat about what's going on"
+  - "If it feels right, you arrange your first session together"
+outro: If you'd rather not wait, or need to change your details, just reply to this email or message us on 0449 637 920.
+signOff: Warm regards,
+signature: Alex, Vital Fascia

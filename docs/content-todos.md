@@ -10,7 +10,7 @@ The home page copy was taken from the design prototype, which contains wording t
 | Contact details | TikTok link | Placeholder; replace with the real account (blank hides the icon). YouTube and Facebook icons are not shown |
 | Home page > Free discovery call | Copy, "2 hours" call-back promise, form endpoint | Confirm with client; form submission still to be connected |
 | Home page > The process | Steps 5-7 | Placeholder titles and text |
-| Other pages > Legal pages | Terms of Service, Refund Policy | Template text only; replace before launch. Privacy and Cancellation Policy are real copy (Nov 2026) |
+| Legal pages | Terms of Service, Refund Policy | Template text only; replace before launch. Privacy and Cancellation Policy are real copy (Nov 2026) |
 | Location | Two locations: Sydney CBD (Mezzanine, 309 George St) and Double Bay (Suite 6/21-25 Knox St) | Confirm both map pins. The Double Bay booking form is on the "The Muscle Group" Cliniko account and still shows old Muscle Medicine text/policy (a $65 fee, 24 hours) inside the form; Alex needs to update that in Cliniko |
 | Home page > Client testimonials | 22 real Google reviews from docs/Reviews.md (top 10 first) | Full names as on Google. Reviews naming the old clinics (Muscle Medicine / Movement Laboratory) and two incomplete ones were left out |
 | Home page > About | "Roughly nine in ten clients report a noticeable improvement..." | Unconfirmed claim. Verify or delete |

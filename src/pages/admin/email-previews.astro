@@ -5,7 +5,11 @@ import '../../styles/global.css';
 import { getContent } from '../../lib/content';
 import { FORMS, clientEmail, ownerEmail } from '../../../worker/emails';
 
-const emails = await getContent('emails');
+const emails = {
+  callRequest: await getContent('emailCallRequest'),
+  contactMessage: await getContent('emailContactMessage'),
+  waitlist: await getContent('emailWaitlist'),
+};
 const site = await getContent('site');
 const contact = await getContent('contact');
 

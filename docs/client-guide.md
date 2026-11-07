@@ -18,8 +18,8 @@ This guide is for **Alex** (the owner). **Part A** is everyday editing and needs
    1. **Home page**: every section of the home page
    2. **Signature program (8-week landing page)**
    3. **Booking page**
-   4. **Legal pages**: privacy, cancellation, terms, refunds, site map
-   5. **Email templates**: the automatic emails clients receive
+   4. **Legal pages**: five separate entries (privacy, cancellation, terms, refund policy, site map page)
+   5. **Email templates**: three separate entries, one for each automatic email clients receive
    6. **Forms**: the Contact page form
    7. **Business details & site settings**: contact details, locations and hours, menu and footer, Google and link-sharing settings
 
@@ -84,11 +84,11 @@ Nothing is stored on the website. **Your inbox is the record of requests.**
 
 ### Change the wording of the confirmation emails
 
-Go to **Email templates**. There is one email for each form (call request, contact message, waitlist). You can edit the subject, greeting, steps and sign-off. Put `{name}` in the greeting and it becomes the visitor's first name. Changes go live a minute or two after you save. The emails sent *to you* are fixed.
+Go to **Email templates**. There is one entry for each form's email (call request, contact message, waitlist). You can edit the subject, greeting, steps and sign-off. Put `{name}` in the greeting and it becomes the visitor's first name. Changes go live a minute or two after you save. The emails sent *to you* are fixed.
 
 ### Preview the emails
 
-**While you edit:** in **Email templates**, open an email and look at the preview panel next to the wording (if you can't see it, use the preview/eye button at the top of the editor). It draws the three finished emails as you type, using a sample person called "Jordan", and has an **Open the full preview page** button.
+**While you edit:** in **Email templates**, open an email and look at the preview panel next to the wording (if you can't see it, use the preview/eye button at the top of the editor). It draws that finished email as you type, using a sample person called "Jordan", and has an **Open the full preview page** button.
 
 **The full preview page (the admin preview page):** to see every email, including the ones sent *to you*, open the private page at **`your-website-address/admin/email-previews`**. Bookmark it. It also has an **Edit the wording** button, and a link back to the editor.
 
@@ -174,7 +174,7 @@ Keep a password manager entry for each, and turn on two-factor authentication fo
 
 | Path | What |
 | --- | --- |
-| `src/content/*.yaml` | **All the wording, images, hours and prices.** One file per section. This is what the editor changes |
+| `src/content/*.yaml` | **All the wording, images, hours and prices.** One file per section (each legal page and each email has its own file). This is what the editor changes |
 | `src/content.config.ts` | The "shape" (schema) of each content file. Must match the editor config |
 | `public/admin/config.yml` | The editor's menus, labels and hints. Must match the schemas |
 | `src/components/` | Page sections (Hero, Offers, Footer and so on) |

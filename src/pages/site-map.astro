@@ -2,22 +2,18 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LegalPage from '../components/LegalPage.astro';
 import { getContent } from '../lib/content';
-const legal = await getContent('legal');
+import { getLegalLinks } from '../lib/legal-links';
+const sitemapPage = await getContent('sitemapPage');
+const legalLinks = await getLegalLinks();
 const site = await getContent('site');
 const contact = await getContent('contact');
 const groups = [
   { heading: 'Pages', links: [{ label: 'Home', href: '/' }, ...site.navLinks.map((l: any) => ({ label: l.label, href: l.href })), { label: contact.bookingLabel, href: '/book' }] },
-  { heading: 'Legal', links: [
-    { label: legal.privacy.title, href: '/privacy-policy' },
-    { label: legal.cancellation.title, href: '/cancellation-policy' },
-    { label: legal.terms.title, href: '/terms-of-service' },
-    { label: legal.refund.title, href: '/refund-policy' },
-    { label: legal.sitemap.title, href: '/site-map' },
-  ] },
+  { heading: 'Legal', links: legalLinks },
 ];
 ---
-<BaseLayout page="legal" title={legal.sitemap.title} description={legal.sitemap.intro}>
-  <LegalPage title={legal.sitemap.title} intro={legal.sitemap.intro}>
+<BaseLayout page="legal" title={sitemapPage.title} description={sitemapPage.intro}>
+  <LegalPage title={sitemapPage.title} intro={sitemapPage.intro}>
     {groups.map((g) => (
       <div class="grp">
         <h2>{g.heading}</h2>

@@ -17,7 +17,9 @@
     offers: ['Pricing & offers', '/#work-with-me'], testimonials: ['Testimonials', '/#testimonials'], about: ['About', '/#about'],
     discoveryCall: ['Free discovery call', '/#discovery-call'], finalCta: ['Final call to action', '/#book'],
     programPage: ['8-Week Program page', '/8-week-program'], bookingPage: ['Booking page', '/book'],
-    legal: ['Legal pages', '/privacy-policy'], contactPage: ['Contact page', '/contact'],
+    privacy: ['Privacy Policy', '/privacy-policy'], cancellation: ['Cancellation Policy', '/cancellation-policy'],
+    terms: ['Terms of Service', '/terms-of-service'], refund: ['Refund Policy', '/refund-policy'], sitemapPage: ['Site map page', '/site-map'],
+    contactPage: ['Contact page', '/contact'],
     contact: ['Footer: contact and locations', '/#contact'], site: ['Menu and footer', '/'],
   };
 

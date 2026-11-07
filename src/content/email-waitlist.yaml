@@ -1,0 +1,13 @@
+# Confirmation email sent after joining the 8-Week Program waitlist. {name} in the greeting is replaced with the first name.
+subject: "You're on the 8-Week Program waitlist"
+preheader: You'll be first to hear when places open.
+greeting: Hi {name},
+intro: Thanks for your interest in the 8-Week 1:1 Program. You're on the waitlist, so you'll be among the first to hear when places open.
+stepsHeading: What happens next
+steps:
+  - "We'll email you as soon as enrolments open"
+  - "You'll get first access to the limited spots"
+  - "No obligation. You can decide when you hear the details"
+outro: Questions in the meantime? Just reply to this email.
+signOff: Warm regards,
+signature: Alex, Vital Fascia
