@@ -2,7 +2,7 @@
 
 **Purpose:** work out what we can connect to Alex's GoHighLevel account, what is worth connecting for a clinic like Vital Fascia, and a phased plan that fits how the site is built. Written for James to talk through with Alex.
 
-**Status:** research and recommendation only. Nothing has been built or connected. Research date: 8 Nov 2026.
+**Status:** research and recommendation only. Nothing has been built or connected. Research date: 8 Nov 2026. Updated with Alex's real GHL screenshot (white-labelled by the agency **GATHR**).
 
 **How confident is this?** The site/Cliniko/Resend facts come from the project and the vendors' own docs. For GHL I could mostly find third-party guides and a few official pages, so anything marked **(verify)** should be checked in Alex's actual GHL account or GHL's help centre before we build on it. Sources are listed at the end.
 
@@ -62,7 +62,15 @@
 
 ### Q3. GHL says a dedicated sending domain is important. Is that relevant to us?
 
-**Yes, once GHL sends marketing email on Alex's behalf.** (The screenshot you attached to this request was a Cloudflare "Builds" screen, not the GHL one, so I couldn't see GHL's exact wording. Please re-send it and I'll check it against this section.)
+**Yes. And the screenshot of Alex's account shows it applies right now.**
+
+**What the screenshot shows (Settings > Email Services > SMTP Service):**
+- The account is a **white-labelled GHL called "GATHR"** (the agency who set it up), and the sub-account is "Vital Fascia, Sydney NSW".
+- The default provider is the **LeadConnector Email System**, and its sending domain is **`marketing.gathrspace.com.au`**. That is the *agency's* domain, not `vitalfascia.com.au`. Any email sent from this account today goes out from Gathr's shared domain, alongside whatever Gathr's other clients send.
+- GHL's warning says: "Not having a dedicated sending domain can lead to several issues when it comes to email communication", for example deliverability problems because "shared or unknown domains lack a positive email reputation" (the box has a "Show More" with more issues).
+- There is a **Dedicated Domain And IP** button in the top right. There is also **Add Service** (to plug in your own SMTP) and tabs for Email Analytics, Risk Assessment, Bounce Classification and Postmaster Tools, which are useful for monitoring once it's set up.
+
+**So the answer is: set up a dedicated sending domain for Vital Fascia before any marketing email goes out**, using the button above (and ask Gathr whether a dedicated IP is included or an extra cost **(verify)**).
 
 What the research says:
 - By default, GHL's "LC Email" sends from shared infrastructure. Even with an LC Email *dedicated sending domain*, one source notes you still share the sending IP address with other HighLevel users, and that using your own SMTP/Mailgun account gives you a reputation that is yours alone ([InboxAlly](https://www.inboxally.com/blog/gohighlevel-email-deliverability), [Mailreach](https://www.mailreach.co/blog/gohighlevel-email-warmup)). These are vendors with their own interests, so treat the strength of the claims with care.
@@ -74,7 +82,7 @@ What the research says:
 2. **Set SPF, DKIM and DMARC** for each sending domain (GHL and Resend each give you the DNS records; we add them in Cloudflare DNS). Start DMARC in monitoring mode (`p=none`) and tighten later.
 3. **Warm up:** begin with the people who just requested a call or booked (engaged, small numbers) before sending to any bigger list. Do not import an old, unconsented list.
 4. **Our volume is small.** A single clinic sending a few hundred emails a month is low risk. The thing that causes trouble is a cold, unauthenticated domain, so the setup above is the whole job.
-5. **Decision for Alex:** use GHL's built-in LC Email with a dedicated domain (simplest, one bill) or plug in his own Mailgun/SMTP (more control, more setup). For a single clinic, **LC Email with a dedicated subdomain is the sensible default**; revisit if deliverability problems show up.
+5. **Decision for Alex:** use GHL's built-in LC Email with a dedicated domain (the **Dedicated Domain And IP** button; simplest, one bill) or plug in his own Mailgun/SMTP via **Add Service** (more control, more setup). For a single clinic, **LC Email with a dedicated subdomain is the sensible default**; revisit if deliverability problems show up. Because the account is run by an agency, ask them to enable it and confirm any extra cost.
 
 ### Q4. What makes sense to track in GHL from a business point of view?
 
@@ -148,7 +156,7 @@ GHL (Alex): pipeline, follow-up automations, SMS, newsletters, reviews
 
 | Phase | What | Effort (rough) | Needs from Alex |
 | --- | --- | --- | --- |
-| **0. Foundations** (after the Resend and domain switch) | Decide GHL's role; create the GHL pipeline and tags; set up GHL dedicated sending **sub**domain with SPF/DKIM/DMARC; send a few test emails | Small | GHL login; decide on sender name/address |
+| **0. Foundations** (after the Resend and domain switch) | Decide GHL's role; create the GHL pipeline and tags; set up GHL dedicated sending **sub**domain (replacing `marketing.gathrspace.com.au`) with SPF/DKIM/DMARC; send a few test emails | Small | GHL login; talk to GATHR about the dedicated domain/IP; decide on sender name/address |
 | **1. Website leads into GHL** | Worker upserts contacts with tags and source for all three forms; consent checkbox; UTM capture; one GHL workflow that notifies Alex and sets the first pipeline stage | Small-medium | GHL private integration token + location ID |
 | **2. Booking status from Cliniko** | Scheduled Worker syncing appointments to GHL (booked / attended / active); stops "called but already booked" follow-ups | Medium | A Cliniko API key (ideally from a limited user); agree what fields may leave Cliniko |
 | **3. Follow-up automations in GHL** | Missed-call chase, post-booking "what to expect", rebooking nudges, review request, waitlist launch email | Medium (mostly done inside GHL, no code) | Alex's wording; SMS sender setup |
@@ -202,7 +210,7 @@ I am not a lawyer; Alex should confirm with a privacy adviser. These are the thi
 | **GHL cost** | Subscription plus SMS/email usage charges. Alex should check what his plan includes before we design SMS-heavy automations |
 | **Maintenance** | The sync job and the API tokens are code we own. They need an owner (Alex's developer) and basic monitoring (the Worker logs; an email to Alex if the sync fails repeatedly) |
 | **GHL API/plan limits** | Some triggers (such as the inbound webhook) may need specific plans or have changed. Confirm in the account |
-| **"gathr"** | GitHub issue #45 is titled "INTEGRATIONS - gathr, GHL, bookings". I don't know what "gathr" is. Worth clarifying before planning |
+| **GATHR (the agency)** | Alex's GHL is a white-labelled account run by an agency called GATHR (the screenshot shows their branding and `gathrspace.com.au`). Find out who owns the account, who bills Alex, what the agency controls (users, sending domain, plan limits, whether API/private integration tokens are allowed on this plan), and what happens to Alex's data and automations if the relationship ends. Alex should own his own data and have admin access |
 
 ## 9. Questions for Alex
 
@@ -213,7 +221,7 @@ I am not a lawyer; Alex should confirm with a privacy adviser. These are the thi
 5. Are you happy for appointment status (booked/attended) to flow from Cliniko into GHL, if no clinical detail is shared?
 6. Should clients who start but don't finish booking be followed up? (That needs the optional "started booking" capture.)
 7. SMS: do you want it, and what sender name should it show?
-8. What is "gathr" in the integrations ticket?
+8. GATHR: who is the agency, what do they manage for you, what does it cost, and can they enable a dedicated sending domain (and an API token for the website) on your sub-account?
 
 ---
 
