@@ -17,7 +17,7 @@ const d = await getContent('discoveryCall');
           </ol>
         </div>
       </div>
-      <form data-form data-success={d.successMessage} action={formEndpoints.discoveryCall || undefined} method="post" data-reveal data-reveal-delay="120">
+      <form id="request-a-call-form" name="Request a call" data-form data-success={d.successMessage} action={formEndpoints.discoveryCall || undefined} method="post" data-reveal data-reveal-delay="120">
         <div class="fields">
           <div class="field">
             <label for="call-name">{d.nameLabel}</label>

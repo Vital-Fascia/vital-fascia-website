@@ -15,7 +15,7 @@ const c = await getContent('contact');
         <p class="lede intro">{d.intro}</p>
         <p class="direct"><a href={`mailto:${c.email}`}>{c.email}</a></p>
       </div>
-      <form data-form data-success={d.successMessage} action={formEndpoints.contact || undefined} method="post">
+      <form id="contact-form" name="Contact message" data-form data-success={d.successMessage} action={formEndpoints.contact || undefined} method="post">
         <!-- TODO: connect to a form service by setting formEndpoints.contact in src/lib/forms.ts -->
         <div class="fields">
           <div class="field"><label for="c-name">{d.nameLabel}</label><input id="c-name" name="name" type="text" autocomplete="name" required /></div>

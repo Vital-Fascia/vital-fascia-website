@@ -71,6 +71,12 @@
 4. **Don't double up.** Use either D or A to create contacts, not both, or you will get duplicates and conflicting tags (unless we deliberately dedupe by email).
 5. **Cliniko is still separate.** It can't see inside the booking iframe, so "booked/attended" still needs the Cliniko sync in phase 2.
 
+**Test results (8 Nov 2026, normal browser with an ad blocker on)**
+- All three forms were detected, and the contact mapped correctly (first name, last name, email, phone). Contact source was set to `external_form`. Page visits also appear on the contact's activity timeline.
+- The ad blocker did not stop the script (it is served from GATHR's own link domain). Other privacy tools (Brave, Safari with strict tracking protection) are untested.
+- Every submission showed as "Unidentified Form". Fixed by giving each form an id and name (`Request a call`, `Contact message`, `8-Week Program waitlist`), which also lets GHL workflows filter by form name.
+- Attribution showed "Direct traffic" because the test did not include UTM parameters, and the contact already existed (first attribution `CRM UI` is set only when a contact is first created). Re-test with a **brand-new email** and a landing link with `?utm_source=...&utm_medium=...&utm_campaign=...`.
+
 **Proposed test (about an hour)**
 1. In GHL: Settings > External Tracking > copy the script. Add it to a *test* copy of the site only (the workers.dev address), not production.
 2. Submit each of the three forms with a test email/phone and a `?utm_source=test` link.

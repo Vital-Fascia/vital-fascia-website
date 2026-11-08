@@ -47,7 +47,7 @@ const d = await getContent('programPage');
         <h2>{d.waitlistHeading}</h2>
         <p class="wl-text">{d.waitlistText}</p>
       </div>
-      <form class="form-dark" data-form data-success={d.successMessage} action={formEndpoints.programWaitlist || undefined} method="post">
+      <form id="waitlist-form" name="8-Week Program waitlist" class="form-dark" data-form data-success={d.successMessage} action={formEndpoints.programWaitlist || undefined} method="post">
         <div class="fields">
           <div class="field"><label for="wl-name">{d.nameLabel}</label><input id="wl-name" name="first_name" type="text" autocomplete="given-name" required /></div>
           <div class="field"><label for="wl-email">{d.emailLabel}</label><input id="wl-email" name="email" type="email" autocomplete="email" required /></div>
