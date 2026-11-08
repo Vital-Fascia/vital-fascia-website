@@ -1,6 +1,16 @@
 # How Alex's systems fit together
 
-A one-page picture of what happens when someone visits the website, submits their details or books, and **which platform handles what**. The diagram code below is [Mermaid](https://mermaid.js.org/). To turn it into a drawing: open <https://excalidraw.com>, click the **menu (top left) > Mermaid to Excalidraw** (or the text/diagram icon in the toolbar), paste the code, and insert it. The same code is saved as `docs/systems-diagram.mmd`. The syntax was checked with Mermaid's parser, but the Excalidraw import hasn't been tried. If a shape comes out odd, tweak it on the canvas.
+A one-page picture of what happens when someone visits the website, submits their details or books, and **which platform handles what**.
+
+**Files**
+- `docs/systems-diagram.excalidraw`: the **editable** drawing. Open <https://excalidraw.com> and use **menu > Open**, or drag the file onto the page. Every box, arrow and note is a normal Excalidraw element, so it can be moved and re-worded.
+- `docs/systems-diagram.png`: a picture of the same drawing for sharing (2240 x 2490 px).
+- The Mermaid version below is a plainer text-only alternative (it imports into Excalidraw but isn't as editable or readable). It can't show the "pay attention" and "what still works" panels.
+
+**What the drawing shows:** a colour-coded grid. Each column is a platform (people, your website, instant emails, CRM and marketing, bookings and patient records) and each numbered row is one thing that happens (browsing, submitting a form in two parts, booking, Alex editing the site). Below it: six things Alex needs to pay attention to, and what still works if a platform is down. Dashed arrows are quiet background tracking, dotted arrows are planned for later.
+
+## Plain-text version (Mermaid)
+
 
 ```mermaid
 flowchart LR
