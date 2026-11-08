@@ -13,6 +13,7 @@ interface Props {
 const { page, title, description } = Astro.props;
 const site = await getContent('site');
 const seo = await getContent('seo');
+const tracking = await getContent('tracking');
 const meta = page === 'legal' ? { title: `${title} | ${site.businessName}`, description: description ?? '' } : seo[page];
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -61,5 +62,8 @@ if (seo.socialImage) {
       import '../scripts/motion';
       import '../scripts/collapse';
     </script>
+    {tracking.enabled && tracking.scriptUrl && tracking.trackingId && (
+      <script is:inline src={tracking.scriptUrl} data-tracking-id={tracking.trackingId}></script>
+    )}
   </body>
 </html>

@@ -617,6 +617,14 @@ collections:
           - { name: showLabel, label: Button text to open a collapsed section, widget: string, hint: "e.g. Show" }
           - { name: hideLabel, label: Button text to close a section, widget: string, hint: "e.g. Hide" }
 
+      - name: tracking
+        label: GoHighLevel tracking (sends form leads to your CRM)
+        file: src/content/tracking.yaml
+        fields:
+          - { name: enabled, label: Turn tracking on, widget: boolean, default: false, hint: "Adds your GoHighLevel tracking script to every public page. Turn off to remove it from the whole website." }
+          - { name: scriptUrl, label: Tracking script address, widget: string, required: false, hint: "From GoHighLevel: Settings > External Tracking. The address ending in external-tracking.js." }
+          - { name: trackingId, label: Tracking ID, widget: string, required: false, hint: "From GoHighLevel: Settings > External Tracking. Starts with tk_. Don't change it." }
+
       - name: seo
         label: Google search & link-sharing preview
         file: src/content/seo.yaml

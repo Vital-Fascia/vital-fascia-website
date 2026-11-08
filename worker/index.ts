@@ -18,10 +18,28 @@ interface Env {
   MAIL_FROM: string; // e.g. "Vital Fascia <bookings@vitalfascia.com.au>"
   NOTIFY_TO: string; // where Alex's notifications go
   MAIL_DRY_RUN?: string; // "true" = log emails instead of sending (local testing only)
+  // TEST MODE (secrets, set only while testing): when MAIL_TEST_TO is set, EVERY email is sent to that one address
+  // instead of the real recipient, from the Resend test sender (works before the domain is verified).
+  MAIL_TEST_TO?: string;
+  MAIL_TEST_FROM?: string; // optional; defaults to Resend's onboarding@resend.dev sender
 }
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+
+/** In test mode, redirect to the test address and say who it would really have gone to. */
+function envelope(env: Env, msg: { to: string; subject: string; html: string; text: string; replyTo?: string }) {
+  if (!env.MAIL_TEST_TO) return { from: env.MAIL_FROM, to: [msg.to], subject: msg.subject, html: msg.html, text: msg.text, reply_to: msg.replyTo };
+  const note = `TEST MODE: this would have gone to ${msg.to}`;
+  return {
+    from: env.MAIL_TEST_FROM || 'Vital Fascia <onboarding@resend.dev>',
+    to: [env.MAIL_TEST_TO],
+    subject: `[TEST for ${msg.to}] ${msg.subject}`,
+    html: `<p style="font-family:sans-serif;background:#fff3cd;padding:8px 12px;margin:0">${note}</p>${msg.html}`,
+    text: `${note}\n\n${msg.text}`,
+    reply_to: msg.replyTo,
+  };
+}
 
 async function send(env: Env, msg: { to: string; subject: string; html: string; text: string; replyTo?: string }) {
   if (env.MAIL_DRY_RUN === 'true') {
@@ -32,7 +50,7 @@ async function send(env: Env, msg: { to: string; subject: string; html: string; 
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: env.MAIL_FROM, to: [msg.to], subject: msg.subject, html: msg.html, text: msg.text, reply_to: msg.replyTo }),
+    body: JSON.stringify(envelope(env, msg)),
   });
   if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`);
 }

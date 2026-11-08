@@ -1,0 +1,5 @@
+# GoHighLevel "External Tracking" script. It adds your GoHighLevel (GATHR) tracking to every public page of the website,
+# so form submissions and page views reach your CRM. Switch off to remove the script from the whole site.
+enabled: true
+scriptUrl: https://links.gathrspace.com.au/js/external-tracking.js
+trackingId: tk_83336da0b6b44767a8e1e9b5896259ca

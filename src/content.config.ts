@@ -85,6 +85,11 @@ export const collections = {
     }),
   }),
 
+  tracking: defineCollection({
+    loader: glob({ pattern: 'tracking.yaml', base: './src/content' }),
+    schema: z.object({ enabled: z.boolean().default(false), scriptUrl: z.string().optional(), trackingId: z.string().optional() }),
+  }),
+
   seo: defineCollection({
     loader: glob({ pattern: 'seo.yaml', base: './src/content' }),
     schema: ({ image }) =>
