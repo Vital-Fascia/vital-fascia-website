@@ -1,0 +1,58 @@
+flowchart LR
+  Visitor["Visitor (phone or computer)"]
+  Alex["Alex"]
+
+  subgraph WEB["1. Your website (hosted on Cloudflare)"]
+    Site["Website pages"]
+    Forms["Forms: Request a call, Contact, Waitlist"]
+    BookPage["Book page: choose Sydney CBD or Double Bay"]
+    Editor["Website editor at /admin"]
+  end
+
+  subgraph EMAIL["2. Instant emails (Resend)"]
+    Handler["Form handler: blocks spam and bots"]
+    Resend["Resend sends the emails"]
+  end
+
+  subgraph CRM["3. CRM and marketing (GoHighLevel via GATHR)"]
+    Tracker["Tracking script: sees page visits and form submissions"]
+    Filter["Spam filter (Alex sets up)"]
+    Contact["Contact record: details, source, marketing consent"]
+    Auto["Alex's automations: follow-ups, SMS, newsletters"]
+  end
+
+  subgraph CLINIC["4. Bookings and patient records (Cliniko)"]
+    Cliniko["Booking form, appointments, clinical notes"]
+  end
+
+  Visitor --> Site
+  Site --> Forms
+  Site --> BookPage
+  BookPage --> Cliniko
+  Forms --> Handler
+  Handler --> Resend
+  Resend -->|"New enquiry email"| Alex
+  Resend -->|"Confirmation email"| Visitor
+
+  Site -.->|"reports visits quietly"| Tracker
+  Forms -.->|"submission also seen by"| Tracker
+  Tracker --> Filter
+  Filter --> Contact
+  Contact --> Auto
+  Auto -->|"follow-up emails and SMS"| Visitor
+  Cliniko -.->|"future: booked or attended"| Contact
+
+  Alex --> Editor
+  Editor -->|"saves and publishes in 1-2 minutes"| Site
+  Alex --> Auto
+
+  W1(["WATCH 1: set up the spam filter"])
+  W2(["WATCH 2: only send marketing to people who ticked the box"])
+  W3(["WATCH 3: keep health details in Cliniko only, never in GoHighLevel"])
+  W4(["WATCH 4: do not send a second instant confirmation from GoHighLevel"])
+  W5(["WATCH 5: send marketing from your own dedicated email domain"])
+  W1 -.- Filter
+  W2 -.- Contact
+  W3 -.- Cliniko
+  W4 -.- Auto
+  W5 -.- Auto

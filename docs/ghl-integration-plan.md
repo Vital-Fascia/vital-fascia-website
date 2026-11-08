@@ -2,7 +2,9 @@
 
 **Purpose:** work out what we can connect to Alex's GoHighLevel account, what is worth connecting for a clinic like Vital Fascia, and a phased plan that fits how the site is built. Written for James to talk through with Alex.
 
-**Status:** research and recommendation only. Nothing has been built or connected. Research date: 8 Nov 2026. Updated with Alex's real GHL screenshot (white-labelled by the agency **GATHR**).
+**Status (updated 8 Nov 2026):** option D (GHL External Tracking script) is built, live on the test site and working for all three forms; field mapping, consent tick-box and privacy updates are done (final verification pending James's re-test). Resend emails are built and waiting on the Resend domain. A one-page picture for Alex is in `docs/systems-diagram.md`. The sections below were written as research and keep their original wording.
+
+**Original status:** research and recommendation only. Nothing had been built or connected. Research date: 8 Nov 2026. Updated with Alex's real GHL screenshot (white-labelled by the agency **GATHR**).
 
 **How confident is this?** The site/Cliniko/Resend facts come from the project and the vendors' own docs. For GHL I could mostly find third-party guides and a few official pages, so anything marked **(verify)** should be checked in Alex's actual GHL account or GHL's help centre before we build on it. Sources are listed at the end.
 
@@ -101,6 +103,14 @@
 - **Resend** is a developer email delivery service. Our code calls it to send an email immediately: "your request came through." It has no contacts, campaigns, pipeline or SMS. Its free plan covers 100 emails a day / 3,000 a month for transactional email; marketing has separate limits ([Resend limits](https://resend.com/docs/knowledge-base/resend-sending-limits)).
 - **GHL** is a CRM with a built-in email and SMS marketing engine: lists, sequences ("3 days after they request a call, send X"), SMS, a sales pipeline, unsubscribe handling, reporting.
 - **They can be chained:** GHL can use any SMTP provider for its own sending, and third-party guides describe pointing GHL at Resend's SMTP (`smtp.resend.com`, port 587) **(verify)**. But we would not recommend it: GHL's own SMTP help says SMTP only reports sent/open/click/bounce (no "delivered" event) and support for it is best-effort ([GHL SMTP article](https://gohighlevelassist.freshdesk.com/support/solutions/articles/48001059689-setting-up-smtp-providers)), and it adds a dependency without much benefit.
+
+**Decision (8 Nov 2026): keep Resend and our own templates, alongside GHL.** Now that GHL capture works, this is still the recommendation, mainly for resilience:
+- **The base site works without GHL.** If GHL has an outage, is blocked in a visitor's browser, or Alex changes CRM, the website still emails Alex every enquiry and still confirms to the visitor.
+- **Server-side beats browser-side for the essentials.** The GHL script runs in the visitor's browser, so it can be blocked and it sees spam. The Worker sees only real, validated submissions, so Alex's notification emails are clean and complete.
+- **Branded, instant, previewable.** The templates are editable in the CMS with live previews, and Resend's free plan covers the volume.
+- **Separate reputations.** Instant emails and marketing emails are sent from different domains, so a marketing problem can't stop confirmations.
+- **Costs:** two systems to keep in mind and a one-time domain setup. Avoid duplicate confirmations by having GHL automations start *after* the website's instant email.
+- Revisit only if Alex wants every email, including instant confirmations, managed inside GHL. The Worker's email step could then be switched off without touching the forms.
 
 **Recommended split**
 - **Resend:** instant automatic confirmations from the website forms, and the notification email to Alex (what we have now).
