@@ -45,7 +45,38 @@
 | **B. Worker posts to a GHL workflow webhook, GHL does everything** | The Worker sends the details to a GHL "Inbound Webhook" workflow; GHL creates the contact, sends confirmation email/SMS and notifies Alex | Alex can change automations inside GHL without a developer | The inbound webhook trigger may be a premium feature **(verify)**; we lose the CMS email templates and live previews; one more thing to rebuild in GHL's email builder |
 | **C. Replace our forms with GHL's embedded forms** | iframe/script from GHL | Fast to set up; GHL attribution works natively | Looks and feels less like the site (we have a carefully built form UX); less control over spam, accessibility and mobile; another third-party script on the page |
 
-**Recommendation:** **A** now. If Alex prefers to manage all automations himself in GHL later, we can move to **B** without touching the website forms (only the Worker's last step changes).
+| **D. GHL External Tracking script** (found by James) | Paste one GHL script into every page. It auto-detects ordinary HTML forms and, on submit, creates/updates the GHL contact, records UTM/page/session data, and fires GHL workflow triggers ([GHL article](https://help.gohighlevel.com/support/solutions/articles/155000006092-tracking-external-forms-with-gohighlevel)) | **Simplest**: no API token, no Worker code, no Cloudflare secret. Captures attribution (UTMs, page, session) automatically, so we don't hand-build it. Tracks anonymous page views too (workflow triggers). "External Tracking" is already in Alex's GHL settings menu | Runs in the visitor's browser: blocked by ad blockers/tracking protection, so some leads will be missed. Can't tell real submissions from spam or failed ones (see section 3a). Third-party script on every page raises cookie/consent questions. Iframes (the Cliniko booking form) are not read. Plan/premium requirements aren't stated in the article **(verify)** |
+
+**Recommendation:** start with **D** (see section 3a for how it fits our forms), keep **A** as the upgrade if D proves unreliable or noisy. If Alex prefers to manage all automations himself in GHL later, we can move to **B** without touching the website forms (only the Worker's last step changes).
+
+### 3a. Does GHL External Tracking suit our forms? (James's find)
+
+**Your reading is right, and it is a good option we should have listed.** It needs no API token or code in the Worker, and it is the easiest way to get leads, source and page-view data into GHL. How it fits our site, from the article:
+
+| Check | Result for us |
+| --- | --- |
+| Script placement | One script before `</body>` on every page. Easy: we'd add it to the base layout, with the script address stored in the CMS settings (so Alex can change/remove it) |
+| Form detection | Needs a standard `<form>`, inputs with `name`, visible, and an email field for contact creation. **Our forms qualify** (Request a call, Contact, Waitlist all have named fields and an email) |
+| JavaScript-submitted forms | The article doesn't say. Ours are submitted by JavaScript (`fetch`) and we call `preventDefault()` on the submit event. GHL's script *probably* still sees the submit event, but **we must test this first** |
+| Field mapping | By name/label. Our fields: `name`, `phone`, `email`, `message`, and `first_name` (waitlist). Expect to check how a single `name` field is split into first/last name in GHL |
+| Attribution | Captures UTM parameters, page URLs and session data automatically. This replaces the hidden UTM/referrer fields I proposed. The "Source" field behaviour isn't described **(verify)** |
+| Hidden fields | The article says fields must be visible and doesn't say whether hidden inputs are captured |
+| Plan/premium | Not stated **(verify)** with GATHR. The menu item exists in Alex's account, which is a good sign |
+| Consent | Not covered |
+
+**Real downsides to be aware of**
+1. **Spam goes straight into the CRM.** Our Worker discards bot submissions (hidden trap field, origin check, validation), but the GHL script runs in the browser before any of that: a bot that submits the form is still seen by GHL. Failed or invalid submissions are seen too. Fix options: filter in a GHL workflow (for example require a valid-looking phone), or later move to option A where only Worker-approved submissions are sent. Alex's notification emails stay clean either way, because they come from the Worker.
+2. **Blocked scripts = missing leads.** Ad blockers and some privacy browsers block third-party tracking scripts. A browser-side capture will miss those people. The Worker's email to Alex still arrives, so no enquiry is lost, but the CRM can be incomplete.
+3. **Cookies and consent.** The script tracks page views of anonymous visitors, so it is tracking, with its own cookies/identifiers **(verify)**. That changes our earlier "no cookie banner needed" analytics position (section 6) unless the script only loads after consent. Update the Privacy Policy either way.
+4. **Don't double up.** Use either D or A to create contacts, not both, or you will get duplicates and conflicting tags (unless we deliberately dedupe by email).
+5. **Cliniko is still separate.** It can't see inside the booking iframe, so "booked/attended" still needs the Cliniko sync in phase 2.
+
+**Proposed test (about an hour)**
+1. In GHL: Settings > External Tracking > copy the script. Add it to a *test* copy of the site only (the workers.dev address), not production.
+2. Submit each of the three forms with a test email/phone and a `?utm_source=test` link.
+3. In GHL check **Sites > Forms > Submissions > External Forms**, the contact record, and unmapped fields.
+4. Check: was our JavaScript-submitted form detected? Was the name split correctly? Did the trap field (`website`) show up as an unmapped field? Were UTMs captured? Does it work with an ad blocker off and on?
+5. Decide: keep D, or move to A.
 
 ### Q2. Is Resend doing exactly the same job as GHL? Can we use both?
 
@@ -157,7 +188,7 @@ GHL (Alex): pipeline, follow-up automations, SMS, newsletters, reviews
 | Phase | What | Effort (rough) | Needs from Alex |
 | --- | --- | --- | --- |
 | **0. Foundations** (after the Resend and domain switch) | Decide GHL's role; create the GHL pipeline and tags; set up GHL dedicated sending **sub**domain (replacing `marketing.gathrspace.com.au`) with SPF/DKIM/DMARC; send a few test emails | Small | GHL login; talk to GATHR about the dedicated domain/IP; decide on sender name/address |
-| **1. Website leads into GHL** | Worker upserts contacts with tags and source for all three forms; consent checkbox; UTM capture; one GHL workflow that notifies Alex and sets the first pipeline stage | Small-medium | GHL private integration token + location ID |
+| **1. Website leads into GHL** | **First try the External Tracking script (section 3a)**: add it via a CMS setting, test as above, add a consent checkbox, and one GHL workflow that sets the first pipeline stage. If it proves unreliable or noisy, upgrade to the Worker API option (A): upsert contacts with tags and source | Small (D) / small-medium (A) | GHL External Tracking script (D) or a private integration token + location ID (A) |
 | **2. Booking status from Cliniko** | Scheduled Worker syncing appointments to GHL (booked / attended / active); stops "called but already booked" follow-ups | Medium | A Cliniko API key (ideally from a limited user); agree what fields may leave Cliniko |
 | **3. Follow-up automations in GHL** | Missed-call chase, post-booking "what to expect", rebooking nudges, review request, waitlist launch email | Medium (mostly done inside GHL, no code) | Alex's wording; SMS sender setup |
 | **4. Analytics and conversion tracking** | See section 6 | Small-medium | Google account; decisions on ads and cookie banner |
@@ -182,7 +213,7 @@ How many people visit, where they come from (Google, Instagram, referral), which
 
 **Recommendation**
 1. **Now:** turn on **Cloudflare Web Analytics** and verify the site in **Search Console** (submit `sitemap-index.xml`). Both are free and need no cookie banner.
-2. **Capture the lead source ourselves:** on a visitor's first page, store `utm_*` parameters and `document.referrer` for the session and include them as hidden fields in the three forms. The Worker passes them to GHL. This gives Alex "where did this lead come from" without relying on GHL's tracking script.
+2. **Capture the lead source:** if we use GHL External Tracking (section 3a) it records UTMs, page and session for us. Otherwise (Worker API option) on a visitor's first page, store `utm_*` parameters and `document.referrer` for the session and include them as hidden fields in the three forms. The Worker passes them to GHL. This gives Alex "where did this lead come from" without relying on GHL's tracking script.
 3. **Add GA4 only when it is needed** (running Google/Meta ads, or wanting funnel reports). Load it through Google Tag Manager with Consent Mode and add a cookie banner. Events to send: `form_submit` (with form type), `booking_location_selected` (Sydney CBD / Double Bay), `click_to_call`, `whatsapp_click`, and `booking_completed`.
 4. **Booking completion is the hard one.** Cliniko says the iframe loses the original traffic source (iframes don't support cross-domain tracking) and recommends redirecting to Cliniko's hosted booking page if accurate tracking is essential. A documented workaround exists: the Cliniko iframe sends a `postMessage` when the confirmation page is reached, a script on our page listens and pushes a `clinikoBookingCompleted` event, and GA4 reports it. Cliniko says it can't support that workaround ([Cliniko help](https://help.cliniko.com/en/articles/4726326-tracking-the-source-in-google-analytics-with-cliniko-bookings-embedded), [GA4 embed guide](https://help.cliniko.com/en/articles/5946172-connect-cliniko-bookings-with-google-analytics-4-embedded)). Our `/book` page already listens for Cliniko's `postMessage` events, so this is feasible and we would test it carefully.
 5. **A very cheap attribution trick:** add a required "How did you hear about us?" question to the Cliniko booking form (check Cliniko's online-bookings settings for referral-source options **(verify)**). It also shows up in the Cliniko-to-GHL sync.
@@ -237,6 +268,7 @@ I am not a lawyer; Alex should confirm with a privacy adviser. These are the thi
 - GHL email sending/warm-up guide: <https://gohighlevelassist.freshdesk.com/support/solutions/articles/155000001021-email-sending-guide-email-best-practices-email-warm-up>
 - GHL deliverability commentary (vendors with their own interests): <https://www.inboxally.com/blog/gohighlevel-email-deliverability>, <https://www.mailreach.co/blog/gohighlevel-email-warmup>
 - Resend sending limits: <https://resend.com/docs/knowledge-base/resend-sending-limits>
+- GHL: Tracking external forms with GoHighLevel: <https://help.gohighlevel.com/support/solutions/articles/155000006092-tracking-external-forms-with-gohighlevel>
 - GHL inbound webhook guides (third-party): <https://chat.salesbot.it.com/blog/get-webhook-from-highlevel-guide>
 - Australian SMS and Spam Act summaries: <https://sinch.com/engage/resources/sms-compliance/sms-marketing-laws-australia/>, <https://www.telerivet.com/blog/australia-sms-compliance-acma-sender-id-spam-act>
 - Cloudflare Web Analytics and GA4 Consent Mode summaries: <https://www.consentstack.io/vendors/cloudflare>, <https://www.uniconsent.com/google-consent-mode-ga4>
