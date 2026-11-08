@@ -24,7 +24,7 @@ const forms = [
 
 const previews = forms.flatMap((f) => {
   const form = FORMS[f.path];
-  const data: Record<string, string> = { name: sample.first, phone: sample.phone, email: sample.email, message: sample.message };
+  const data: Record<string, string> = { name: sample.first, phone: sample.phone, email: sample.email, message: sample.message, marketing: 'Yes, they ticked the box' };
   const client = clientEmail(emails[f.copy], site.businessName, sample.first);
   const owner = ownerEmail(form, site.businessName, { ...data, name: sample.name }, when);
   return [

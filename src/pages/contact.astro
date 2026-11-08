@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getContent } from '../lib/content';
 import { formEndpoints } from '../lib/forms';
+import ConsentCheckbox from '../components/ConsentCheckbox.astro';
 const d = await getContent('contactPage');
 const c = await getContent('contact');
 ---
@@ -26,6 +27,7 @@ const c = await getContent('contact');
             <textarea id="c-message" name="message" aria-describedby="c-hint" required></textarea>
             <span class="hint" id="c-hint">{d.messageHint}</span>
           </div>
+          <ConsentCheckbox form="contact" id="c-consent" />
           <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
           <button type="submit" class="btn btn-primary">{d.buttonLabel}</button>
         </div>

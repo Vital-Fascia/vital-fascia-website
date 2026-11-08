@@ -23,7 +23,7 @@ export interface EmailContent {
   ownerEmail: string;
 }
 
-export type Field = { key: string; label: string; formName: string; required: boolean; max: number; kind: 'text' | 'phone' | 'email' | 'message' };
+export type Field = { key: string; label: string; formName: string; required: boolean; max: number; kind: 'text' | 'phone' | 'email' | 'message' | 'consent' };
 export interface FormType {
   copy: keyof Omit<EmailContent, 'businessName' | 'ownerEmail'>;
   nameField: string;
@@ -42,6 +42,7 @@ export const FORMS: Record<string, FormType> = {
       { key: 'name', label: 'Name', formName: 'name', required: true, max: 100, kind: 'text' },
       { key: 'phone', label: 'Phone', formName: 'phone', required: true, max: 40, kind: 'phone' },
       { key: 'email', label: 'Email', formName: 'email', required: true, max: 200, kind: 'email' },
+      { key: 'marketing', label: 'Marketing updates', formName: 'marketing_consent', required: false, max: 5, kind: 'consent' },
     ],
     ownerHeading: 'New call request',
     ownerTitle: (n) => `${n} would like a call`,
@@ -56,6 +57,7 @@ export const FORMS: Record<string, FormType> = {
       { key: 'email', label: 'Email', formName: 'email', required: true, max: 200, kind: 'email' },
       { key: 'phone', label: 'Phone', formName: 'phone', required: false, max: 40, kind: 'phone' },
       { key: 'message', label: 'Message', formName: 'message', required: true, max: 4000, kind: 'message' },
+      { key: 'marketing', label: 'Marketing updates', formName: 'marketing_consent', required: false, max: 5, kind: 'consent' },
     ],
     ownerHeading: 'New message',
     ownerTitle: (n) => `${n} sent you a message`,
@@ -68,6 +70,7 @@ export const FORMS: Record<string, FormType> = {
     fields: [
       { key: 'name', label: 'First name', formName: 'first_name', required: true, max: 100, kind: 'text' },
       { key: 'email', label: 'Email', formName: 'email', required: true, max: 200, kind: 'email' },
+      { key: 'marketing', label: 'Marketing updates', formName: 'marketing_consent', required: false, max: 5, kind: 'consent' },
     ],
     ownerHeading: '8-Week Program waitlist',
     ownerTitle: (n) => `${n} joined the waitlist`,

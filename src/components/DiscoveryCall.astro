@@ -1,6 +1,7 @@
 ---
 import { getContent } from '../lib/content';
 import { formEndpoints } from '../lib/forms';
+import ConsentCheckbox from './ConsentCheckbox.astro';
 const d = await getContent('discoveryCall');
 ---
 {d.visible && (
@@ -31,6 +32,7 @@ const d = await getContent('discoveryCall');
             <label for="call-email">{d.emailLabel}</label>
             <input id="call-email" name="email" type="email" autocomplete="email" placeholder={d.emailPlaceholder} required />
           </div>
+          <ConsentCheckbox form="callRequest" id="call-consent" />
           <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
           <button type="submit" class="btn btn-primary btn-arrow">{d.buttonLabel}</button>
         </div>

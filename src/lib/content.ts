@@ -4,10 +4,10 @@ import { getEntry } from 'astro:content';
 type Single =
   | 'site' | 'contact' | 'seo' | 'hero' | 'highlights' | 'whoItsFor' | 'services'
   | 'approach' | 'process' | 'offers' | 'testimonials' | 'about' | 'discoveryCall'
-  | 'finalCta' | 'privacy' | 'cancellation' | 'terms' | 'refund' | 'sitemapPage' | 'programPage' | 'contactPage' | 'bookingPage' | 'tracking' | 'emailCallRequest' | 'emailContactMessage' | 'emailWaitlist';
+  | 'finalCta' | 'privacy' | 'cancellation' | 'terms' | 'refund' | 'sitemapPage' | 'programPage' | 'contactPage' | 'bookingPage' | 'tracking' | 'consent' | 'emailCallRequest' | 'emailContactMessage' | 'emailWaitlist';
 
 const ids: Record<Single, string> = {
-  site: 'site', contact: 'contact', seo: 'seo', tracking: 'tracking', hero: 'hero', highlights: 'highlights',
+  site: 'site', contact: 'contact', seo: 'seo', tracking: 'tracking', consent: 'consent', hero: 'hero', highlights: 'highlights',
   whoItsFor: 'who-its-for', services: 'services', approach: 'approach', process: 'process',
   offers: 'offers', testimonials: 'testimonials', about: 'about', discoveryCall: 'discovery-call',
   finalCta: 'final-cta', privacy: 'privacy-policy', cancellation: 'cancellation-policy', terms: 'terms-of-service', refund: 'refund-policy', sitemapPage: 'site-map', programPage: 'program-page', contactPage: 'contact-page', bookingPage: 'booking-page', emailCallRequest: 'email-call-request', emailContactMessage: 'email-contact-message', emailWaitlist: 'email-waitlist',

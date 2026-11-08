@@ -85,6 +85,20 @@ export const collections = {
     }),
   }),
 
+  consent: defineCollection({
+    loader: glob({ pattern: 'consent.yaml', base: './src/content' }),
+    schema: z.object({
+      enabled: z.boolean().default(true),
+      preTicked: z.boolean().default(false),
+      label: z.string(),
+      smallPrint: z.string().optional(),
+      privacyLinkText: z.string().optional(),
+      showOnCallRequest: z.boolean().default(true),
+      showOnContact: z.boolean().default(true),
+      showOnWaitlist: z.boolean().default(true),
+    }),
+  }),
+
   tracking: defineCollection({
     loader: glob({ pattern: 'tracking.yaml', base: './src/content' }),
     schema: z.object({ enabled: z.boolean().default(false), scriptUrl: z.string().optional(), trackingId: z.string().optional() }),

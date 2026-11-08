@@ -3,7 +3,7 @@
 This guide is for **Alex** (the owner). **Part A** is everyday editing and needs no technical knowledge. **Part B** explains how everything is built and run, so you (or any developer or AI assistant you hire) can maintain it, move it, or take it over without the original developer.
 
 **Contents**
-- Part A: Everyday use. [Log in](#log-in) · [Edit text and photos](#change-some-text) · [Hours, locations and booking](#update-your-contact-details-hours-and-booking-link) · [Forms and automatic emails](#forms-and-automatic-emails) · [Email previews](#preview-the-emails-the-admin-preview-page) · [Google and link sharing](#change-what-google-and-link-sharing-show)
+- Part A: Everyday use. [Log in](#log-in) · [Edit text and photos](#change-some-text) · [Hours, locations and booking](#update-your-contact-details-hours-and-booking-link) · [Forms and automatic emails](#forms-and-automatic-emails) · [Email previews](#preview-the-emails-the-admin-preview-page) · [Marketing consent](#marketing-consent-tick-box) · [CRM and spam filter](#your-crm-gohighlevel-and-the-website-forms) · [Google and link sharing](#change-what-google-and-link-sharing-show)
 - Part B: [The big picture](#the-big-picture) · [Accounts you own](#accounts-and-who-owns-what) · [Tech stack](#tech-stack) · [How a change goes live](#how-a-change-goes-live) · [Style guide](#style-guide) · [Using Claude to make changes](#using-claude-to-edit-content-or-code) · [Handing over to a new developer](#handing-over-to-a-new-developer) · [Moving the site or domain](#moving-the-site-or-the-domain) · [Troubleshooting](#troubleshooting)
 
 ---
@@ -103,6 +103,32 @@ Go to **Email templates**. There is one entry for each form's email (call reques
 - **Visitors see an error / no emails arrive:** check the Resend dashboard (resend.com) > **Logs**, which shows every email and why one failed. Check the domain shows *Verified* there.
 - **Emails land in spam:** confirm the domain is verified in Resend; ask the visitor to add bookings@vitalfascia.com.au to their contacts.
 - **Spam submissions:** the forms have a hidden trap field that blocks most bots. If it becomes a problem, ask a developer to add Cloudflare Turnstile (a free, invisible CAPTCHA).
+
+## Marketing consent tick-box
+
+Under each website form there is a small tick-box asking whether the person is happy to receive updates and offers. Australian law (the Spam Act) says you need a person's consent before sending them marketing email or SMS, so this is how you collect it.
+
+Go to **Business details & site settings > Marketing consent tick-box** to control it:
+- **Show the tick-box on the website forms:** one switch to turn it on or off everywhere. Keep it on if you send newsletters, offers or SMS.
+- **Tick the box by default:** off by default, and we recommend leaving it off. In Australia, agreeing to marketing generally has to be an active choice, so a pre-ticked box may not count as consent. Get advice before turning this on.
+- **Wording, extra small words, and the Privacy Policy link text:** edit freely. Keep it short and clear.
+- **Show on each form:** separate switches for *Request a call*, the *Contact page* and the *8-Week Program waitlist*.
+
+What happens to the answer: the notification email you receive says whether they ticked it ("Marketing updates: Yes/No"), and GoHighLevel receives it as a form field. Only send marketing to people who ticked it, and always include an unsubscribe link. **Messages about someone's own appointment or enquiry are not marketing.**
+
+## Your CRM (GoHighLevel) and the website forms
+
+A small tracking script from GoHighLevel is on every page, so each form submission creates a contact in your CRM (with the form name, the page, and where the visitor came from). You can switch the script off under **Business details & site settings > GoHighLevel tracking**.
+
+One-off setup inside GoHighLevel (done once per form): map the form fields to contact fields, as in the table below. Don't map the hidden field called `website`.
+
+| Form (name in GoHighLevel) | Fields to map |
+| --- | --- |
+| `request-a-call-form` | `name` to full name, `phone` to phone, `email` to email, `marketing_consent` to a "Marketing consent" field |
+| `contact-form` | `name`, `email`, `phone`, `message` (to a "Message" custom field), `marketing_consent` |
+| `waitlist-form` | `first_name` to first name, `email`, `marketing_consent` |
+
+**To do for Alex: set up a spam filter in GoHighLevel.** The tracking script sees every submission in the visitor's browser, including spam and bots. The website's own email notifications are already filtered, but the CRM is not. In GoHighLevel, create a workflow (Automation > Workflows) that starts when an external form is submitted and checks the details: for example, if the phone number is empty or invalid, or the name looks like random letters, add the tag `possible-spam` and stop. Review that tag now and then and delete the contacts. If spam becomes a real problem, ask a developer to add Cloudflare Turnstile (an invisible CAPTCHA) or to send leads to GoHighLevel from the website's server instead, where bots are already filtered out.
 
 ## Change what Google and link sharing show
 

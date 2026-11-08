@@ -617,6 +617,19 @@ collections:
           - { name: showLabel, label: Button text to open a collapsed section, widget: string, hint: "e.g. Show" }
           - { name: hideLabel, label: Button text to close a section, widget: string, hint: "e.g. Hide" }
 
+      - name: consent
+        label: Marketing consent tick-box (under the forms)
+        file: src/content/consent.yaml
+        fields:
+          - { name: enabled, label: Show the tick-box on the website forms, widget: boolean, default: true, hint: "Turn off to remove the tick-box from every form. Keep it on if you send newsletters, offers or SMS: Australian law needs people to agree first." }
+          - { name: preTicked, label: Tick the box by default, widget: boolean, default: false, hint: "Not recommended. In Australia, agreeing to marketing generally has to be an active choice, so a pre-ticked box may not count as consent. Get advice before turning this on." }
+          - { name: label, label: Wording next to the box, widget: string, hint: "Keep it short and clear, e.g. 'Send me occasional updates and offers from Vital Fascia.'" }
+          - { name: smallPrint, label: Extra small words (optional), widget: string, required: false, hint: "e.g. 'You can unsubscribe at any time.'" }
+          - { name: privacyLinkText, label: Privacy Policy link text (optional), widget: string, required: false, hint: "The words that link to your Privacy Policy. Leave empty to hide the link." }
+          - { name: showOnCallRequest, label: Show on the 'Request a call' form, widget: boolean, default: true }
+          - { name: showOnContact, label: Show on the Contact page form, widget: boolean, default: true }
+          - { name: showOnWaitlist, label: Show on the 8-Week Program waitlist form, widget: boolean, default: true }
+
       - name: tracking
         label: GoHighLevel tracking (sends form leads to your CRM)
         file: src/content/tracking.yaml

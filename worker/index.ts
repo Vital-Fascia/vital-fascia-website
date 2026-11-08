@@ -65,6 +65,11 @@ async function handleForm(f: FormType, request: Request, env: Env): Promise<Resp
 
   const d: Record<string, string> = {};
   for (const fld of f.fields) {
+    if (fld.kind === 'consent') {
+      // only recorded when the form actually showed the tick-box (it can be switched off in the editor)
+      if (form.get('marketing_consent_asked')) d[fld.key] = form.get(fld.formName) ? 'Yes, they ticked the box' : 'No (box not ticked)';
+      continue;
+    }
     const v = String(form.get(fld.formName) ?? '').trim().slice(0, fld.max);
     if (!v && !fld.required) continue;
     const ok =

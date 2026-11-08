@@ -77,6 +77,16 @@
 - Every submission showed as "Unidentified Form". Fixed by giving each form an id and name (`Request a call`, `Contact message`, `8-Week Program waitlist`), which also lets GHL workflows filter by form name.
 - Attribution showed "Direct traffic" because the test did not include UTM parameters, and the contact already existed (first attribution `CRM UI` is set only when a contact is first created). Re-test with a **brand-new email** and a landing link with `?utm_source=...&utm_medium=...&utm_campaign=...`.
 
+**Round 2 test results (8 Nov 2026, incognito, UTM link)**
+- Forms detected with the correct names (`request-a-call-form`, `contact-form`). Email, phone, UTM campaign and page visits arrived. Contact source `external_form`.
+- **First/last name did not arrive** until the form fields were **mapped inside GHL** (External form settings). It was a mapping step, not a code fault. Mapping is done once per form; see the table in the client guide. Existing test contacts stay blank (and GHL won't overwrite the name of a contact it merges by matching email or phone).
+- **Outcome:** option D (External Tracking script) works for our forms. We keep it, and keep option A (Worker API) as the upgrade path if spam or missed leads become a problem.
+
+**Added in response (8 Nov 2026)**
+- A marketing consent tick-box, controlled in the editor (on/off, default unticked, wording, per-form switches). The notification email records the answer, and GHL receives `marketing_consent` as a form field to map.
+- Privacy Policy updated for the CRM, overseas providers, tracking and marketing consent (needs Alex's approval).
+- TODO for Alex: a spam-filter workflow in GHL (see the client guide).
+
 **Proposed test (about an hour)**
 1. In GHL: Settings > External Tracking > copy the script. Add it to a *test* copy of the site only (the workers.dev address), not production.
 2. Submit each of the three forms with a test email/phone and a `?utm_source=test` link.

@@ -23,3 +23,9 @@ Facts taken from the live Squarespace site: address (Suite 6/21-25 Knox St, Doub
 The live site's own hero/intro wording was **not** used; the design's copy was (client decision). The live site's longer treatment descriptions were also not used.
 
 Note: when the client saves in the CMS, the `# TODO` comments inside the YAML files are removed. This file is the source of truth for open items.
+
+| Privacy Policy | Nov 2026 updates: CRM/marketing platforms, overseas storage (US-based services), website tracking linked to enquiries, marketing consent and how to withdraw it. Added "Last updated: November 2026" | **Needs Alex's approval, ideally a privacy adviser's review.** Edited by the developer, not a lawyer |
+| Marketing consent tick-box | Wording ("Send me occasional updates and offers from Vital Fascia. You can unsubscribe at any time."), default unticked, on all 3 forms | Alex to confirm wording and that he'll honour unsubscribes. Pre-ticking is NOT recommended under the Spam Act |
+| GoHighLevel | **TODO for Alex: set up a spam filter workflow** (see the client guide, "Your CRM") and map the form fields for each form | Open. The tracking script captures junk submissions that the website's own email filter already rejects |
+| GoHighLevel | Confirm with GATHR: dedicated sending domain, API token availability, plan limits | Open (see docs/ghl-integration-plan.md) |
+| Cookies / tracking | The GHL tracking script tracks page visits. Decide whether a cookie banner is wanted | Open. Currently no banner; wording in the Privacy Policy covers the tracking |

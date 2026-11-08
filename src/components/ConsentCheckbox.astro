@@ -1,0 +1,33 @@
+---
+// The optional "send me updates" tick-box. Wording, on/off and the default state are all edited in the CMS
+// (Business details & site settings > Marketing consent tick-box).
+import { getContent } from '../lib/content';
+interface Props { form: 'callRequest' | 'contact' | 'waitlist'; id: string }
+const { form, id } = Astro.props;
+const c = await getContent('consent');
+const show = c.enabled && { callRequest: c.showOnCallRequest, contact: c.showOnContact, waitlist: c.showOnWaitlist }[form];
+---
+{show && (
+  <div class="consent">
+    <input type="hidden" name="marketing_consent_asked" value="1" />
+    <label for={id}>
+      <input id={id} type="checkbox" name="marketing_consent" value="yes" checked={c.preTicked} />
+      <span>
+        {c.label}
+        {c.smallPrint && <> <span class="sub">{c.smallPrint}</span></>}
+        {c.privacyLinkText && <> <a href="/privacy-policy" target="_blank" rel="noopener">{c.privacyLinkText}</a></>}
+      </span>
+    </label>
+  </div>
+)}
+
+<style>
+  .consent { margin-top: -2px; }
+  .consent label { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.45; color: var(--ink-muted); cursor: pointer; }
+  .consent input[type='checkbox'] { flex: none; width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--olive); cursor: pointer; }
+  .consent input[type='checkbox']:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; }
+  .consent .sub { opacity: .9; }
+  .consent a { color: inherit; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+  :global(.form-dark) .consent label { color: var(--cream-muted); }
+  :global(.form-dark) .consent input[type='checkbox'] { accent-color: var(--cream); }
+</style>
