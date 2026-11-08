@@ -48,10 +48,10 @@ const d = await getContent('programPage');
         <h2>{d.waitlistHeading}</h2>
         <p class="wl-text">{d.waitlistText}</p>
       </div>
-      <form id="waitlist-form" name="8-Week Program waitlist" class="form-dark" data-form data-success={d.successMessage} action={formEndpoints.programWaitlist || undefined} method="post">
+      <form id="waitlist-form" name="8-Week Program waitlist" class="form-dark" novalidate data-form data-success={d.successMessage} action={formEndpoints.programWaitlist || undefined} method="post">
         <div class="fields">
-          <div class="field"><label for="wl-name">{d.nameLabel}</label><input id="wl-name" name="first_name" type="text" autocomplete="given-name" required /></div>
-          <div class="field"><label for="wl-email">{d.emailLabel}</label><input id="wl-email" name="email" type="email" autocomplete="email" required /></div>
+          <div class="field"><label for="wl-name">{d.nameLabel}</label><input id="wl-name" name="first_name" type="text" autocomplete="given-name" autocapitalize="words" maxlength="100" required /></div>
+          <div class="field"><label for="wl-email">{d.emailLabel}</label><input id="wl-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" maxlength="254" required /></div>
           <ConsentCheckbox form="waitlist" id="wl-consent" />
           <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
           <button type="submit" class="btn btn-primary">{d.buttonLabel}</button>

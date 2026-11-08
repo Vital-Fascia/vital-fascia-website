@@ -18,19 +18,19 @@ const d = await getContent('discoveryCall');
           </ol>
         </div>
       </div>
-      <form id="request-a-call-form" name="Request a call" data-form data-success={d.successMessage} action={formEndpoints.discoveryCall || undefined} method="post" data-reveal data-reveal-delay="120">
+      <form id="request-a-call-form" name="Request a call" novalidate data-form data-success={d.successMessage} action={formEndpoints.discoveryCall || undefined} method="post" data-reveal data-reveal-delay="120">
         <div class="fields">
           <div class="field">
             <label for="call-name">{d.nameLabel}</label>
-            <input id="call-name" name="name" type="text" autocomplete="name" placeholder={d.namePlaceholder} required />
+            <input id="call-name" name="name" type="text" autocomplete="name" autocapitalize="words" maxlength="100" placeholder={d.namePlaceholder} required />
           </div>
           <div class="field">
             <label for="call-phone">{d.phoneLabel}</label>
-            <input id="call-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder={d.phonePlaceholder} required />
+            <input id="call-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="25" placeholder={d.phonePlaceholder} required />
           </div>
           <div class="field">
             <label for="call-email">{d.emailLabel}</label>
-            <input id="call-email" name="email" type="email" autocomplete="email" placeholder={d.emailPlaceholder} required />
+            <input id="call-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" maxlength="254" placeholder={d.emailPlaceholder} required />
           </div>
           <ConsentCheckbox form="callRequest" id="call-consent" />
           <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>

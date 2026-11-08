@@ -18,6 +18,8 @@
   --white: #fff;
   --sage: #8fa07c;
   --gold: #c9a96c;
+  --error: #a63a2a;
+  --error-on-dark: #f3b8ab;
 
   /* Type */
   --font-display: 'Newsreader Variable', Georgia, 'Times New Roman', serif;

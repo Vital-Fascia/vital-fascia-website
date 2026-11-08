@@ -16,15 +16,15 @@ const c = await getContent('contact');
         <p class="lede intro">{d.intro}</p>
         <p class="direct"><a href={`mailto:${c.email}`}>{c.email}</a></p>
       </div>
-      <form id="contact-form" name="Contact message" data-form data-success={d.successMessage} action={formEndpoints.contact || undefined} method="post">
+      <form id="contact-form" name="Contact message" novalidate data-form data-success={d.successMessage} action={formEndpoints.contact || undefined} method="post">
         <!-- TODO: connect to a form service by setting formEndpoints.contact in src/lib/forms.ts -->
         <div class="fields">
-          <div class="field"><label for="c-name">{d.nameLabel}</label><input id="c-name" name="name" type="text" autocomplete="name" required /></div>
-          <div class="field"><label for="c-email">{d.emailLabel}</label><input id="c-email" name="email" type="email" autocomplete="email" required /></div>
-          <div class="field"><label for="c-phone">{d.phoneLabel}</label><input id="c-phone" name="phone" type="tel" autocomplete="tel" /></div>
+          <div class="field"><label for="c-name">{d.nameLabel}</label><input id="c-name" name="name" type="text" autocomplete="name" autocapitalize="words" maxlength="100" required /></div>
+          <div class="field"><label for="c-email">{d.emailLabel}</label><input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" maxlength="254" required /></div>
+          <div class="field"><label for="c-phone">{d.phoneLabel}</label><input id="c-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="25" /></div>
           <div class="field">
             <label for="c-message">{d.messageLabel}</label>
-            <textarea id="c-message" name="message" aria-describedby="c-hint" required></textarea>
+            <textarea id="c-message" name="message" aria-describedby="c-hint" maxlength="4000" required></textarea>
             <span class="hint" id="c-hint">{d.messageHint}</span>
           </div>
           <ConsentCheckbox form="contact" id="c-consent" />

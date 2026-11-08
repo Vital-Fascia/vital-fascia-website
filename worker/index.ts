@@ -10,6 +10,8 @@
  */
 
 import { FORMS, clientEmail, ownerEmail } from './emails';
+import { checkEmail, checkMessage, checkName, checkPhone, looksLikeSpam } from '../src/lib/clean';
+import type { Checked } from '../src/lib/clean';
 import type { EmailContent, FormType } from './emails';
 
 interface Env {
@@ -56,28 +58,38 @@ async function send(env: Env, msg: { to: string; subject: string; html: string; 
 }
 
 async function handleForm(f: FormType, request: Request, env: Env): Promise<Response> {
-  // only accept posts from this site
+  // 1. Only real posts from this website's own pages, and nothing huge.
   const origin = request.headers.get('Origin');
-  if (origin && new URL(origin).host !== new URL(request.url).host) return json({ error: 'forbidden' }, 403);
+  if (!origin || new URL(origin).host !== new URL(request.url).host) return json({ error: 'forbidden' }, 403);
+  if (Number(request.headers.get('Content-Length') ?? 0) > 32_768) return json({ error: 'too-large' }, 413);
+  if (!(request.headers.get('Content-Type') ?? '').includes('form')) return json({ error: 'bad-type' }, 415);
 
   const form = await request.formData();
-  if (String(form.get('website') ?? '') !== '') return json({ ok: true }); // honeypot: bots fill this in; pretend success
 
+  // 2. Bot traps. Bots get a fake "ok" so they can't learn what to change.
+  if (String(form.get('website') ?? '') !== '') return json({ ok: true }); // hidden box that humans never fill in
+  const loadedAt = Number(form.get('_t'));
+  const age = Date.now() - loadedAt;
+  if (!loadedAt || !Number.isFinite(age) || age < 1500) return json({ ok: true }); // no page-load stamp, or sent within 1.5 seconds of loading
+  if (age > 12 * 3_600_000) return json({ error: 'stale', message: 'This page has been open for a long time. Please refresh the page and try again.' }, 400);
+
+  // 3. Clean and check every field (the same rules as the browser; the browser can be bypassed).
   const d: Record<string, string> = {};
   for (const fld of f.fields) {
     if (fld.kind === 'consent') {
-      // only recorded when the form actually showed the tick-box (it can be switched off in the editor)
-      if (form.get('marketing_consent_asked')) d[fld.key] = form.get(fld.formName) ? 'Yes, they ticked the box' : 'No (box not ticked)';
+      // only recorded when the form actually showed the choice (it can be switched off in the editor)
+      if (form.get('marketing_consent_asked')) d[fld.key] = form.get(fld.formName) === 'Consent' ? 'Consent' : 'No consent';
       continue;
     }
-    const v = String(form.get(fld.formName) ?? '').trim().slice(0, fld.max);
-    if (!v && !fld.required) continue;
-    const ok =
-      fld.kind === 'email' ? /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(v)
-      : fld.kind === 'phone' ? /^[+\d][\d\s()+-]{5,}$/.test(v)
-      : v.length > 0;
-    if (!ok) return json({ error: 'invalid' }, 400);
-    d[fld.key] = v;
+    const raw = String(form.get(fld.formName) ?? '');
+    const r: Checked = fld.kind === 'email' ? checkEmail(raw) : fld.kind === 'phone' ? checkPhone(raw, fld.required) : fld.kind === 'message' ? checkMessage(raw) : checkName(raw);
+    if (!fld.required && !r.value) continue;
+    if (r.error) return json({ error: 'invalid', field: fld.formName, message: r.error }, 400);
+    d[fld.key] = r.value;
+  }
+  if (looksLikeSpam({ name: d.name, message: d.message })) {
+    console.warn('spam submission dropped', f.copy);
+    return json({ ok: true });
   }
 
   const contentRes = await env.ASSETS.fetch(new Request(new URL('/email-content.json', request.url)));

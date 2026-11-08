@@ -89,6 +89,12 @@
 - Privacy Policy updated for the CRM, overseas providers, tracking and marketing consent (needs Alex's approval).
 - TODO for Alex: a spam-filter workflow in GHL (see the client guide).
 
+**Findings after mapping (9 Nov 2026)**
+- **External Tracking can only map to built-in fields** (names, phone, email, address fields, organization, website, Terms & Conditions, Source, Captcha). It **cannot map to custom fields**, and it auto-maps a consent checkbox to "Terms & Conditions", which is not a per-contact field, so it can't drive automations or smart lists.
+- **It captured a form the browser had rejected** (an email with no `@`). The script appears to react to the submit-button click, before validation. Mitigated on our side by validating in a window-level capture handler that stops the click before any other script sees it. Not yet verified against GHL; re-test with an invalid email.
+- **Changes made:** the consent control is now a Yes/No choice (values `Consent` / `No consent`, "No consent" selected by default) so it can be matched by name to a *Marketing Consent* custom field via Automatic mapping, and every submission carries an explicit answer. All forms now clean and validate data (names, phones, emails, messages) in the browser and on the server, with bot traps, an origin check and spam heuristics on the server.
+- **If Automatic mapping doesn't fill the custom field, move to option A** (Worker sends each lead to GHL via the API with the custom field and a tag). That also stops spam reaching the CRM and gives exact control over the data. It needs a GATHR-provided token with contact read/write scopes.
+
 **Proposed test (about an hour)**
 1. In GHL: Settings > External Tracking > copy the script. Add it to a *test* copy of the site only (the workers.dev address), not production.
 2. Submit each of the three forms with a test email/phone and a `?utm_source=test` link.

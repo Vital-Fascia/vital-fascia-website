@@ -1,9 +1,12 @@
-# The optional "send me updates" tick-box under the website forms (Request a call, Contact, Waitlist).
+# The optional "send me updates" choice under the website forms (Request a call, Contact, Waitlist).
 # It records whether the person agreed to receive marketing emails/SMS (a requirement of Australia's Spam Act).
+# The form sends exactly "Consent" or "No consent" to your CRM and to the notification email.
 enabled: true
-# Australian law generally needs a person to actively agree to marketing, so pre-ticking the box is NOT recommended.
-preTicked: false
+# Australian law generally needs a person to actively agree to marketing, so pre-selecting "Yes" is NOT recommended.
+preSelectYes: false
 label: Send me occasional updates and offers from Vital Fascia.
+yesLabel: Yes please
+noLabel: No thanks
 smallPrint: You can unsubscribe at any time.
 privacyLinkText: Privacy Policy
 showOnCallRequest: true

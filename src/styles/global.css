@@ -77,6 +77,11 @@ img { max-width: 100%; height: auto; }
 .field textarea { padding-block: 14px; min-height: 160px; resize: vertical; }
 .field input:focus, .field textarea:focus { outline: 2px solid var(--olive); outline-offset: 1px; }
 .form-status { margin-top: 14px; font-size: 15px; }
+.field-error { font-size: 13px; color: var(--error); min-height: 0; }
+.field-error:empty { display: none; }
+.field input[aria-invalid="true"], .field textarea[aria-invalid="true"] { border-color: var(--error); }
+.form-dark .field-error { color: var(--error-on-dark); }
+.form-dark .field input[aria-invalid="true"], .form-dark .field textarea[aria-invalid="true"] { border-color: var(--error-on-dark); }
 .form-dark .field label, .form-dark .field .hint { color: var(--cream-muted); }
 .form-dark .field input, .form-dark .field textarea { background: rgba(242, 236, 221, 0.06); border-color: rgba(242, 236, 221, 0.35); color: var(--cream); }
 .form-dark .field input::placeholder { color: rgba(242, 236, 221, 0.55); }
