@@ -9,7 +9,7 @@ const primaryHref = h.primaryButton.href === '#' ? contact.bookingUrl : h.primar
   <div class="wrap hero-grid">
     <div class="copy">
       <span class="eyebrow rise" style="--d:0ms">{h.eyebrow}</span>
-      <h1 class="rise" style="--d:90ms">{h.headingStart}<em>{h.headingEmphasis}</em>{h.headingEnd}</h1>
+      <h1 class="rise" style="--d:90ms">{h.headingStart.trim()}{" "}<em>{h.headingEmphasis.trim()}</em>{" "}{h.headingEnd.trim()}</h1>
       <p class="lede intro rise" style="--d:200ms">{h.intro}</p>
       <div class="cta-row rise" style="--d:300ms">
         <a class="btn btn-primary btn-arrow" href={primaryHref}>{h.primaryButton.label}</a>

@@ -34,9 +34,9 @@ collections:
         file: src/content/hero.yaml
         fields:
           - { name: eyebrow, label: Small line above the headline, widget: string, hint: "Short label, e.g. the type of therapy and where you are." }
-          - { name: headingStart, label: Headline - first part, widget: string, hint: "The big headline is built from three parts so one word can be shown in italics. Keep the trailing space." }
+          - { name: headingStart, label: Headline - first part, widget: string, hint: "The big headline is built from three parts so one word can be shown in italics. Spaces around the italic word are added automatically." }
           - { name: headingEmphasis, label: Headline - italic word, widget: string, hint: "This word is shown in italics and green." }
-          - { name: headingEnd, label: Headline - last part, widget: string, hint: "Keep the leading space." }
+          - { name: headingEnd, label: Headline - last part, widget: string, hint: "Spaces around the italic word are added automatically." }
           - { name: intro, label: Introduction paragraph, widget: text }
           - name: primaryButton
             label: Main button
