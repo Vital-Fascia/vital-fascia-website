@@ -2,37 +2,29 @@ visible: true
 startOpen: false
 eyebrow: The process
 heading: A journey, not a quick fix
-intro: Eight steps, every time, so treatment builds toward independence rather than another appointment.
+intro: Six steps, guided by Structural Integration principles, so each session builds on the last and moves you toward independence.
 steps:
   - title: Understand
     icon: conversation
-    description: "A real conversation: your history, your patterns, what you've already tried."
+    description: A real conversation about your history, your patterns and what you’ve already tried, so we start with the whole picture.
     detail: "What you leave with: a clear picture of what's likely going on."
   - title: Assess
     icon: posture
-    description: "A whole-body movement and posture assessment, not just the painful area."
-    detail: "What happens: simple movement and posture checks, head to toe."
-  - title: Treat
+    description: We look at how you stand, move, breathe and organise yourself around gravity, across your whole body, not just the painful area.
+    detail: 'What happens: simple movement and posture checks, head to toe.'
+  - title: Release
     icon: hands
-    description: "Hands-on work with the modality suited to your pattern, not a default routine."
-    detail: "What happens: hands-on work matched to what we found."
-  - title: Move
-    icon: movement
-    description: "Simple movement work that retrains the pattern in between sessions."
-    detail: "What you leave with: two or three short drills, no gym needed."
-  - title: "[Step 5 title]"
-    icon: web
-    description: "[Placeholder] A short description of this step, two lines or so, to be written with the client."
-    detail: "[Placeholder] What happens or what you leave with."
-  - title: "[Step 6 title]"
-    icon: target
-    description: "[Placeholder] A short description of this step, two lines or so, to be written with the client."
-    detail: "[Placeholder] What happens or what you leave with."
-  - title: "[Step 7 title]"
-    icon: exercise
-    description: "[Placeholder] A short description of this step, two lines or so, to be written with the client."
-    detail: "[Placeholder] What happens or what you leave with."
-  - title: Empower
+    description: Hands-on work that moves from the outer layers inward, easing tension where your body is holding more than it needs to.
+    detail: 'What happens: hands-on work matched to what we found.'
+  - title: Integrate
     icon: compass
-    description: "Tools and understanding to manage your own body long after treatment ends."
-    detail: "What you leave with: the confidence to manage it yourself."
+    description: We work on how areas connect, like ribs to pelvis and feet to hips, so your body can share the load more evenly.
+    detail: Understanding how your body is interconnected with breathing, movement and rest for long term sustained improvement
+  - title: Move
+    icon: web
+    description: Simple, guided movement to help your body explore new options and carry the session into daily life.
+    detail: 'What you leave with: two or three short drills, no gym needed.'
+  - title: Empower
+    icon: conversation
+    description: Tools and understanding to manage your own body, so progress continues long after a session ends.
+    detail: A complete process from start to finish.
