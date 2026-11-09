@@ -89,10 +89,9 @@ export const collections = {
     loader: glob({ pattern: 'consent.yaml', base: './src/content' }),
     schema: z.object({
       enabled: z.boolean().default(true),
-      preSelectYes: z.boolean().default(false),
+      preTicked: z.boolean().default(false),
+      rememberChoice: z.boolean().default(true),
       label: z.string(),
-      yesLabel: z.string().default('Yes please'),
-      noLabel: z.string().default('No thanks'),
       smallPrint: z.string().optional(),
       privacyLinkText: z.string().optional(),
       showOnCallRequest: z.boolean().default(true),

@@ -1,7 +1,9 @@
 ---
-// The optional "send me updates" choice (Yes / No). Wording, on/off and the default are all edited in the CMS
-// (Business details & site settings > Marketing consent). It always sends exactly "Consent" or "No consent",
-// so the CRM and the notification email get a clear answer either way (an unticked tick-box sends nothing at all).
+// The optional "I agree to receive offers & updates" tick-box. Wording, on/off, the default and "remember the choice"
+// are all edited in the CMS (Business details & site settings > Marketing consent).
+// What the visitor sees is one tick-box. What the form sends (and what the CRM tracking script reads) is a pair of
+// visually hidden radio buttons that always carry exactly "Consent" or "No consent": an unticked tick-box would
+// send nothing at all, and the CRM maps a tick-box to the wrong field. src/scripts/consent.ts keeps them in step.
 import { getContent } from '../lib/content';
 interface Props { form: 'callRequest' | 'contact' | 'waitlist'; id: string }
 const { form, id } = Astro.props;
@@ -9,32 +11,34 @@ const c = await getContent('consent');
 const show = c.enabled && { callRequest: c.showOnCallRequest, contact: c.showOnContact, waitlist: c.showOnWaitlist }[form];
 ---
 {show && (
-  <fieldset class="consent">
+  <div class="consent" data-consent data-preticked={String(c.preTicked)} data-remember={String(c.rememberChoice)}>
     <input type="hidden" name="marketing_consent_asked" value="1" />
-    <legend>{c.label}</legend>
-    <div class="opts">
-      <label for={`${id}-yes`}><input id={`${id}-yes`} type="radio" name="marketing_consent" value="Consent" checked={c.preSelectYes} /> <span>{c.yesLabel}</span></label>
-      <label for={`${id}-no`}><input id={`${id}-no`} type="radio" name="marketing_consent" value="No consent" checked={!c.preSelectYes} /> <span>{c.noLabel}</span></label>
-    </div>
+    <span class="vh" aria-hidden="true">
+      <input type="radio" name="marketing_consent" value="Consent" tabindex="-1" checked={c.preTicked} />
+      <input type="radio" name="marketing_consent" value="No consent" tabindex="-1" checked={!c.preTicked} />
+    </span>
+    <label for={id} class="tick">
+      <input id={id} type="checkbox" checked={c.preTicked} aria-describedby={`${id}-note`} />
+      <span>{c.label}</span>
+    </label>
     {(c.smallPrint || c.privacyLinkText) && (
-      <p class="sub">
+      <p class="sub" id={`${id}-note`}>
         {c.smallPrint}
         {c.privacyLinkText && <> <a href="/privacy-policy" target="_blank" rel="noopener">{c.privacyLinkText}</a></>}
       </p>
     )}
-  </fieldset>
+  </div>
 )}
 
 <style>
-  .consent { border: 0; margin: 0; padding: 0; min-width: 0; }
-  .consent legend { padding: 0; font-size: 13.5px; line-height: 1.45; color: var(--ink); }
-  .consent .opts { display: flex; flex-wrap: wrap; gap: 4px 22px; margin-top: 6px; }
-  .consent label { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-muted); cursor: pointer; min-height: 32px; }
-  .consent input[type='radio'] { width: 18px; height: 18px; margin: 0; accent-color: var(--olive); cursor: pointer; }
-  .consent input[type='radio']:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; }
-  .consent .sub { margin: 2px 0 0; font-size: 12.5px; color: var(--ink-muted); }
-  .consent a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
-  :global(.form-dark) .consent legend { color: var(--cream); }
-  :global(.form-dark) .consent label, :global(.form-dark) .consent .sub { color: var(--cream-muted); }
-  :global(.form-dark) .consent input[type='radio'] { accent-color: var(--cream); }
+  .consent { margin: 0; }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .tick { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.45; color: var(--ink); cursor: pointer; }
+  .tick input { flex: none; width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--olive); cursor: pointer; }
+  .tick input:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; }
+  .sub { margin: 3px 0 0 28px; font-size: 12.5px; line-height: 1.4; color: var(--ink-muted); }
+  .sub a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+  :global(.form-dark) .tick { color: var(--cream); }
+  :global(.form-dark) .tick input { accent-color: var(--cream); }
+  :global(.form-dark) .sub { color: var(--cream-muted); }
 </style>

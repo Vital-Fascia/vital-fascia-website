@@ -95,6 +95,8 @@
 - **Changes made:** the consent control is now a Yes/No choice (values `Consent` / `No consent`, "No consent" selected by default) so it can be matched by name to a *Marketing Consent* custom field via Automatic mapping, and every submission carries an explicit answer. All forms now clean and validate data (names, phones, emails, messages) in the browser and on the server, with bot traps, an origin check and spam heuristics on the server.
 - **If Automatic mapping doesn't fill the custom field, move to option A** (Worker sends each lead to GHL via the API with the custom field and a tag). That also stops spam reaching the CRM and gives exact control over the data. It needs a GATHR-provided token with contact read/write scopes.
 
+**Update (9 Nov 2026): consent now maps to a custom field.** The consent control was reworked into a single visible tick-box ("I agree to receive occasional offers & updates from Vital Fascia", unticked by default, remembered across forms and pages in the browser) that drives a visually hidden `Consent` / `No consent` radio pair named `marketing_consent`. The hidden pair is what GHL's Automatic mapping matches to the *Marketing Consent* custom field (a plain checkbox maps to Terms & Conditions instead). Re-check the mapping on each form after this change.
+
 **Proposed test (about an hour)**
 1. In GHL: Settings > External Tracking > copy the script. Add it to a *test* copy of the site only (the workers.dev address), not production.
 2. Submit each of the three forms with a test email/phone and a `?utm_source=test` link.
