@@ -7,7 +7,7 @@ A one-page picture of what happens when someone visits the website, submits thei
 - `docs/systems-diagram.png`: a picture of the same drawing for sharing (2240 x 2490 px).
 - The Mermaid version below is a plainer text-only alternative (it imports into Excalidraw but isn't as editable or readable). It can't show the "pay attention" and "what still works" panels.
 
-**What the drawing shows:** a colour-coded grid. Each column is a platform (people, your website, instant emails, CRM and marketing, bookings and patient records) and each numbered row is one thing that happens (browsing, submitting a form in two parts, booking, Alex editing the site). Below it: six things Alex needs to pay attention to, and what still works if a platform is down. Dashed arrows are quiet background tracking, dotted arrows are planned for later.
+**What the drawing shows:** a colour-coded grid. Each column is a platform (people, your website, instant emails, CRM and marketing, bookings and patient records) and each numbered row is one thing that happens (browsing, submitting a form in two parts, booking, and Alex editing the website, forms and emails in the Sveltia CMS editor). Below it: six things Alex needs to pay attention to, and what still works if a platform is down. Dashed arrows are quiet background tracking, dotted arrows are planned for later.
 
 ## Plain-text version (Mermaid)
 
@@ -21,7 +21,8 @@ flowchart LR
     Site["Website pages"]
     Forms["Forms: Request a call, Contact, Waitlist"]
     BookPage["Book page: choose Sydney CBD or Double Bay"]
-    Editor["Website editor at /admin"]
+    Editor["Sveltia CMS editor at /admin (edits wording, forms, emails, hours)"]
+    GitHub["GitHub saves each change"]
   end
 
   subgraph EMAIL["2. Instant emails (Resend)"]
@@ -58,7 +59,10 @@ flowchart LR
   Cliniko -.->|"future: booked or attended"| Contact
 
   Alex --> Editor
-  Editor -->|"saves and publishes in 1-2 minutes"| Site
+  Editor --> GitHub
+  GitHub -->|"Cloudflare publishes in 1-2 minutes"| Site
+  Editor -.->|"changes the wording of"| Forms
+  Editor -.->|"changes the wording of"| Resend
   Alex --> Auto
 
   W1(["WATCH 1: set up the spam filter"])
@@ -76,7 +80,7 @@ flowchart LR
 ## How to read it (plain English)
 
 **The four platforms, in one line each**
-1. **Website (Cloudflare):** the public face. Pages, forms and the booking page. Alex edits it in the website editor at `/admin`.
+1. **Website (Cloudflare, GitHub and the Sveltia CMS editor):** the public face. Pages, forms and the booking page. Alex edits it in the **Sveltia CMS** editor at `/admin`. The editor saves each change to GitHub, and Cloudflare publishes it within about two minutes. The editor controls what the forms say (including the marketing tick-box), the wording of the instant emails, hours, prices, legal pages, the booking links to Cliniko, and the on/off switch for the CRM tracking script. It does **not** receive form submissions: those go straight to Resend and the CRM.
 2. **Resend:** sends the instant emails when a form is submitted: one to Alex ("new enquiry") and one to the visitor ("we got your request"). It runs quietly in the background.
 3. **GoHighLevel (GATHR):** Alex's CRM. Every enquiry becomes a contact here, with where they came from and whether they agreed to marketing. Alex's automations (follow-up texts and emails, newsletters) live here.
 4. **Cliniko:** the clinic system. Bookings, appointments and **all health information** live only here.
@@ -87,7 +91,7 @@ flowchart LR
   1. The website's own form handler checks it's not spam, then Resend emails Alex and the visitor straight away. This works **even if GoHighLevel is down**.
   2. GoHighLevel's script sees the submission and creates or updates the contact, which then runs through Alex's spam filter and automations.
 - **Someone books:** they choose a location on the Book page and complete the booking inside Cliniko. Nothing about the booking passes through GoHighLevel yet (a future connection could pass "booked / attended").
-- **Alex changes the website:** he edits in `/admin`, saves, and the live site updates in about two minutes.
+- **Alex changes the website, forms or emails:** he edits in the Sveltia CMS editor at `/admin` and saves. The change is recorded in GitHub and the live site updates in about two minutes. Editing changes how the forms and emails *read and behave*; it never touches submissions people have already sent.
 
 ## What Alex needs to pay attention to
 
