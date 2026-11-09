@@ -11,13 +11,13 @@ regions:
     label: Jaw
     symptom: jaw-clenching
   - id: neck
-    label: Neck & shoulders
+    label: Neck & Shoulders
     symptom: neck-tension
   - id: upperback
     label: Upper back
     symptom: neck-tension
   - id: core
-    label: Spine & core
+    label: Spine & Core
     symptom: lower-back-pain
   - id: hip
     label: Hips
@@ -49,7 +49,7 @@ symptoms:
       - core
       - hip
       - knee
-    caption: Lower back pain often involves the glutes, hamstrings and lats, which all pull on the same sheet of fascia across the lower back.
+    caption: Lower back pain often involves the glutes, hamstrings and lats, which are all connected through the fascia.
   - id: knee-pain
     label: Knee pain
     nodes:
