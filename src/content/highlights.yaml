@@ -1,6 +1,8 @@
 visible: true
-# TODO: these figures come from the design prototype and are NOT confirmed. Verify or delete.
 items:
-  - { value: 3+, label: Years in practice }
-  - { value: 500+, label: Sessions delivered }
-  - { value: 4.9 / 5, label: Average client rating }
+  - value: 5+
+    label: Years in practice
+  - value: 5000+
+    label: Sessions delivered
+  - value: 4.9 / 5
+    label: Average client rating
