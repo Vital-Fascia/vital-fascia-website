@@ -4,34 +4,45 @@ heading: 1:1 treatment, built around your pattern
 items:
   - status: active
     badge: Available now
-    title: Initial Session
+    title: Initial Treatment
     details: 60 minutes · Sydney CBD & Double Bay
-    price: $175
-    priceNote: " per 60 minute session"
+    description: ''
+    price: $165
+    priceNote: per 60 minute session
     includes:
       - Whole-body movement & posture assessment
       - Hands-on treatment matched to your pattern
-      - A simple, personalised take-home movement plan
-      - Follow-up sessions are also $175 · 60 minutes
+      - Targeted corrective care to support your treatment
+      - Follow-up sessions are also $165 · 60 minutes
     expect:
-      - { label: Duration, value: 60 minutes }
-      - { label: Where, value: "Sydney CBD & Double Bay" }
-    rebate: Health Fund Rebates available via TyroHealth online
+      - label: Duration
+        value: 60 minutes
+      - label: Where
+        value: Sydney CBD & Double Bay
+    rebate: Health Fund Rebates available via TyroHealth online (dependent on your cover)
+    photo: ''
+    photoAlt: ''
+    photoPlaceholder: ''
     buttonLabel: Book a Session
-    buttonHref: "#"
+    buttonHref: '#'
+    buttonNote: ''
   - status: soon
     badge: COMING SOON
     title: 8-Week 1:1 Program
     details: In person · Sydney CBD
-    description: For people who are done chasing temporary relief. Over eight weeks, we combine hands-on fascia work, corrective movement and nervous system awareness to address the patterns behind your tension, not just the symptoms.
+    description: For people ready to go beyond short-term relief. Over eight weeks, we combine hands-on fascia work, corrective movement and nervous system awareness to understand and work with the patterns behind your tension, not just the symptoms.
+    price: TBA
+    priceNote: ''
     includes:
-      - A full initial assessment of posture, movement and breathing
-      - Weekly 1:1 soft tissue sessions tailored to your body
-      - A personalised movement plan you can keep using long after week eight
+      - A full initial assessment of posture, movement and breathing. Everything to understand where you are, and where you want to go.
+      - Weekly 1:1 soft tissue treatments tailored to your body & goals
+      - A personalised corrective care plan you can keep using long after week eight
+    expect: []
+    rebate: Rebates unavailable for program.
     photo: ../assets/uploads/program-8-week-preview.jpg
-    photoAlt: "Three scenes from the program: seated shoulder treatment, supine arm and shoulder release, and a standing movement drill in a gym"
-    photoPlaceholder: "[Photo - program preview]"
-    buttonLabel: Register interest
+    photoAlt: 'Three scenes from the program: seated shoulder treatment, supine arm and shoulder release, and a standing movement drill in a gym'
+    photoPlaceholder: '[Photo - program preview]'
+    buttonLabel: Register Interest
     buttonHref: /8-week-program#waitlist
     buttonNote: Limited spots. Be first to hear when enrolments open.
 faqHeading: Before your first visit (FAQ)
