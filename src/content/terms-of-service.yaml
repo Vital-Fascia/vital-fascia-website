@@ -1,8 +1,155 @@
-# TODO: placeholder template. Replace with a real, professionally prepared policy before launch.
-title: Terms of Service
-intro: "[Placeholder] The terms that apply when you use this website and book services with Vital Fascia."
+title: 'Terms of Service: Vital Fascia'
+intro: 'Last updated: November 2026'
 sections:
-  - { heading: Using this website, body: "[Placeholder text. This section will set out acceptable use of the website and its content.]" }
-  - { heading: Bookings and services, body: "[Placeholder text. This section will describe how bookings are made, changed and cancelled.]" }
-  - { heading: Health information, body: "[Placeholder text. This section will clarify that website content is general information and not a substitute for personalised health advice.]" }
-  - { heading: Liability and changes, body: "[Placeholder text. This section will cover limits of liability and how these terms may change.]" }
+  - heading: About these terms
+    body: |-
+      These Terms of Service apply to all services provided by Vital Fascia, operated by Alex May [ABN: 72 489 455 015] (“Vital Fascia”, “I”, “me”). They cover in-clinic treatment at Sydney CBD and Double Bay, discovery calls, home movement programs, and any programs offered in future.
+
+      By booking a session, registering for a program or using this website, you agree to these terms, together with the Cancellation Policy and Privacy Policy, which form part of them.
+
+      Nothing in these terms excludes, restricts or modifies any right you have under the Australian Consumer Law (ACL) that can’t lawfully be excluded.
+  - heading: Bookings and services
+    body: |-
+      Vital Fascia provides soft tissue therapy and related education, which may include:
+
+      - Remedial and soft tissue massage
+      - Myofascial release
+      - Trigger point therapy
+      - Cupping
+      - Dry needling
+      - Movement and posture assessment
+      - Personalised home movement and self-care programs
+      - Free discovery calls
+      - Structured multi-week programs (when available)
+
+      Techniques are selected based on your assessment, goals and consent. Not every technique will be suitable or used in every session.
+  - heading: Scope of practice
+    body: |-
+      I’m a soft tissue therapist, not a medical practitioner. My services:
+
+      - are not a substitute for medical diagnosis or treatment
+      - don’t involve diagnosing medical conditions
+      - are not intended to cure any disease or condition.
+
+      If something in your assessment or history suggests you’d benefit from medical care or another health professional, I’ll recommend you see your GP or refer you on. I’ll never advise you to stop or avoid medical treatment.
+
+      Please see your GP before booking if you have new, severe or unexplained pain, symptoms following an injury or accident, or symptoms such as numbness, weakness, unexplained weight loss, fever, or changes in bladder or bowel function.
+  - heading: Your health information and responsibilities
+    body: |-
+      Before your first session, you’ll complete an intake form. To keep treatment safe, you agree to:
+
+      - provide accurate and complete health information, including medical conditions, medications (especially blood-thinning medication), pregnancy, recent surgery or injury, and skin conditions
+      - tell me about any changes to your health before each session
+      - tell me during a session if anything feels uncomfortable, painful or not right.
+
+      I may decline or modify treatment if a technique isn’t safe or appropriate for you.
+  - heading: Consent
+    body: |-
+      **General consent.** Treatment only proceeds with your informed consent. I’ll explain what I propose, why, and any relevant risks before starting.
+
+      **Ongoing consent.** You can ask me to adjust pressure, change technique, avoid an area, or stop at any time, without needing to give a reason.
+
+      **Draping.** You’ll be appropriately draped throughout, and only the area being treated will be uncovered. You’re welcome to remain partly clothed.
+
+      **Support person.** You’re welcome to bring a support person to any session.
+
+      **Clients under 18.** A parent or guardian must provide written consent and must be present for treatment.
+
+      Cupping
+
+      Cupping can leave temporary circular marks on the skin that may last several days. Cupping won’t be used without your specific consent.
+
+      Dry needling
+
+      Dry needling is only performed with your specific written consent, after we’ve discussed the benefits, risks and alternatives. Common effects include temporary soreness, bruising or fatigue. Rare but serious risks include fainting, infection, and, when needling near the chest wall, pneumothorax (a collapsed lung). Single-use sterile needles are used and disposed of in line with NSW skin penetration requirements. Dry needling is not acupuncture.
+  - heading: Outcomes
+    body: Every body responds differently. While I’ll always work towards your goals, I can’t guarantee any specific outcome, including pain relief, improved posture, or how many sessions you’ll need. Any information about likely outcomes is general guidance based on your assessment, not a promise.
+  - heading: Bookings and payment
+    body: |-
+      **Fees.** Current fees are listed on the website. An Initial Session and Follow-up Sessions are each $165 for 60 minutes. All prices are in Australian dollars and include GST.
+
+      **Payment.** Payment is due at the end of each session unless agreed otherwise.
+
+      **Price changes.** Fees may change from time to time. Any change won’t affect sessions already booked and confirmed.
+
+      **Health fund rebates.** Rebates may be available depending on your fund and level of cover, and can be claimed via Tyro Health. Eligibility and rebate amounts are set by your fund, not by Vital Fascia, so please check with your fund before your session. Rebates can only be claimed for a session on the day it’s delivered. Cancellation fees, late fees and prepaid program fees (before a session takes place) can’t be claimed.
+  - heading: Cancellations, late arrivals and no-shows
+    body: |-
+      Cancellations, rescheduling, late arrivals and no-shows are covered by the Cancellation Policy, which you’ll be asked to accept when booking.
+
+      In summary:
+
+      | Notice given | Fee |
+      | 12 hours or more | No charge |
+      | Less than 12 hours, more than 4 hours | $90 |
+      | 4 hours or less, or no-show | Full session fee |
+
+      No fee applies if the time is rebooked from the waitlist, or if you cancel before your appointment because of a contagious illness.
+
+      If I need to cancel or reschedule, I’ll give as much notice as possible, there’s no charge to you, and you’ll be offered priority rebooking.
+  - heading: Discovery calls
+    body: |-
+      Discovery calls are free and carry no obligation to book. They’re a chance to talk through what’s going on and whether my services suit you. A discovery call is not a clinical assessment or treatment, and no health advice given during the call should be relied on in place of an in-person assessment or medical care.
+
+      I aim to call back within a reasonable timeframe during clinic hours 9am - 5pm.
+  - heading: Corrective Care
+    body: |-
+      Home programs are general self-care and mobility guidance tailored to you. They are not rehabilitation programs for specific injuries.
+
+      Please stop any exercise that causes pain, dizziness or discomfort beyond mild effort, and let me know. If you have an injury or condition that needs rehabilitation, I may recommend working with a physiotherapist or exercise physiologist.
+  - heading: Professional conduct
+    body: |-
+      I’m committed to providing a safe, respectful and professional environment.
+
+      I may end a session immediately, without refund, if a client:
+
+      - behaves in a sexually inappropriate, abusive, threatening or discriminatory way
+      - attends under the influence of alcohol or drugs
+      - refuses to follow reasonable safety instructions.
+
+      Treatment for that session is billed in full, and future bookings may be declined.
+  - heading: Privacy and records
+    body: |-
+      Vital Fascia is a health service provider, so it is bound by the Australian Privacy Principles regardless of business size, and by NSW health privacy law.
+
+      - Your health information is collected to provide safe, appropriate treatment, and is stored securely.
+      - It won’t be shared without your consent, except where required or permitted by law, such as in an emergency.
+      - You can request access to, or correction of, your records.
+      - Clinical records are kept for the period required by law (in NSW, generally at least seven years after your last visit for adults, or until age 25 for clients treated as minors).
+
+      See the Privacy Policy for full details.
+  - heading: Website content
+    body: |-
+      Content on the Vital Fascia website and social channels is general educational information only. It isn’t personalised health advice and doesn’t replace an assessment or consultation with a qualified health professional.
+
+      All website content, including text, images, graphics, programs and educational materials, is owned by or licensed to Vital Fascia. You may share it for personal, non-commercial purposes with credit. You may not reproduce or sell it without written permission.
+  - heading: Liability
+    body: |-
+      To the extent permitted by law, including the ACL:
+
+      - Vital Fascia isn’t liable for loss or injury caused by inaccurate or incomplete health information you provided, or by not following advice or instructions given.
+      - Vital Fascia isn’t liable for indirect or consequential loss.
+
+      Where liability for a failure to comply with a consumer guarantee can lawfully be limited, it’s limited to supplying the service again or paying the cost of having it supplied again.
+
+      Nothing in this section limits liability for negligence causing personal injury where that can’t lawfully be excluded, or your rights under the ACL.
+  - heading: Feedback and complaints
+    body: |-
+      If you’re unhappy with any aspect of your care, please contact me first at [email] or 0449 637 920. I’ll acknowledge your concern within [2 business days] and aim to resolve it fairly.
+
+      If you’re not satisfied with the outcome, you can contact:
+
+      - **Health Care Complaints Commission (NSW):** hccc.nsw.gov.au · 1800 043 159
+      - **[Professional association name]:** ATMS
+  - heading: Changes to these terms
+    body: These terms may be updated from time to time. The current version will always be available on the website with its update date. Changes don’t affect sessions or programs you’ve already paid for.
+  - heading: Governing law
+    body: These terms are governed by the laws of New South Wales, Australia.
+  - heading: Contact
+    body: |-
+      **Vital Fascia**
+      Alex May · 72 489 455 015
+      Sydney CBD: Mezzanine, 309 George Street, Sydney, NSW 2000
+      Double Bay: Suite 6/21-25 Knox St, Double Bay NSW 2028
+      Phone: 0449 637 920
+      Email: alex@vitalfascia.com.au
