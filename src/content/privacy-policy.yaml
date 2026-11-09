@@ -1,6 +1,5 @@
-# Real copy from Alex (Nov 2026). Page text supports simple formatting (bold, bullet lists, links, tables).
 title: Privacy Policy
-intro: |
+intro: |-
   **Effective date: April 2025. Last updated: November 2026.**
 
   Vital Fascia respects your privacy and is committed to safeguarding your personal information in accordance with the Australian Privacy Principles (APPs) outlined in the Privacy Act 1988 (Cth).
@@ -8,7 +7,7 @@ intro: |
   This Privacy Policy explains how we collect, use, store, disclose, and protect your personal information when you interact with our clinic, website, and services.
 sections:
   - heading: 1. What personal information we collect
-    body: |
+    body: |-
       We may collect the following types of information:
 
       - Your full name, date of birth, and contact details (address, phone, email)
@@ -18,7 +17,7 @@ sections:
       - Which pages of our website you visit and how you found us (for example a search engine, social media or a link), where this is linked to an enquiry you make
       - Your preferences about receiving marketing messages from us
   - heading: 2. How we collect personal information
-    body: |
+    body: |-
       We collect your personal information through:
 
       - Intake forms and treatment notes
@@ -26,7 +25,7 @@ sections:
       - Website forms (for example requesting a call, sending a message or joining the program waitlist) or when you contact us via our digital platforms
       - In-person conversations during consultations or therapy sessions
   - heading: 3. Why we collect your information
-    body: |
+    body: |-
       We collect your information to:
 
       - Provide personalised soft tissue therapy, myofascial release, and health services
@@ -36,7 +35,7 @@ sections:
       - Process payments and manage clinic operations
       - Comply with legal obligations and industry regulations
   - heading: 4. Disclosure of your information
-    body: |
+    body: |-
       Your information may be disclosed:
 
       - To authorised third-party service providers (e.g., practice management software, customer relationship management (CRM) and marketing platforms, website hosting, email/SMS tools) strictly for the purpose of delivering our services
@@ -46,7 +45,7 @@ sections:
 
       **We will never sell or rent your personal data to third parties.**
   - heading: 5. How we store and protect your information
-    body: |
+    body: |-
       We take reasonable steps to protect your information from misuse, loss, unauthorised access, or disclosure. This includes:
 
       - Secure electronic storage using encrypted platforms
@@ -55,12 +54,12 @@ sections:
 
       If your data is no longer needed, we will take reasonable steps to destroy or de-identify it.
   - heading: 6. Access and correction of personal information
-    body: |
+    body: |-
       You may request access to or correction of your personal information at any time. We will respond within a reasonable timeframe and may require proof of identity before releasing information.
 
       To request access or a correction, please email: [alex@vitalfascia.com.au](mailto:alex@vitalfascia.com.au)
   - heading: 7. Cookies and website analytics
-    body: |
+    body: |-
       Our website may use cookies and analytics tools to improve user experience. These tools collect non-identifying information such as pages visited, time spent on site, and device type.
 
       We also use a tracking tool linked to our customer relationship management (CRM) system. When you submit a form on our website, it can connect that enquiry to the pages you visited and how you found our website, so that we can respond to you and understand which of our channels help people find us.
@@ -69,23 +68,22 @@ sections:
 
       You can disable cookies in your browser settings. Doing so, or using a tracking-blocking tool, will not stop you from using our website or contacting us.
   - heading: 8. Marketing and communications
-    body: |
+    body: |-
       We only send you marketing messages (updates, offers or educational content by email or SMS) if you have agreed to receive them, for example by ticking the box on one of our website forms or by telling us in person. We keep a record of your choice and when you made it.
 
       You can change your mind at any time by clicking "unsubscribe" in an email, replying STOP to an SMS, or contacting us at [alex@vitalfascia.com.au](mailto:alex@vitalfascia.com.au). Messages about your appointments, or a reply to an enquiry you have made, are not marketing messages.
   - heading: 9. Making a complaint
-    body: |
+    body: |-
       If you believe your privacy has been breached, please contact us immediately. We take all complaints seriously and will respond within a reasonable timeframe.
 
       **Contact details:**  
       Vital Fascia  
       [alex@vitalfascia.com.au](mailto:alex@vitalfascia.com.au)  
       0449 637 920  
-      Suite 6/21-25 Knox St, Double Bay NSW 2028
+      Mezzanine, 309 George Street, Sydney CBD, 2000, NSW
 
       If you are not satisfied with our response, you can contact the Office of the Australian Information Commissioner (OAIC):  
       [www.oaic.gov.au](https://www.oaic.gov.au/)  
       1300 363 992
   - heading: 10. Policy updates
-    body: |
-      We may update this Privacy Policy from time to time to reflect changes in law or practice. The latest version will always be available on our website.
+    body: We may update this Privacy Policy from time to time to reflect changes in law or practice. The latest version will always be available on our website.
