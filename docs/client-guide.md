@@ -3,8 +3,8 @@
 This guide is for **Alex** (the owner). **Part A** is everyday editing and needs no technical knowledge. **Part B** explains how everything is built and run, so you (or any developer or AI assistant you hire) can maintain it, move it, or take it over without the original developer.
 
 **Contents**
-- Part A: Everyday use. [Log in](#log-in) · [Edit text and photos](#change-some-text) · [Hours, locations and booking](#update-your-contact-details-hours-and-booking-link) · [Forms and automatic emails](#forms-and-automatic-emails) · [Email previews](#preview-the-emails-the-admin-preview-page) · [Marketing consent](#marketing-consent-tick-box) · [CRM and spam filter](#your-crm-gohighlevel-and-the-website-forms) · [Google and link sharing](#change-what-google-and-link-sharing-show)
-- Part B: [The big picture](#the-big-picture) · [Accounts you own](#accounts-and-who-owns-what) · [Tech stack](#tech-stack) · [How a change goes live](#how-a-change-goes-live) · [Style guide](#style-guide) · [Using Claude to make changes](#using-claude-to-edit-content-or-code) · [Handing over to a new developer](#handing-over-to-a-new-developer) · [Moving the site or domain](#moving-the-site-or-the-domain) · [Troubleshooting](#troubleshooting)
+- Part A: Everyday use. [Visitor numbers](#see-how-many-people-visit-your-website) · [Log in](#log-in) · [Edit text and photos](#change-some-text) · [Hours, locations and booking](#update-your-contact-details-hours-and-booking-link) · [Forms and automatic emails](#forms-and-automatic-emails) · [Email previews](#preview-the-emails-the-admin-preview-page) · [Marketing consent](#marketing-consent-tick-box) · [CRM and spam filter](#your-crm-gohighlevel-and-the-website-forms) · [Google and link sharing](#change-what-google-and-link-sharing-show)
+- Part B: [The big picture](#the-big-picture) · [Accounts you own](#accounts-and-who-owns-what) · [Tech stack](#tech-stack) · [How a change goes live](#how-a-change-goes-live) · [Style guide](#style-guide) · [Security and monitoring](#security-and-monitoring-cloudflare) · [HSTS](#hsts-what-it-is-and-when-to-turn-it-on) · [Using Claude to make changes](#using-claude-to-edit-content-or-code) · [Handing over to a new developer](#handing-over-to-a-new-developer) · [Moving the site or domain](#moving-the-site-or-the-domain) · [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -143,6 +143,15 @@ Go to **Business details & site settings > Google search & link-sharing preview*
 
 - The *Page title* and *Page description* for each page are what people see in Google results.
 - **Link-sharing preview image** is the picture shown when someone shares your website link on WhatsApp, Facebook, iMessage and similar. Use a wide picture, **1200 × 630 pixels**, with the important part in the middle. Apps remember old previews, so changes can take a while to show up.
+
+## See how many people visit your website
+
+The website uses **Cloudflare Web Analytics**, a free, privacy-friendly visitor counter. It shows page views, visits, which pages are most popular, where visitors came from (Google, Instagram, a link) and what devices they use. It does **not** use cookies and does not identify individual people, so no cookie banner is needed for it.
+
+- **Where to look:** log in to Cloudflare (dash.cloudflare.com) > **Observability > Analytics > Web analytics**, then choose `vitalfascia.com.au`. Numbers can take a few minutes to appear and are for real visitors only (bots are filtered out).
+- **What it is not:** it doesn't tell you who someone is, and it doesn't replace your CRM. Form enquiries (with names and emails) are in GoHighLevel and your inbox.
+- Visitors who use an ad-blocker may not be counted, so treat the numbers as a good guide, not an exact count.
+- The privacy policy already describes this (section 7). If you ever turn it off, update the policy.
 
 ## Tips
 
@@ -304,7 +313,49 @@ All three forms follow the same rules, in the visitor's browser **and again on t
 - A hidden box that only bots fill in, and a page-load timestamp (submitting within 1.5 seconds, or with none, is treated as a bot). Bots are told "ok" so they don't adapt.
 - Messages with more than two links, HTML, or names that look like web addresses are quietly dropped. A few throwaway-email domains are refused.
 - All values are escaped before going into an email, and line breaks are removed from anything used in an email subject.
-- **Not yet in place (recommended):** a rate limit (for example 10 form posts per minute per visitor). In Cloudflare: **Security > WAF > Rate limiting rules**, match the path starting `/api/`, 10 requests per minute per IP, action Block. If spam still gets through, add Cloudflare Turnstile (a free, invisible CAPTCHA).
+- **Rate limit (live in Cloudflare):** see *Security and monitoring* below.
+- **Possible later upgrade:** Cloudflare Turnstile. See *Security options for later*.
+
+## Security and monitoring (Cloudflare)
+
+These settings live in Alex's Cloudflare account for `vitalfascia.com.au` (dash.cloudflare.com > the domain). Nobody needs to touch them day to day. They are written down so a future developer knows what was set up and why.
+
+### What is switched on
+
+| Protection | Setting | What it does, in plain English |
+| --- | --- | --- |
+| **Form rate limit** | Security > Security rules > rate limiting rule "Limit form submissions (/api)" | If one visitor (IP address) sends more than **5 requests in 10 seconds** to the form addresses (`/api/...`), they are blocked for 10 seconds. A real person never hits this; a script hammering the forms does. Cloudflare's free plan only allows a 10-second window and one rule of this kind, which is why it isn't "10 per minute". |
+| **Always Use HTTPS** | SSL/TLS > Edge Certificates | Anyone who types `http://` is sent to the secure `https://` version. |
+| **Minimum TLS 1.2** | SSL/TLS > Edge Certificates | Refuses very old, weak encryption. Only ancient browsers are affected. |
+| **Bot Fight Mode** | Security > Settings | Cloudflare challenges obvious bad bots. Google's crawler is allowed. If a genuine visitor is ever blocked (for example on a VPN), you can switch it off in the same place. |
+| **Managed protection** | Always on | Cloudflare's built-in firewall rules and DDoS protection, free and automatic. |
+| **Web Analytics** | Observability > Analytics > Web analytics | Cookie-free visitor counts (see *See how many people visit your website*). |
+| **Workers Logs** | `observability` in `wrangler.jsonc` | Keeps a log of the form Worker's activity and errors: Cloudflare > Workers & Pages > `vital-fascia-website` > **Logs**. Useful when a form shows an error. |
+
+### Email security (DMARC) note
+
+The domain's DMARC record is currently in **monitor-only** mode (`p=none`): receiving servers are asked to report on mail that fails the checks, but nothing is rejected. Reports go to `dmarc_agg@vali.email`. This is the safe starting point. Once you are sure every service that sends email as `@vitalfascia.com.au` is set up correctly (Google Workspace, Mailchimp and Resend are), a developer can tighten it to `p=quarantine` and later `p=reject` so that other people cannot successfully fake emails from your domain. Do this only after checking the reports, because a mistake can send real email to spam.
+
+### Security options for later
+
+- **Turnstile on the forms.** Turnstile is Cloudflare's free, invisible alternative to a CAPTCHA ("I'm not a robot" without puzzles). The forms already have protection (a hidden trap field, a timing check, link and HTML filtering, and the rate limit above), which stops most spam. If junk submissions still get through, a developer can add Turnstile: it needs a free Turnstile site key (Cloudflare > Turnstile), a small widget on each form, and a check of the result in the form Worker. It is not needed now.
+- **Lock the admin page** behind a Cloudflare Access login (see *Locking the admin area*).
+- **Move spam filtering earlier:** send leads to GoHighLevel from the website's server, where bots are already filtered (see `docs/ghl-integration-plan.md`).
+
+### HSTS: what it is and when to turn it on
+
+**HSTS** (HTTP Strict Transport Security) tells a visitor's browser: "for the next while, only ever talk to this website over secure HTTPS, even if someone types `http://` or clicks an old insecure link." It protects people on public Wi-Fi from being quietly downgraded to an insecure connection.
+
+- **How it works:** the website sends a header ("Strict-Transport-Security") with a time limit. The browser remembers the rule for that long and refuses insecure connections to the site until it expires.
+- **Why it hasn't been turned on yet:** it is hard to undo. If the secure certificate ever broke while HSTS was active, visitors' browsers would refuse to load the site at all until the time limit ran out. So it should be switched on only after the site has run smoothly for a week or two.
+- **How to turn it on:** Cloudflare > the domain > **SSL/TLS > Edge Certificates > HTTP Strict Transport Security (HSTS) > Enable HSTS**. Start with a **short max-age (for example 1 month)**, with **Include subdomains OFF** and **Preload OFF**. After a few trouble-free months you can raise it to 6 months or more. Leave *Preload* off unless you are sure: it is very difficult to reverse.
+- **Do not enable it** while you are still moving the domain or changing certificates.
+
+### If a form shows an error
+
+1. Resend > **Logs** shows whether the email was accepted. A `403` or `422` there points to a sender or recipient problem (for example sending from an unverified domain).
+2. Cloudflare > Workers & Pages > `vital-fascia-website` > **Logs** shows the Worker's own errors.
+3. If a visitor is blocked after many quick attempts, wait 10 seconds. That's the rate limit.
 
 ## Using Claude to edit content or code
 
