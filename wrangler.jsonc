@@ -11,6 +11,8 @@
     "not_found_handling": "404-page",
     "run_worker_first": ["/api/*"]
   },
+  // Workers Logs: lets you see form-Worker errors in the Cloudflare dashboard (Worker > Logs).
+  "observability": { "enabled": true },
   "vars": {
     "MAIL_FROM": "Vital Fascia <bookings@vitalfascia.com.au>",
     "NOTIFY_TO": "alex@vitalfascia.com.au"
