@@ -60,7 +60,9 @@ sections:
       To request access or a correction, please email: [alex@vitalfascia.com.au](mailto:alex@vitalfascia.com.au)
   - heading: 7. Cookies and website analytics
     body: |-
-      Our website may use cookies and analytics tools to improve user experience. These tools collect non-identifying information such as pages visited, time spent on site, and device type.
+      Our website uses Cloudflare Web Analytics, a privacy-focused tool that counts visits and page views so we can see how the website is used. It records non-identifying information such as the pages visited, how you arrived (for example a search engine or another website), your approximate country, and your device and browser type. It does not use cookies, does not follow you across other websites, and is not used to identify you.
+
+      Our website is also hosted and protected by Cloudflare, which processes your IP address to deliver the website and to block malicious or automated traffic.
 
       We also use a tracking tool linked to our customer relationship management (CRM) system. When you submit a form on our website, it can connect that enquiry to the pages you visited and how you found our website, so that we can respond to you and understand which of our channels help people find us.
 
