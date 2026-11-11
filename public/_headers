@@ -2,5 +2,13 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
 
+/alex-video-lab
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Referrer-Policy: no-referrer
+
+/alex-video-lab/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Referrer-Policy: no-referrer
+
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable

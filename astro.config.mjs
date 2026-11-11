@@ -30,7 +30,7 @@ const serveAdminIndex = {
 export default defineConfig({
   site,
   output: 'static',
-  // keep the private /admin pages out of the search-engine sitemap
-  integrations: [sitemap({ filter: (page) => !page.includes('/admin') })],
+  // keep the private /admin pages and the unlisted guide out of the search-engine sitemap
+  integrations: [sitemap({ filter: (page) => !page.includes('/admin') && !page.includes('/alex-video-lab') })],
   vite: { plugins: [serveAdminIndex] },
 });

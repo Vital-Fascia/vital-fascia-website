@@ -1,0 +1,414 @@
+---
+// PRIVATE guide for Alex (not linked anywhere, noindex, excluded from the sitemap; see astro.config.mjs and public/_headers).
+// Not site content, so (like admin/email-previews) the copy lives in this file rather than src/content/*.yaml.
+// Facts about each repo were read from its GitHub page on 2026-11-11. Re-check before relying on them.
+import '../../styles/global.css';
+
+type Rating = 'yes' | 'part' | 'no';
+const checks = ['Cuts ums, pauses, retakes', 'Captions', 'Zoom punch-ins', 'Sound effects', 'Transitions', 'Saved brand / theme', 'Free, no paid keys'] as const;
+
+const repos: {
+  name: string; url: string; stats: string; pick?: string; summary: string; pros: string[]; catches: string[]; fit: Rating[];
+}[] = [
+  {
+    name: 'Vedit', url: 'https://github.com/onetwothird/Vedit', stats: '2 stars · MIT licence · updated 7 Nov 2026',
+    pick: 'Start here',
+    summary: 'A command-line editor with a Claude skill on top, built for creators. Cuts dead air, ums and flubbed takes (keeping the last take), adds word-by-word captions, and has a Reels preset.',
+    pros: ['Saved brand kit (brand.json): font, highlight colour, logo, intro/outro, music, colour look. This is how every reel looks the same.', 'Free local transcription (Whisper), so no paid keys needed.', 'Built-in whoosh / ding / pop sound effects and alternating punch-in zooms.'],
+    catches: ['Very young project, tiny community.', 'Crossfade and whip transitions are on its roadmap, not finished.', 'Some setup in Terminal (Claude can do it for you).'],
+    fit: ['yes', 'yes', 'yes', 'yes', 'part', 'yes', 'yes'],
+  },
+  {
+    name: 'talking-head-editor', url: 'https://github.com/griffinwooldridge/talking-head-editor', stats: '10 stars · MIT · updated 27 Oct 2026',
+    pick: 'Runner-up (fancier visuals)',
+    summary: 'Cleans up the voice, makes tight cuts, tracks your face for vertical framing, adds word-timed captions and animated graphics, with a library of fancy transitions.',
+    pros: ['Richest transitions and motion graphics of the free options.', 'No API keys. Mac and Linux.', 'Voice clean-up built in.'],
+    catches: ['No saved style file, so it restyles each run (less consistent).', 'Mac or Linux only (fine for Alex if he is on a Mac).', 'Sound effects not mentioned.'],
+    fit: ['yes', 'yes', 'part', 'no', 'yes', 'part', 'yes'],
+  },
+  {
+    name: 'tenfoldmarc/video-edit-skill', url: 'https://github.com/tenfoldmarc/video-edit-skill', stats: '138 stars · no licence file · updated 15 Oct 2026',
+    summary: 'Turns phone clips into a finished Instagram reel: picks the best take of each line, puts words behind your head, adds sound effects and animated inserts. Its readme says it works from the Code tab of the Claude desktop app.',
+    pros: ['Closest to a one-command "make me a reel" experience.', 'Three ready-made looks.', 'Explicitly supports the Claude desktop app.'],
+    catches: ['No licence file, so treat as personal use only: do not copy or share the code.', 'Only three fixed looks, so limited theming.', 'Windows untested by its author.'],
+    fit: ['yes', 'yes', 'yes', 'yes', 'no', 'part', 'yes'],
+  },
+  {
+    name: 'video-use (browser-use)', url: 'https://github.com/browser-use/video-use', stats: '30.9k stars · MIT · updated 8 Oct 2026',
+    summary: 'The most popular and established. Cuts from the transcript, colour-grades, smooths audio joins and burns in subtitles, with animations via HyperFrames or Remotion.',
+    pros: ['Biggest community, so most likely to keep being maintained.', 'Handles longer, messier footage well by working from the transcript.'],
+    catches: ['Needs a paid ElevenLabs key for transcription (pay per use).', 'No saved brand file; sound effects and zooms not mentioned.'],
+    fit: ['yes', 'yes', 'no', 'no', 'part', 'no', 'no'],
+  },
+  {
+    name: 'video-editing-skill (social-media-skills)', url: 'https://github.com/social-media-skills/video-editing-skill', stats: '1 star · MIT · updated 30 Oct 2026',
+    summary: 'Cuts silences, ums and retakes, adds gentle 1.1x punch-ins, levels audio to social-media loudness and writes caption files and chapters.',
+    pros: ['Simple and focused. Mac, Windows, Linux.', 'Three editing styles (tight, podcast, YouTube).'],
+    catches: ['Brand new with a single commit.', 'No sound effects, transitions or brand file.', 'Its readme promotes a paid posting service (optional).'],
+    fit: ['yes', 'yes', 'yes', 'no', 'no', 'no', 'yes'],
+  },
+];
+
+const videos = [
+  { id: 'S9Dd8fQHaEo', title: 'Claude Code Video Editing: No Editor Needed (Free Skill)', by: 'Nuno Tavares | Automated Marketer', why: 'Closest to Alex\'s goal: a free skill editing talking-head footage.' },
+  { id: 'JjM0MSgwIDI', title: 'Edit TikToks, Reels & Shorts Faster With AI', by: 'Judith Creates', why: 'Reels-focused: filler words, captions, overlays in plain English.' },
+  { id: '9e5T7yn1cvk', title: '8 Claude Skills That Edit Your Videos For You', by: 'Darius Reed', why: 'A tour of the free skills from raw cut to captions to graphics.' },
+  { id: 'f1Dugj0rIcg', title: 'Claude Code Now Edits My Videos (HyperFrames Studio Tutorial)', by: 'Vito Zhu', why: 'See the "describe the edit, Claude does it" loop in action.' },
+  { id: 'Ri9St_A5ZEo', title: 'How to Use HyperFrames (Make Videos from HTML with Claude Code)', by: 'tubemind', why: 'Setup walk-through from inside the Claude desktop app.' },
+];
+
+const stages = [
+  { n: 1, title: 'Install one skill and edit one clip', when: 'This week', body: 'Open the Code tab in the Claude desktop app, point it at the Vedit repo and ask it to install and run a health check. Test on a throwaway 30-second clip. Goal: see the cuts, captions and zooms working once.' },
+  { n: 2, title: 'Lock in the look', when: 'Week 2', body: 'Set Vedit\'s brand.json (fonts, colours, logo, music, intro/outro) to match Vital Fascia. Add the free HyperFrames skills for extra caption styles and sound effects. Edit three real reels and note what you would change.' },
+  { n: 3, title: 'Dump & run', when: 'Week 3-4', body: 'A small watched-folder script on the Mac: drop clips (and an optional notes.txt) into Reels/Inbox. It runs Claude with your default prompt plus the notes, saves the result into Reels/Done and pops up a notification. You check it and post.' },
+  { n: 4, title: 'Optional: a settings dashboard', when: 'Only if stages 1-3 earn it', body: 'A small local web app on the Mac with a form for brand settings, the default prompt, the inbox status and previews. Honest note below on why this cannot live on the public website.' },
+];
+
+const risks = [
+  'These repos are young and mostly have few users. Have someone technical skim the code before installing, and try everything on a throwaway clip first.',
+  'Check the licence before reusing anything: one repo above has no licence at all.',
+  'Keep client or patient footage and any clinical detail out of third-party services. Prefer the free local options that transcribe on your own Mac.',
+  'Always watch the result before posting. AI cuts occasionally clip a word or misspell a caption, and health claims in captions still need to be accurate.',
+  'Only use music you are licensed to use commercially. The free sound effects bundled with these tools are the safe choice; check the licence before adding any other music.',
+];
+---
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="referrer" content="no-referrer" />
+    <title>AI Reel Editing Guide</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="in">
+        <p class="eyebrow-l">Private guide · for Alex</p>
+        <h1>Your <em>dump &amp; run</em> reel editor</h1>
+        <p class="lede">You record. You drop the clips in a folder. An AI system cuts the stutters, pauses and &ldquo;umms&rdquo;, adds captions, zooms and sound effects in your look, then tells you when it&rsquo;s done. You check it and post.</p>
+        <nav class="jump" aria-label="On this page">
+          <a href="#flow">The idea</a>
+          <a href="#reel">Your reel</a>
+          <a href="#videos">Watch</a>
+          <a href="#repos">Free tools</a>
+          <a href="#how">How it works</a>
+          <a href="#plan">My plan for you</a>
+          <a href="#dashboard">Dashboard?</a>
+          <a href="#careful">Be careful</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="flow" class="band">
+        <div class="in">
+          <h2>The idea in one picture</h2>
+          <ol class="flow">
+            <li><span class="num">1</span><strong>Record</strong><span>Film as normal on your phone.</span></li>
+            <li><span class="num">2</span><strong>Drop in a folder</strong><span>Add a line of notes if you like: &ldquo;keep it under 45 seconds, focus on posture.&rdquo;</span></li>
+            <li><span class="num">3</span><strong>Claude edits</strong><span>Using your default prompt + brand settings + your notes.</span></li>
+            <li><span class="num">4</span><strong>You get a ping</strong><span>A notification on your Mac when it&rsquo;s finished.</span></li>
+            <li><span class="num">5</span><strong>Check &amp; post</strong><span>Watch it, tweak if needed, publish.</span></li>
+          </ol>
+          <p class="layers"><strong>Three layers of instruction, stacked:</strong> a <em>default prompt</em> (your standing rules) &rarr; the <em>brand file</em> (fonts, colours, logo, music) &rarr; your <em>per-video notes</em>. Your notes sit on top, so you only type what&rsquo;s different this time.</p>
+
+          <h3>What it can do, against your wish list</h3>
+          <ul class="cards3">
+            <li><strong>Cut the clutter</strong>Stutters, long pauses, &ldquo;umm/ahh&rdquo;, repeated sentences and flubbed takes (it keeps the best take).</li>
+            <li><strong>Trim to length</strong>Tell it a target such as &ldquo;about 40 seconds&rdquo; or &ldquo;the best 60&rdquo;.</li>
+            <li><strong>Captions</strong>Word-by-word, highlighted as you speak, in your font and colours.</li>
+            <li><strong>Zooms &amp; punch-ins</strong>Subtle zooms that hide jump cuts and keep things lively.</li>
+            <li><strong>Sound effects</strong>Whooshes, pops and dings timed to the cuts.</li>
+            <li><strong>Same look every time</strong>A saved brand file so every reel feels like Vital Fascia.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="reel" class="band alt">
+        <div class="in">
+          <h2>About the reel you sent</h2>
+          <p>That reel put two Claude models (<strong>Fable</strong> and <strong>Opus</strong>) side by side: the same video and the same prompt, to show how well each one can <em>see and understand</em> video.</p>
+          <p><strong>Why it matters for you:</strong> editing quality depends on how well the model understands what is happening on screen, not only what is said. A model that can look at your footage can judge a good take, spot an awkward moment or check that a caption lands on the right word. So the model you pick is a setting worth testing: run the <em>same clip</em> through each with the <em>same prompt</em> (just like the reel) and keep whichever edits more to your taste. In the Claude desktop app you can switch models in the Code tab.</p>
+        </div>
+      </section>
+
+      <section id="videos" class="band">
+        <div class="in">
+          <h2>Watch it in action</h2>
+          <p class="sub">Five short tutorials of the same approach. Start with the first two. (Videos load only when you press play.)</p>
+          <ul class="videos">
+            {videos.map((v) => (
+              <li class="video">
+                <button type="button" class="facade" data-id={v.id} data-title={v.title} aria-label={`Play video: ${v.title}`}>
+                  <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" loading="lazy" width="480" height="360" referrerpolicy="no-referrer" />
+                  <span class="play" aria-hidden="true"></span>
+                </button>
+                <div class="vmeta">
+                  <strong>{v.title}</strong>
+                  <span class="by">{v.by}</span>
+                  <span>{v.why}</span>
+                  <a href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noopener noreferrer">Open on YouTube</a>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section id="repos" class="band alt">
+        <div class="in">
+          <h2>The free tools, compared</h2>
+          <p class="sub">All of these are free, open-source &ldquo;skills&rdquo; for Claude. I read each one&rsquo;s GitHub page on 11 Nov 2026. Stars show how many people use it; a small number means newer and less tested, not bad.</p>
+
+          <div class="tablewrap" role="region" aria-label="Comparison table" tabindex="0">
+            <table>
+              <caption class="sr">How each tool matches your wish list. &ldquo;Yes&rdquo; means supported, &ldquo;Partly&rdquo; means limited, &ldquo;No&rdquo; means not mentioned or not supported.</caption>
+              <thead>
+                <tr><th scope="col">Tool</th>{checks.map((c) => <th scope="col">{c}</th>)}</tr>
+              </thead>
+              <tbody>
+                {repos.map((r) => (
+                  <tr>
+                    <th scope="row"><a href={r.url} target="_blank" rel="noopener noreferrer">{r.name}</a></th>
+                    {r.fit.map((f) => <td class={`r-${f}`}>{f === 'yes' ? '✓ Yes' : f === 'part' ? '◐ Partly' : '✕ No'}</td>)}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <ul class="repos">
+            {repos.map((r) => (
+              <li class="repo">
+                {r.pick && <span class="pill">{r.pick}</span>}
+                <h3><a href={r.url} target="_blank" rel="noopener noreferrer">{r.name}</a></h3>
+                <p class="stats">{r.stats}</p>
+                <p>{r.summary}</p>
+                <div class="pc">
+                  <div><h4>Good</h4><ul>{r.pros.map((p) => <li>{p}</li>)}</ul></div>
+                  <div><h4>Catches</h4><ul>{r.catches.map((p) => <li>{p}</li>)}</ul></div>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <h3>Building blocks worth knowing</h3>
+          <ul class="blocks">
+            <li><a href="https://github.com/heygen-com/hyperframes" target="_blank" rel="noopener noreferrer">HyperFrames (HeyGen)</a> Free engine that turns code into video. Its skills add 35 caption styles, motion graphics and 19 free sound effects. Several tools above are built on it.</li>
+            <li><a href="https://github.com/nateherkai/hyperframes-student-kit" target="_blank" rel="noopener noreferrer">HyperFrames Student Kit</a> 15 skills including silence and retake cutting that shows you the proposed cuts before it renders.</li>
+            <li><a href="https://www.dariusreed.com/claude-video-editing-skills/" target="_blank" rel="noopener noreferrer">8 free skills roundup (Darius Reed)</a> A good overview article of this whole area.</li>
+            <li><a href="https://github.com/sasateguh/awesome-ai-video-for-creators" target="_blank" rel="noopener noreferrer">awesome-ai-video-for-creators</a> A community-maintained list of open-source video tools, including Descript-style &ldquo;edit by deleting words&rdquo; editors (Spokecut, CutScript).</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="how" class="band">
+        <div class="in">
+          <h2>How this works, in plain English</h2>
+          <div class="cols">
+            <div>
+              <h3>What is a &ldquo;skill&rdquo;?</h3>
+              <p>A skill is a folder of instructions and small programs that teaches Claude how to do one job, like editing a talking-head video. You install it once; after that you just talk to Claude: &ldquo;edit this clip, 45 seconds, my usual look&rdquo;.</p>
+              <p>Under the hood the heavy lifting is done by free programs on your own Mac: <strong>ffmpeg</strong> (cuts and joins video), <strong>Whisper</strong> (turns speech into text with exact timings, so Claude knows where every &ldquo;umm&rdquo; is) and a renderer for captions and graphics. With the free local options (like Vedit), your footage stays on your computer.</p>
+            </div>
+            <div>
+              <h3>Where do I use it?</h3>
+              <p>In the <strong>Claude desktop app</strong>, use the <strong>Code</strong> tab (not the normal chat). The Code tab can run programs on your computer, which video editing needs. Plain chat cannot.</p>
+              <p>Installing is usually one sentence typed to Claude: <em>&ldquo;Install this skill for me: [GitHub link]. Then run its health check.&rdquo;</em> Claude does the setup. Anthropic&rsquo;s own help page on skills is <a href="https://support.claude.com/en/articles/12512180-get-started-with-claude-skills" target="_blank" rel="noopener noreferrer">here</a>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="plan" class="band alt">
+        <div class="in">
+          <h2>My recommendation: four stages</h2>
+          <ol class="stages">
+            {stages.map((s) => (
+              <li>
+                <span class="num">{s.n}</span>
+                <div><h3>{s.title} <span class="when">{s.when}</span></h3><p>{s.body}</p></div>
+              </li>
+            ))}
+          </ol>
+
+          <h3>What your instructions could look like</h3>
+          <p class="sub">An example only, to show the idea. We would tailor this together.</p>
+          <div class="cols">
+            <figure class="code">
+              <figcaption>default-prompt.md (your standing rules)</figcaption>
+              <pre>{`Edit the raw clip into a vertical 9:16 reel.
+- Remove ums, ahs, stutters, long pauses and repeated sentences. Keep the best take.
+- Default length: 30-45 seconds unless my notes say otherwise.
+- Word-by-word captions in the brand style, keywords highlighted.
+- Subtle zoom-in on emphasis, one sound effect per key point, no more.
+- Never cut mid-word. Flag anything you are unsure about.
+- Save to Reels/Done and tell me when finished.`}</pre>
+            </figure>
+            <figure class="code">
+              <figcaption>notes.txt (optional, per video)</figcaption>
+              <pre>{`Make this one 25 seconds.
+Open with the line about desk posture.
+Skip the part where I mention the booking page.`}</pre>
+              <figcaption class="sep">brand.json (set once)</figcaption>
+              <pre>{`{
+  "font": "(your brand font)",
+  "highlight_colour": "(your accent colour)",
+  "logo": "logo.png",
+  "intro": "none",
+  "outro": "book-now.mp4",
+  "music": "off"
+}`}</pre>
+            </figure>
+          </div>
+          <p class="sub">The brand file holds your look, so every reel matches. Your notes only say what&rsquo;s different today.</p>
+        </div>
+      </section>
+
+      <section id="dashboard" class="band">
+        <div class="in">
+          <h2>What about a dashboard on the website?</h2>
+          <p>A good question, with an honest answer: <strong>a page on the public website cannot control the Claude on your Mac.</strong> The website lives on the internet; your editing lives on your computer, with no safe way for one to reach the other directly. Three realistic options:</p>
+          <ul class="cards3">
+            <li><strong>A. Settings files <span class="tag">Recommended now</span></strong>Your look and default prompt live in two small files (brand.json, default-prompt.md). Change them in any text editor, or just ask Claude to. No extra software.</li>
+            <li><strong>B. A small local app <span class="tag">Later, if useful</span></strong>A little page that runs on your Mac only (not online) with a settings form, an inbox view and video previews. This is the right shape for &ldquo;settings that talk to my local Claude&rdquo;.</li>
+            <li><strong>C. Settings on the website</strong>Possible to build, but pointless on its own: it would still need option B running on your Mac to do anything. Not recommended.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="careful" class="band alt">
+        <div class="in">
+          <h2>Be careful about</h2>
+          <ul class="risks">{risks.map((r) => <li>{r}</li>)}</ul>
+
+          <h3>If you&rsquo;d rather pay and skip the setup</h3>
+          <p>Apps like CapCut, Submagic, Opus Clip and Descript do automatic captions and filler-word removal in the browser or on your phone, with no installing. The trade-off is a monthly fee, less control over a consistent look, and your footage is usually uploaded to their servers. Check current pricing on their sites before deciding. They are worth a look if the free route feels like too much.</p>
+
+          <h3>Your first 30 minutes</h3>
+          <ol class="check">
+            <li>Update the Claude desktop app and open the <strong>Code</strong> tab.</li>
+            <li>Watch the first two videos above (about 20 minutes together).</li>
+            <li>Pick one throwaway 30-second clip of yourself talking.</li>
+            <li>Tell Claude: &ldquo;Install the Vedit skill from github.com/onetwothird/Vedit and run its health check.&rdquo;</li>
+            <li>Send me what happened. We take it from there.</li>
+          </ol>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot"><div class="in"><p>Prepared 11 Nov 2026 for Alex. Private page, please don&rsquo;t share the link. Facts about each tool were read from its public GitHub page on that date and may change.</p></div></footer>
+
+    <script is:inline>
+      (function () {
+        document.querySelectorAll('.facade').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var f = document.createElement('iframe');
+            f.src = 'https://www.youtube-nocookie.com/embed/' + btn.dataset.id + '?autoplay=1&rel=0';
+            f.title = btn.dataset.title;
+            f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+            f.allowFullscreen = true;
+            f.referrerPolicy = 'strict-origin-when-cross-origin';
+            btn.replaceWith(f);
+            f.focus();
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  body { margin: 0; background: var(--bone); color: var(--ink); font-family: var(--font-body); line-height: 1.6; }
+  .in { max-width: var(--wrap-max); margin: 0 auto; padding: 0 var(--gutter); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; margin: 0 0 .5em; font-weight: 500; }
+  h1 { font-size: clamp(2.2rem, 7vw, 4rem); }
+  h2 { font-size: clamp(1.7rem, 4.5vw, 2.4rem); }
+  h3 { font-size: 1.3rem; margin-top: 2rem; }
+  h4 { font-size: 1rem; font-family: var(--font-body); font-weight: 600; margin-bottom: .25rem; }
+  p { margin: 0 0 1em; }
+  a { color: var(--olive-dark); text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible, .tablewrap:focus-visible { outline: 3px solid var(--olive); outline-offset: 3px; }
+  ul, ol { padding-left: 1.2rem; }
+
+  .hero { background: var(--charcoal); color: var(--cream); padding: 3.5rem 0 2rem; }
+  .hero a { color: var(--cream); }
+  .hero em { font-style: italic; color: var(--sage); }
+  .eyebrow-l { text-transform: uppercase; letter-spacing: .14em; font-size: .8rem; color: var(--cream-muted); margin-bottom: 1rem; }
+  .lede { font-size: 1.15rem; max-width: 46rem; color: var(--cream); }
+  .jump { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
+  .jump a { padding: .45rem .9rem; border: 1px solid var(--cream-muted); border-radius: 999px; text-decoration: none; font-size: .9rem; }
+  .jump a:hover { background: var(--olive); border-color: var(--olive); }
+
+  .band { padding: 3.5rem 0; }
+  .band.alt { background: var(--sand); }
+  .sub { color: var(--ink-muted); max-width: 46rem; }
+
+  .num { display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--olive-dark); color: var(--white); font-weight: 600; flex: none; }
+  .flow { list-style: none; padding: 0; margin: 1.5rem 0; display: grid; gap: .75rem; }
+  .flow li { display: grid; grid-template-columns: auto 1fr; column-gap: .75rem; row-gap: .1rem; background: var(--white); border: 1px solid var(--stone-line); border-radius: var(--radius); padding: .9rem 1rem; }
+  .flow .num { grid-row: span 2; align-self: center; }
+  .flow span:last-child { color: var(--ink-muted); font-size: .95rem; }
+  .layers { background: var(--cream); border-left: 4px solid var(--gold); padding: 1rem 1.25rem; border-radius: var(--radius); }
+
+  .cards3 { list-style: none; padding: 0; display: grid; gap: .9rem; grid-template-columns: 1fr; }
+  .cards3 li { background: var(--white); border: 1px solid var(--stone-line); border-radius: var(--radius); padding: 1.1rem 1.2rem; }
+  .cards3 strong { display: block; font-family: var(--font-display); font-size: 1.15rem; margin-bottom: .3rem; }
+  .tag { display: inline-block; font-family: var(--font-body); font-size: .72rem; background: var(--olive-dark); color: var(--white); padding: .1rem .55rem; border-radius: 999px; vertical-align: middle; margin-left: .3rem; }
+
+  .videos { list-style: none; padding: 0; display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+  .video { background: var(--white); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--stone-line); }
+  .video iframe, .facade { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; padding: 0; background: var(--charcoal); }
+  .facade { position: relative; cursor: pointer; }
+  .facade img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .play { position: absolute; inset: 0; margin: auto; width: 4.2rem; height: 4.2rem; border-radius: 50%; background: var(--olive-dark); box-shadow: var(--shadow-lift); }
+  .play::after { content: ''; position: absolute; left: 1.7rem; top: 1.2rem; border-left: 1.4rem solid var(--white); border-top: .9rem solid transparent; border-bottom: .9rem solid transparent; }
+  .vmeta { padding: 1rem 1.2rem 1.2rem; display: grid; gap: .25rem; }
+  .by { color: var(--ink-muted); font-size: .9rem; }
+
+  .tablewrap { overflow-x: auto; margin: 1.5rem 0; border: 1px solid var(--stone-line); border-radius: var(--radius); background: var(--white); }
+  table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: .9rem; }
+  th, td { padding: .6rem .7rem; border-bottom: 1px solid var(--stone-line); text-align: left; }
+  thead th { background: var(--cream); font-weight: 600; vertical-align: bottom; }
+  tbody th { font-weight: 600; }
+  td.r-yes { color: var(--olive-deep); font-weight: 600; }
+  td.r-part { color: var(--ink); }
+  td.r-no { color: var(--ink-muted); }
+
+  .repos { list-style: none; padding: 0; display: grid; gap: 1.2rem; }
+  .repo { background: var(--white); border: 1px solid var(--stone-line); border-radius: var(--radius); padding: 1.3rem 1.4rem; }
+  .repo h3 { margin-top: .3rem; }
+  .pill { display: inline-block; background: var(--olive-dark); color: var(--white); font-size: .78rem; padding: .2rem .7rem; border-radius: 999px; }
+  .stats { color: var(--ink-muted); font-size: .88rem; }
+  .pc { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+  .pc ul { margin: 0; font-size: .93rem; }
+  .blocks li { margin-bottom: .6rem; }
+
+  .cols { display: grid; gap: 2rem; grid-template-columns: 1fr; }
+  .stages { list-style: none; padding: 0; display: grid; gap: 1rem; }
+  .stages li { display: grid; grid-template-columns: auto 1fr; gap: 1rem; background: var(--white); border: 1px solid var(--stone-line); border-radius: var(--radius); padding: 1.1rem 1.2rem; }
+  .stages h3 { margin: 0 0 .3rem; font-size: 1.2rem; }
+  .stages p { margin: 0; }
+  .when { font-family: var(--font-body); font-size: .8rem; color: var(--ink-muted); font-weight: 400; margin-left: .4rem; }
+
+  .code { margin: 0; background: var(--charcoal); color: var(--cream); border-radius: var(--radius); padding: 1rem 1.2rem; }
+  .code figcaption { font-size: .8rem; color: var(--cream-muted); margin-bottom: .5rem; }
+  .code .sep { margin-top: 1rem; }
+  .code pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-size: .85rem; line-height: 1.55; }
+
+  .risks li, .check li { margin-bottom: .6rem; }
+  .foot { background: var(--charcoal); color: var(--cream-muted); padding: 1.5rem 0; font-size: .85rem; }
+  .foot p { margin: 0; }
+
+  @media (min-width: 720px) {
+    .flow { grid-template-columns: repeat(5, 1fr); }
+    .flow li { grid-template-columns: 1fr; text-align: left; }
+    .flow .num { grid-row: auto; margin-bottom: .4rem; }
+    .cards3 { grid-template-columns: repeat(3, 1fr); }
+    .videos { grid-template-columns: repeat(2, 1fr); }
+    .pc, .cols { grid-template-columns: 1fr 1fr; }
+  }
+</style>
