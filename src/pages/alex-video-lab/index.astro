@@ -14,16 +14,16 @@ const repos: {
     name: 'Vedit', url: 'https://github.com/onetwothird/Vedit', stats: '2 stars · MIT licence · updated 7 Nov 2026',
     pick: 'Start here',
     summary: 'A command-line editor with a Claude skill on top, built for creators. Cuts dead air, ums and flubbed takes (keeping the last take), adds word-by-word captions, and has a Reels preset.',
-    pros: ['Saved brand kit (brand.json): font, highlight colour, logo, intro/outro, music, colour look. This is how every reel looks the same.', 'Free local transcription (Whisper), so no paid keys needed.', 'Built-in whoosh / ding / pop sound effects and alternating punch-in zooms.'],
-    catches: ['Very young project, tiny community.', 'Crossfade and whip transitions are on its roadmap, not finished.', 'Some setup in Terminal (Claude can do it for you).'],
+    pros: ['Saved brand kit (brand.json): font, highlight colour, logo, intro/outro, music, colour look. This is how every reel looks the same.', 'Free local transcription (Whisper), so no paid keys needed.', 'Runs natively on Windows (PowerShell), with install steps in its docs.', 'Built-in whoosh / ding / pop sound effects and alternating punch-in zooms.'],
+    catches: ['Very young project, tiny community.', 'Crossfade and whip transitions are on its roadmap, not finished.', 'One-time setup in PowerShell (the prompt above has Claude do it for you).'],
     fit: ['yes', 'yes', 'yes', 'yes', 'part', 'yes', 'yes'],
   },
   {
     name: 'talking-head-editor', url: 'https://github.com/griffinwooldridge/talking-head-editor', stats: '10 stars · MIT · updated 27 Oct 2026',
-    pick: 'Runner-up (fancier visuals)',
+    pick: 'Not for Windows',
     summary: 'Cleans up the voice, makes tight cuts, tracks your face for vertical framing, adds word-timed captions and animated graphics, with a library of fancy transitions.',
-    pros: ['Richest transitions and motion graphics of the free options.', 'No API keys. Mac and Linux.', 'Voice clean-up built in.'],
-    catches: ['No saved style file, so it restyles each run (less consistent).', 'Mac or Linux only (fine for Alex if he is on a Mac).', 'Sound effects not mentioned.'],
+    pros: ['Richest transitions and motion graphics of the free options.', 'No API keys needed.', 'Voice clean-up built in.'],
+    catches: ['No saved style file, so it restyles each run (less consistent).', 'Mac and Linux only: it does not run on Windows, so it is not an option for your PC.', 'Sound effects not mentioned.'],
     fit: ['yes', 'yes', 'part', 'no', 'yes', 'part', 'yes'],
   },
   {
@@ -43,11 +43,22 @@ const repos: {
   {
     name: 'video-editing-skill (social-media-skills)', url: 'https://github.com/social-media-skills/video-editing-skill', stats: '1 star · MIT · updated 30 Oct 2026',
     summary: 'Cuts silences, ums and retakes, adds gentle 1.1x punch-ins, levels audio to social-media loudness and writes caption files and chapters.',
-    pros: ['Simple and focused. Mac, Windows, Linux.', 'Three editing styles (tight, podcast, YouTube).'],
+    pros: ['Simple and focused. Works on Windows, Mac and Linux.', 'Three editing styles (tight, podcast, YouTube).'],
     catches: ['Brand new with a single commit.', 'No sound effects, transitions or brand file.', 'Its readme promotes a paid posting service (optional).'],
     fit: ['yes', 'yes', 'yes', 'no', 'no', 'no', 'yes'],
   },
 ];
+
+const setupPrompt = `I want to set up a free AI reel-editing workflow on this Windows PC using the open-source "Vedit" skill (https://github.com/onetwothird/Vedit). I am not technical, so do each step yourself, check that it worked before moving on, and explain any problem in plain English. Ask before anything that deletes files.
+
+1. CHECK AND INSTALL the prerequisites with winget: Python 3.9 or newer (Python.Python.3.12), Git (Git.Git) and FFmpeg (Gyan.FFmpeg). Tell me if I need to close and reopen the app so they are picked up.
+2. INSTALL VEDIT: git clone https://github.com/onetwothird/vedit.git into Documents\\vedit, then inside that folder run: pip install -e ".[all]" and then: vedit doctor. Fix anything that is not [ok].
+3. LINK THE SKILL so Claude can find it: create the folder $HOME\\.claude\\skills if missing, then create a junction (not a symlink) named vedit pointing at Documents\\vedit.
+4. SAFETY CHECK: before using it, skim SKILL.md and the scripts for anything that uploads my files, contacts unknown servers or looks unsafe. Give me a 3-bullet summary. Stop and ask me if anything worries you.
+5. CREATE MY WORKSPACE: Documents\\Reels\\Inbox (raw clips go here) and Documents\\Reels\\Done (finished reels).
+6. CREATE MY BRAND FILE at $HOME\\.vedit\\brand.json for Vital Fascia (Vedit supports font, highlight colour, logo, intro/outro, music, colour look). Ask me for the font, accent colour, whether I have a logo file, and whether I want music. Do not guess. Use only free-to-use fonts and music.
+7. WRITE MY STANDING RULES to Documents\\Reels\\default-prompt.md: vertical 9:16; remove ums, ahs, stutters, long pauses and repeated sentences and keep the best take; default length 30-45 seconds unless my notes say otherwise; word-by-word captions in my brand style; subtle zoom punch-ins on emphasis; a light sound effect only on key points; never cut mid-word; flag anything you are unsure about; save the result in Documents\\Reels\\Done. Tell me that my per-video notes override these rules.
+8. FINISH by telling me, in 5 short steps, exactly how to do my first run: copy a clip from my Android phone into Documents\\Reels\\Inbox, open that Reels folder in the Code tab, and ask you to edit it using default-prompt.md and my brand settings. If a clip is already in Inbox, offer to run it now and tell me where the finished file will be.`;
 
 const videos = [
   { id: 'S9Dd8fQHaEo', title: 'Claude Code Video Editing: No Editor Needed (Free Skill)', by: 'Nuno Tavares | Automated Marketer', why: 'Closest to Alex\'s goal: a free skill editing talking-head footage.' },
@@ -58,16 +69,15 @@ const videos = [
 ];
 
 const stages = [
-  { n: 1, title: 'Install one skill and edit one clip', when: 'This week', body: 'Open the Code tab in the Claude desktop app, point it at the Vedit repo and ask it to install and run a health check. Test on a throwaway 30-second clip. Goal: see the cuts, captions and zooms working once.' },
+  { n: 1, title: 'Install one skill and edit one clip', when: 'This week', body: 'Paste the setup prompt at the top of this page into the Code tab of the Claude desktop app, then follow the first-run steps. Test on a throwaway 30-second clip. Goal: see the cuts, captions and zooms working once.' },
   { n: 2, title: 'Lock in the look', when: 'Week 2', body: 'Set Vedit\'s brand.json (fonts, colours, logo, music, intro/outro) to match Vital Fascia. Add the free HyperFrames skills for extra caption styles and sound effects. Edit three real reels and note what you would change.' },
-  { n: 3, title: 'Dump & run', when: 'Week 3-4', body: 'A small watched-folder script on the Mac: drop clips (and an optional notes.txt) into Reels/Inbox. It runs Claude with your default prompt plus the notes, saves the result into Reels/Done and pops up a notification. You check it and post.' },
-  { n: 4, title: 'Optional: a settings dashboard', when: 'Only if stages 1-3 earn it', body: 'A small local web app on the Mac with a form for brand settings, the default prompt, the inbox status and previews. Honest note below on why this cannot live on the public website.' },
+  { n: 3, title: 'Dump & run', when: 'Week 3-4', body: 'A small watched-folder script on your PC: drop clips (and an optional notes.txt) into Reels/Inbox. It runs Claude with your default prompt plus the notes, saves the result into Reels/Done and pops up a notification. You check it and post.' },
 ];
 
 const risks = [
   'These repos are young and mostly have few users. Have someone technical skim the code before installing, and try everything on a throwaway clip first.',
   'Check the licence before reusing anything: one repo above has no licence at all.',
-  'Keep client or patient footage and any clinical detail out of third-party services. Prefer the free local options that transcribe on your own Mac.',
+  'Keep client or patient footage and any clinical detail out of third-party services. Prefer the free local options that transcribe on your own PC.',
   'Always watch the result before posting. AI cuts occasionally clip a word or misspell a caption, and health claims in captions still need to be accurate.',
   'Only use music you are licensed to use commercially. The free sound effects bundled with these tools are the safe choice; check the licence before adding any other music.',
 ];
@@ -89,27 +99,50 @@ const risks = [
         <h1>Your <em>dump &amp; run</em> reel editor</h1>
         <p class="lede">You record. You drop the clips in a folder. An AI system cuts the stutters, pauses and &ldquo;umms&rdquo;, adds captions, zooms and sound effects in your look, then tells you when it&rsquo;s done. You check it and post.</p>
         <nav class="jump" aria-label="On this page">
+          <a href="#start">Start here</a>
           <a href="#flow">The idea</a>
-          <a href="#reel">Your reel</a>
           <a href="#videos">Watch</a>
           <a href="#repos">Free tools</a>
           <a href="#how">How it works</a>
           <a href="#plan">My plan for you</a>
-          <a href="#dashboard">Dashboard?</a>
           <a href="#careful">Be careful</a>
         </nav>
       </div>
     </header>
 
     <main>
-      <section id="flow" class="band">
+      <section id="start" class="band start">
+        <div class="in">
+          <h2>Start here: one prompt, then your first run</h2>
+          <p class="sub">Written for a Windows PC with an Android phone. It uses <a href="https://github.com/onetwothird/Vedit" target="_blank" rel="noopener noreferrer">Vedit</a>, a free editor that runs natively on Windows (the other top skill, talking-head-editor, does not).</p>
+          <ol class="steps">
+            <li><strong>Open the Claude desktop app</strong> and click the <strong>Code</strong> tab (not normal chat).</li>
+            <li><strong>Copy the prompt below</strong> and paste it in. Claude installs everything, checks it works and asks you a few questions about your brand. Say yes to the permission pop-ups when they are for installs.</li>
+            <li><strong>Answer its questions</strong> (font, colour, logo, usual video length).</li>
+          </ol>
+          <figure class="code prompt">
+            <figcaption>Setup prompt <button type="button" class="copybtn" data-copy="setup-prompt">Copy prompt</button><span class="copied" role="status" aria-live="polite"></span></figcaption>
+            <pre id="setup-prompt">{setupPrompt}</pre>
+          </figure>
+          <h3>Your first run</h3>
+          <ol class="steps">
+            <li><strong>Get a clip onto the PC.</strong> Send it from your Android phone with Quick Share, Google Drive or Google Photos, or a USB cable. Use a short, throwaway clip of you talking (30-60 seconds).</li>
+            <li><strong>Save it in</strong> <code>Documents\Reels\Inbox</code>.</li>
+            <li><strong>In the Code tab, open the folder</strong> <code>Documents\Reels</code>, then type: <em>&ldquo;Edit the clip in Inbox as a reel using my default prompt and brand settings. Notes: keep it about 40 seconds.&rdquo;</em></li>
+            <li><strong>Wait a few minutes.</strong> Your finished reel appears in <code>Documents\Reels\Done</code> next to a captions file. Watch it all the way through.</li>
+            <li><strong>Tell Claude what to change</strong> in plain words (&ldquo;captions bigger&rdquo;, &ldquo;too many zooms&rdquo;, &ldquo;you cut off my last sentence&rdquo;) and ask it to save that as a standing rule so every future reel keeps it.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="flow" class="band alt">
         <div class="in">
           <h2>The idea in one picture</h2>
           <ol class="flow">
-            <li><span class="num">1</span><strong>Record</strong><span>Film as normal on your phone.</span></li>
-            <li><span class="num">2</span><strong>Drop in a folder</strong><span>Add a line of notes if you like: &ldquo;keep it under 45 seconds, focus on posture.&rdquo;</span></li>
+            <li><span class="num">1</span><strong>Record</strong><span>Film as normal on your Android phone.</span></li>
+            <li><span class="num">2</span><strong>Drop in a folder</strong><span>Copy the clip to your PC&rsquo;s Inbox folder. Add a line of notes if you like: &ldquo;keep it under 45 seconds, focus on posture.&rdquo;</span></li>
             <li><span class="num">3</span><strong>Claude edits</strong><span>Using your default prompt + brand settings + your notes.</span></li>
-            <li><span class="num">4</span><strong>You get a ping</strong><span>A notification on your Mac when it&rsquo;s finished.</span></li>
+            <li><span class="num">4</span><strong>You get a ping</strong><span>A notification on your PC when it&rsquo;s finished.</span></li>
             <li><span class="num">5</span><strong>Check &amp; post</strong><span>Watch it, tweak if needed, publish.</span></li>
           </ol>
           <p class="layers"><strong>Three layers of instruction, stacked:</strong> a <em>default prompt</em> (your standing rules) &rarr; the <em>brand file</em> (fonts, colours, logo, music) &rarr; your <em>per-video notes</em>. Your notes sit on top, so you only type what&rsquo;s different this time.</p>
@@ -123,14 +156,6 @@ const risks = [
             <li><strong>Sound effects</strong>Whooshes, pops and dings timed to the cuts.</li>
             <li><strong>Same look every time</strong>A saved brand file so every reel feels like Vital Fascia.</li>
           </ul>
-        </div>
-      </section>
-
-      <section id="reel" class="band alt">
-        <div class="in">
-          <h2>About the reel you sent</h2>
-          <p>That reel put two Claude models (<strong>Fable</strong> and <strong>Opus</strong>) side by side: the same video and the same prompt, to show how well each one can <em>see and understand</em> video.</p>
-          <p><strong>Why it matters for you:</strong> editing quality depends on how well the model understands what is happening on screen, not only what is said. A model that can look at your footage can judge a good take, spot an awkward moment or check that a caption lands on the right word. So the model you pick is a setting worth testing: run the <em>same clip</em> through each with the <em>same prompt</em> (just like the reel) and keep whichever edits more to your taste. In the Claude desktop app you can switch models in the Code tab.</p>
         </div>
       </section>
 
@@ -211,7 +236,7 @@ const risks = [
             <div>
               <h3>What is a &ldquo;skill&rdquo;?</h3>
               <p>A skill is a folder of instructions and small programs that teaches Claude how to do one job, like editing a talking-head video. You install it once; after that you just talk to Claude: &ldquo;edit this clip, 45 seconds, my usual look&rdquo;.</p>
-              <p>Under the hood the heavy lifting is done by free programs on your own Mac: <strong>ffmpeg</strong> (cuts and joins video), <strong>Whisper</strong> (turns speech into text with exact timings, so Claude knows where every &ldquo;umm&rdquo; is) and a renderer for captions and graphics. With the free local options (like Vedit), your footage stays on your computer.</p>
+              <p>Under the hood the heavy lifting is done by free programs on your own Windows PC: <strong>ffmpeg</strong> (cuts and joins video), <strong>Whisper</strong> (turns speech into text with exact timings, so Claude knows where every &ldquo;umm&rdquo; is) and a renderer for captions and graphics. With the free local options (like Vedit), your footage stays on your computer.</p>
             </div>
             <div>
               <h3>Where do I use it?</h3>
@@ -224,7 +249,7 @@ const risks = [
 
       <section id="plan" class="band alt">
         <div class="in">
-          <h2>My recommendation: four stages</h2>
+          <h2>My recommendation: three stages</h2>
           <ol class="stages">
             {stages.map((s) => (
               <li>
@@ -267,19 +292,7 @@ Skip the part where I mention the booking page.`}</pre>
         </div>
       </section>
 
-      <section id="dashboard" class="band">
-        <div class="in">
-          <h2>What about a dashboard on the website?</h2>
-          <p>A good question, with an honest answer: <strong>a page on the public website cannot control the Claude on your Mac.</strong> The website lives on the internet; your editing lives on your computer, with no safe way for one to reach the other directly. Three realistic options:</p>
-          <ul class="cards3">
-            <li><strong>A. Settings files <span class="tag">Recommended now</span></strong>Your look and default prompt live in two small files (brand.json, default-prompt.md). Change them in any text editor, or just ask Claude to. No extra software.</li>
-            <li><strong>B. A small local app <span class="tag">Later, if useful</span></strong>A little page that runs on your Mac only (not online) with a settings form, an inbox view and video previews. This is the right shape for &ldquo;settings that talk to my local Claude&rdquo;.</li>
-            <li><strong>C. Settings on the website</strong>Possible to build, but pointless on its own: it would still need option B running on your Mac to do anything. Not recommended.</li>
-          </ul>
-        </div>
-      </section>
-
-      <section id="careful" class="band alt">
+      <section id="careful" class="band">
         <div class="in">
           <h2>Be careful about</h2>
           <ul class="risks">{risks.map((r) => <li>{r}</li>)}</ul>
@@ -287,14 +300,6 @@ Skip the part where I mention the booking page.`}</pre>
           <h3>If you&rsquo;d rather pay and skip the setup</h3>
           <p>Apps like CapCut, Submagic, Opus Clip and Descript do automatic captions and filler-word removal in the browser or on your phone, with no installing. The trade-off is a monthly fee, less control over a consistent look, and your footage is usually uploaded to their servers. Check current pricing on their sites before deciding. They are worth a look if the free route feels like too much.</p>
 
-          <h3>Your first 30 minutes</h3>
-          <ol class="check">
-            <li>Update the Claude desktop app and open the <strong>Code</strong> tab.</li>
-            <li>Watch the first two videos above (about 20 minutes together).</li>
-            <li>Pick one throwaway 30-second clip of yourself talking.</li>
-            <li>Tell Claude: &ldquo;Install the Vedit skill from github.com/onetwothird/Vedit and run its health check.&rdquo;</li>
-            <li>Send me what happened. We take it from there.</li>
-          </ol>
         </div>
       </section>
     </main>
@@ -303,6 +308,14 @@ Skip the part where I mention the booking page.`}</pre>
 
     <script is:inline>
       (function () {
+        document.querySelectorAll('.copybtn').forEach(function (b) {
+          b.addEventListener('click', function () {
+            var pre = document.getElementById(b.dataset.copy); var note = b.parentNode.querySelector('.copied');
+            var done = function (m) { note.textContent = m; setTimeout(function () { note.textContent = ''; }, 3000); };
+            if (navigator.clipboard) { navigator.clipboard.writeText(pre.innerText).then(function () { done('Copied!'); }, function () { done('Select the text and press Ctrl+C'); }); }
+            else { done('Select the text and press Ctrl+C'); }
+          });
+        });
         document.querySelectorAll('.facade').forEach(function (btn) {
           btn.addEventListener('click', function () {
             var f = document.createElement('iframe');
@@ -400,6 +413,13 @@ Skip the part where I mention the booking page.`}</pre>
   .code pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-size: .85rem; line-height: 1.55; }
 
   .risks li, .check li { margin-bottom: .6rem; }
+  .steps { padding-left: 1.2rem; } .steps li { margin-bottom: .6rem; }
+  .start { border-bottom: 4px solid var(--gold); }
+  code { background: var(--cream); padding: .1rem .35rem; border-radius: 4px; font-size: .88em; word-break: break-word; }
+  .prompt pre { max-height: 22rem; overflow: auto; }
+  .copybtn { margin-left: .75rem; background: var(--olive); color: var(--white); border: 0; border-radius: var(--radius-btn); padding: .45rem .9rem; font: inherit; font-size: .85rem; cursor: pointer; }
+  .copybtn:hover { background: var(--olive-dark); }
+  .copied { margin-left: .6rem; color: var(--sage); }
   .foot { background: var(--charcoal); color: var(--cream-muted); padding: 1.5rem 0; font-size: .85rem; }
   .foot p { margin: 0; }
 
